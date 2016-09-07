@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+- '6'
+- '5'
+- '4'
+before_script:
+- npm i -g iloa
+- node bin/iloa.js config init
+after_success:
+- npm run cover
+- npm run climate

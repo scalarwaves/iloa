@@ -1,0 +1,16 @@
+logs
+*.log
+coverage
+.nyc_output
+node_modules
+
+# Project specific
+.sync
+docs
+scripts
+staging
+wiki
+TODO.md
+jsdoc.conf.json
+json
+.nvmrc
