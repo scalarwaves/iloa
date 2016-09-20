@@ -74,11 +74,10 @@ exports.arrToStr = function (obj) {
   * Strips HTML from a string
   * @public
   * @param  {string} string Text with HTML tags
-  * @return {string} Plaint text string
+  * @return {string} Plain text string
   */
 exports.stripHTML = function (string) {
-  var stripped = string.replace(/(<([^>]+)>)/ig, '');
-  return stripped;
+  return string.replace(/(<([^>]+)>)/ig, '');
 };
 
 /**

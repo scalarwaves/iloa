@@ -72,12 +72,9 @@ exports.arrToStr = (obj) => {
   * Strips HTML from a string
   * @public
   * @param  {string} string Text with HTML tags
-  * @return {string} Plaint text string
+  * @return {string} Plain text string
   */
-exports.stripHTML = (string) => {
-  const stripped = string.replace(/(<([^>]+)>)/ig, '')
-  return stripped
-}
+exports.stripHTML = (string) => string.replace(/(<([^>]+)>)/ig, '')
 
 /**
   * Wraps blocks of text
