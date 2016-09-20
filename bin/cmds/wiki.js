@@ -5,7 +5,13 @@ var themes = require('../themes');
 var tools = require('../tools');
 
 var _ = require('lodash');
-var http = require('good-guy-http')();
+var gg = require('good-guy-http');
+var http = gg({
+  cache: false,
+  defaultCache: {
+    cached: false
+  }
+});
 var noon = require('noon');
 
 var CFILE = process.env.HOME + '/.iloa.noon';
@@ -24,11 +30,25 @@ exports.builder = {
     desc: 'Force overwriting outfile',
     default: false,
     type: 'boolean'
+  },
+  intro: {
+    alias: 'i',
+    desc: 'Just intro or all sections',
+    default: false,
+    type: 'boolean'
   }
 };
 exports.handler = function (argv) {
   tools.checkConfig(CFILE);
   var config = noon.load(CFILE);
+  var userConfig = {
+    wiki: {
+      intro: argv.i
+    }
+  };
+  if (config.merge) config = _.merge({}, config, userConfig);
+  if (argv.s && config.merge) noon.save(CFILE, config);
+  if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.");
   var theme = themes.loadTheme(config.theme);
   if (config.verbose) themes.label(theme, 'down', 'Wikipedia');
   var wcont = [];
@@ -44,7 +64,9 @@ exports.handler = function (argv) {
   } else {
     words = wcont[0];
   }
-  var url = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&indexpageids&redirects=1&explaintext=&titles=' + words;
+  var prefix = 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&indexpageids&redirects=1&continue=&explaintext=';
+  if (argv.i) prefix = prefix + '&exintro=';
+  var url = prefix + '&titles=' + words;
   url = encodeURI(url);
   var tofile = {
     type: 'wiki',
@@ -54,13 +76,25 @@ exports.handler = function (argv) {
   http({ url: url }, function (error, response) {
     if (!error && response.statusCode === 200) {
       var body = JSON.parse(response.body);
+      if (body.query.pageids[0] === '-1') {
+        if (body.query.normalized) {
+          var fixed = body.query.normalized[0];
+          console.log('Query normalized from ' + fixed.from + ' to ' + fixed.to + ', try searching again.');
+          process.exit(0);
+        } else {
+          console.log('No Wikipedia article found for ' + wcont.join(' ') + ', try searching again.');
+          process.exit(0);
+        }
+      }
       var pageID = body.query.pageids[0];
       var page = body.query.pages[pageID];
-      themes.label(theme, 'down', 'Summary', page.extract.trim());
-      tofile['summary'] = page.extract.trim();
+      var plain = page.extract.trim();
+      var wrapped = tools.wrapStr(plain, 80, false);
+      themes.label(theme, 'down', 'Summary', wrapped);
+      tofile.summary = plain;
       if (argv.o) tools.outFile(argv.o, argv.f, tofile);
     } else {
-      throw new Error('HTTP ' + response.statusCode + ': ' + error);
+      throw new Error('HTTP ' + error.statusCode + ': ' + error.reponse.body);
     }
   });
 };
