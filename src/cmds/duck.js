@@ -3,7 +3,6 @@ const themes = require('../themes')
 const tools = require('../tools')
 
 const _ = require('lodash')
-const exec = require('child_process').exec
 const http = require('good-guy-http')()
 const noon = require('noon')
 
@@ -27,7 +26,7 @@ exports.builder = {
 }
 exports.handler = (argv) => {
   tools.checkConfig(CFILE)
-  let config = noon.load(CFILE)
+  const config = noon.load(CFILE)
   const theme = themes.loadTheme(config.theme)
   if (config.verbose) themes.label(theme, 'down', 'DuckDuckGo')
   const dcont = []
@@ -45,7 +44,6 @@ exports.handler = (argv) => {
   }
   let url = `https://api.duckduckgo.com/?q=${words}&format=json&pretty=1&no_redirect=1&t=iloa`
   url = encodeURI(url)
-  // console.log(url)
   const tofile = {
     type: 'duckduckgo',
     source: 'https://www.duckduckgo.com/',
@@ -74,26 +72,25 @@ exports.handler = (argv) => {
         AnswerType: '',
         ImageHeight: '',
         Answer: '',
-        Results: []
+        Results: [],
       }
-      // console.log(response.body)
       const body = JSON.parse(response.body)
       if (body === blank) {
         console.log('DuckDuckGo found no results.')
         process.exit(0)
       }
-      if (body.Type === 'E' && body.Redirect != '') {
+      if (body.Type === 'E' && body.Redirect !== '') {
         console.log(`!bang redirect to ${body.Redirect}`)
         process.exit(0)
       }
       let rtype = null
-      if (body.Type != '') {
+      if (body.Type !== '') {
         if (body.Type === 'A') rtype = 'Article'
         if (body.Type === 'C') rtype = 'Category'
         if (body.Type === 'D') rtype = 'Disambiguation'
         if (body.Type === 'N') rtype = 'Name'
       } else rtype = body.Type
-      tofile['answerType'] = body.AnswerType
+      tofile.answerType = body.AnswerType
       if (body.AnswerType === 'calc') {
         themes.label(theme, 'right', 'Calculation')
         console.log(tools.stripHTML(body.Answer))
@@ -110,51 +107,54 @@ exports.handler = (argv) => {
         console.log(body.Answer)
         process.exit(0)
       }
-      if (rtype != '') themes.label(theme, 'right', 'Type', rtype)
-      tofile['responseType'] = rtype
-      const results = body.Results
+      if (rtype !== '') themes.label(theme, 'right', 'Type', rtype)
+      tofile.responseType = rtype
       if (rtype === 'Article') {
         themes.label(theme, 'right', 'Title', body.Heading)
         themes.label(theme, 'right', 'Entity', body.Entity)
         themes.label(theme, 'right', 'Source', body.AbstractSource)
         themes.label(theme, 'right', 'URL', body.AbstractURL)
         themes.label(theme, 'right', 'Text', body.AbstractText)
-        if (results != []) {
+        if (body.Results.length > 0) {
           themes.label(theme, 'down', 'Primary Results')
-          for (let i = 0; i <= results - 1; i++) {
-            const res = results[i]
+          for (let i = 0; i <= body.Results - 1; i++) {
+            const res = body.Results[i]
             console.log(`${res.Text}\n${res.FirstURL}`)
             tofile[[`resultText${i}`]] = res.Text
             tofile[[`resultUrl${i}`]] = res.FirstURL
           }
         }
-        tofile['title'] = body.Heading
-        tofile['entity'] = body.Entity
-        tofile['abstractSource'] = body.AbstractSource
-        tofile['abstractUrl'] = body.AbstractURL
-        tofile['text'] = body.AbstractText
+        tofile.title = body.Heading
+        tofile.entity = body.Entity
+        tofile.abstractSource = body.AbstractSource
+        tofile.abstractUrl = body.AbstractURL
+        tofile.text = body.AbstractText
       }
       if (rtype === 'Category' || rtype === 'Disambiguation') {
         themes.label(theme, 'right', 'Title', body.Heading)
         themes.label(theme, 'right', 'Source', body.AbstractSource)
         themes.label(theme, 'right', 'URL', body.AbstractURL)
-        tofile['title'] = body.Heading
-        tofile['abstractSource'] = body.AbstractSource
-        tofile['abstractUrl'] = body.AbstractURL
+        tofile.title = body.Heading
+        tofile.abstractSource = body.AbstractSource
+        tofile.abstractUrl = body.AbstractURL
       }
-      if (body.RelatedTopics != []) {
+      if (body.Image) {
+        themes.label(theme, 'right', 'Image URL', body.Image)
+        tofile.image = body.Image
+      }
+      if (body.RelatedTopics !== []) {
         const rtArray = body.RelatedTopics
         const rcont = []
         const tcont = []
         for (let i = 0; i <= rtArray.length - 1; i++) {
           const hash = rtArray[i]
-          if (hash.Result != undefined) {
+          if (hash.Result !== undefined) {
             rcont.push(hash)
-          } else if (hash.Name != undefined) {
+          } else if (hash.Name !== undefined) {
             tcont.push(hash)
           }
         }
-        if (rcont != []) {
+        if (rcont !== []) {
           themes.label(theme, 'down', 'Related')
           for (let i = 0; i <= rcont.length - 1; i++) {
             const rhash = rcont[i]
@@ -163,7 +163,7 @@ exports.handler = (argv) => {
             tofile[[`relatedUrl${i}`]] = rhash.FirstURL
           }
         }
-        if (tcont != []) {
+        if (tcont !== []) {
           for (let i = 0; i <= tcont.length - 1; i++) {
             const thash = tcont[i]
             themes.label(theme, 'right', 'Topics', thash.Name)
@@ -180,7 +180,7 @@ exports.handler = (argv) => {
       }
       if (argv.o) tools.outFile(argv.o, argv.f, tofile)
     } else {
-      throw new Error(`HTTP ${response.statusCode}: ${error}`)
+      throw new Error(`HTTP ${error.statusCode}: ${error.reponse.body}`)
     }
   })
 }
