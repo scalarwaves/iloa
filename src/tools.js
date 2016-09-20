@@ -1,8 +1,8 @@
 /* eslint max-len: 0 */
 const chalk = require('chalk')
 const fs = require('fs-extra')
-const moment = require('moment')
 const noon = require('noon')
+const wrap = require('wrap-ansi')
 const xml2js = require('xml2js')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
@@ -75,9 +75,18 @@ exports.arrToStr = (obj) => {
   * @return {string} Plaint text string
   */
 exports.stripHTML = (string) => {
-  let stripped = string.replace(/(<([^>]+)>)/ig,'')
+  const stripped = string.replace(/(<([^>]+)>)/ig, '')
   return stripped
 }
+
+/**
+  * Wraps blocks of text
+  * @param  {string} str Long string
+  * @param  {number} col Number of columns
+  * @param  {boolean} hard true, soft false
+  * @return {string} ANSI-wrapped string
+  */
+exports.wrapStr = (str, col, hard) => wrap(str, col, hard)
 
 /**
   * Handles data export to file. Supports cson, json, noon, plist, xml, yaml.

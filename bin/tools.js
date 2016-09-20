@@ -3,8 +3,8 @@
 /* eslint max-len: 0 */
 var chalk = require('chalk');
 var fs = require('fs-extra');
-var moment = require('moment');
 var noon = require('noon');
+var wrap = require('wrap-ansi');
 var xml2js = require('xml2js');
 
 var CFILE = process.env.HOME + '/.iloa.noon';
@@ -79,6 +79,17 @@ exports.arrToStr = function (obj) {
 exports.stripHTML = function (string) {
   var stripped = string.replace(/(<([^>]+)>)/ig, '');
   return stripped;
+};
+
+/**
+  * Wraps blocks of text
+  * @param  {string} str Long string
+  * @param  {number} col Number of columns
+  * @param  {boolean} hard true, soft false
+  * @return {string} ANSI-wrapped string
+  */
+exports.wrapStr = function (str, col, hard) {
+  return wrap(str, col, hard);
 };
 
 /**
