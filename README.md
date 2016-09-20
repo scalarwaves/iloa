@@ -6,8 +6,15 @@ iloa is a command-line tool for gaining knowledge. It is intended as a companion
 
 - [x] Wikipedia summary
 - [x] DuckDuckGo Instant Answers
+- [x] searx : example query ->  iloa searx --engine=st -c it nodejs
+- [ ] Wunderground
 - [ ] Wolfram|Alpha
-- [ ] Reddit?
-- [ ] StackExchange?
 
 More complete documentation will be written when the first release is near.
+
+## Installation
+
+## Resources
+
+- [Bangs](https://duckduckgo.com/bang)
+- [WikSearch](http://www.wiksearch.com)
