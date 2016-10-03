@@ -1,8 +1,8 @@
-const themes = require('../../themes')
+import themes from '../../themes'
 
-const chalk = require('chalk')
-const fs = require('fs')
-const noon = require('noon')
+import chalk from 'chalk'
+import fs from 'fs'
+import noon from 'noon'
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 const PKGDIR = `${process.env.NODE_PATH}/iloa/`
@@ -44,6 +44,7 @@ exports.handler = (argv) => {
       throw new Error('Package dir not found, set NODE_PATH per documentation.')
     }
   }
+  obj.wolf.date.stamp = new Date().toJSON()
   let fileExists = null
   try {
     fs.statSync(CFILE)
@@ -56,6 +57,9 @@ exports.handler = (argv) => {
   if (fileExists) {
     if (argv.f) {
       const config = noon.load(CFILE)
+      obj.wolf.date.stamp = config.wolf.date.stamp
+      obj.wolf.date.remain = config.wolf.date.remain
+      noon.save(CFILE, obj)
       console.log(`Overwrote ${chalk.white.bold(CFILE)}.`)
     } else {
       console.log(`Using configuration at ${chalk.white.bold(CFILE)}.`)
