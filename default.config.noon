@@ -1,5 +1,32 @@
-wiki
-  intro  true
+usage  true
 merge  true
 theme  square
-verbose  false
+verbose  true
+wiki
+  intro  true
+wolf
+  assu  ||
+  async  false
+  date
+    interval  month
+    limit  2000
+    remain  2000
+    stamp  ||
+  expod  ||
+  fetch  true
+  fmt  ||
+  ftime  8
+  icase  false
+  incpod  ||
+  loc  ||
+  pdtime  ||
+  podid  ||
+  podt  ||
+  prtime  5
+  reint  false
+  scan  ||
+  sig  ||
+  stime  3
+  trans  false
+  unit  ||
+  width  ||

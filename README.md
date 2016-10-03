@@ -7,7 +7,7 @@ iloa is a command-line tool for gaining knowledge. It is intended as a companion
 - [x] Wikipedia summary
 - [x] DuckDuckGo Instant Answers
 - [x] searx : example query ->  iloa searx --engine=st -c it nodejs
-- [ ] Wolfram|Alpha - Limited to 2000/month, caching results not allowed, requires API key
+- [x] Wolfram|Alpha - Limited to 2000/month, caching results not allowed, requires API key
 - [ ] Wunderground
 
 More complete documentation will be written when the first release is near.
