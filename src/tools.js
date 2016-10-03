@@ -1,9 +1,10 @@
 /* eslint max-len: 0 */
-const chalk = require('chalk')
-const fs = require('fs-extra')
-const noon = require('noon')
-const wrap = require('wrap-ansi')
-const xml2js = require('xml2js')
+import chalk from 'chalk'
+import fs from 'fs-extra'
+import moment from 'moment'
+import noon from 'noon'
+import wrap from 'wrap-ansi'
+import xml2js from 'xml2js'
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
@@ -11,6 +12,30 @@ const CFILE = `${process.env.HOME}/.iloa.noon`
   * The tools module provides useful repetitive tasks
   * @module Utils
   */
+
+  /**
+    * Wolfram|Alpha's API limit check
+    * @param  {Object} config The current config
+    * @return {Array} Updated config, proceed boolean, and reset boolean
+    */
+exports.limitWolf = (config) => {
+  const c = config
+  let proceed = false
+  let reset = false
+  const stamp = new Date(c.wolf.date.stamp)
+  const days = moment(new Date).diff(stamp, 'days')
+  if (days < 31) {
+    c.wolf.date.remain--
+  } else if (days >= 31) {
+    reset = true
+    c.wolf.date.stamp = new Date().toJSON()
+    c.wolf.date.remain = c.wolf.date.limit
+    c.wolf.date.remain--
+  }
+  c.wolf.date.remain <= 0 ? c.wolf.date.remain = 0 : proceed = true
+  noon.save(CFILE, c)
+  return [c, proceed, reset]
+}
 
 /**
   * Checks if a file exists
