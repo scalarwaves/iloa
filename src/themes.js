@@ -1,9 +1,9 @@
 /* eslint max-len:0 */
-const _ = require('lodash')
-const chalk = require('chalk')
-const fs = require('fs')
-const glob = require('glob')
-const noon = require('noon')
+import _ from 'lodash'
+import chalk from 'chalk'
+import fs from 'fs'
+import glob from 'glob'
+import noon from 'noon'
 
 let TDIR = null
 let themeDirExists = null

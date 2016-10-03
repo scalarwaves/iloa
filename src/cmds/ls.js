@@ -1,7 +1,7 @@
 /* eslint no-unused-vars: 0 */
-const themes = require('../themes')
+import themes from '../themes'
 
-const _ = require('lodash')
+import _ from 'lodash'
 
 const sample = 'Morbi ornare pulvinar metus, non faucibus arcu ultricies non.'
 

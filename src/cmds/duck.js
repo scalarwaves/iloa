@@ -1,10 +1,10 @@
 /* eslint max-len:0 */
-const themes = require('../themes')
-const tools = require('../tools')
+import themes from '../themes'
+import tools from '../tools'
 
-const _ = require('lodash')
+import _ from 'lodash'
 const http = require('good-guy-http')()
-const noon = require('noon')
+import noon from 'noon'
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 

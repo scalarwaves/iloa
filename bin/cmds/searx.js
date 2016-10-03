@@ -1,15 +1,40 @@
 'use strict';
 
+var _map2 = require('lodash/map');
+
+var _map3 = _interopRequireDefault(_map2);
+
+var _each2 = require('lodash/each');
+
+var _each3 = _interopRequireDefault(_each2);
+
+var _themes = require('../themes');
+
+var _themes2 = _interopRequireDefault(_themes);
+
+var _tools = require('../tools');
+
+var _tools2 = _interopRequireDefault(_tools);
+
+var _chalk = require('chalk');
+
+var _chalk2 = _interopRequireDefault(_chalk);
+
+var _noon = require('noon');
+
+var _noon2 = _interopRequireDefault(_noon);
+
+var _ora = require('ora');
+
+var _ora2 = _interopRequireDefault(_ora);
+
+var _xRay = require('x-ray');
+
+var _xRay2 = _interopRequireDefault(_xRay);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /* eslint max-len: 0 */
-var themes = require('../themes');
-var tools = require('../tools');
-
-var _ = require('lodash');
-var chalk = require('chalk');
-var noon = require('noon');
-var ora = require('ora');
-var xray = require('x-ray');
-
 var CFILE = process.env.HOME + '/.iloa.noon';
 
 var general = ['ai', 'wp', 'bi', 'cc', 'ddd', 'ew', 'wd', 'ddg', 'gb', 'go', 'qw', 're', 'sp', 'iq', 'sw', 'yh', 'yn', 'dc', 'tl'];
@@ -52,15 +77,15 @@ exports.builder = {
   }
 };
 exports.handler = function (argv) {
-  tools.checkConfig(CFILE);
-  var config = noon.load(CFILE);
-  var theme = themes.loadTheme(config.theme);
-  if (config.verbose) themes.label(theme, 'down', 'searx');
+  _tools2.default.checkConfig(CFILE);
+  var config = _noon2.default.load(CFILE);
+  var theme = _themes2.default.loadTheme(config.theme);
+  if (config.verbose) _themes2.default.label(theme, 'down', 'searx');
   var prefix = 'https://searx.me/?q=';
   var scont = [];
   scont.push(argv.query);
   if (argv._.length > 1) {
-    _.each(argv._, function (value) {
+    (0, _each3.default)(argv._, function (value) {
       if (value !== 'searx') scont.push(value);
     });
   }
@@ -73,7 +98,7 @@ exports.handler = function (argv) {
   var ccont = argv.cat.split(',');
   var cassy = [];
   if (ccont.length > 1) {
-    _.each(ccont, function (value) {
+    (0, _each3.default)(ccont, function (value) {
       cassy.push('&category_' + value + '=on');
     });
   } else if (ccont.length === 1) {
@@ -82,7 +107,7 @@ exports.handler = function (argv) {
   var econt = argv.engine.split(',');
   var eassy = [];
   if (econt.length > 1) {
-    _.each(econt, function (value) {
+    (0, _each3.default)(econt, function (value) {
       if (ccont.general !== undefined) if (general[value] !== undefined && eassy[value] !== undefined) eassy.push('%21' + value + '+');
       if (ccont.files !== undefined) if (files[value] !== undefined && eassy[value] !== undefined) eassy.push('%21' + value + '+');
       if (ccont.images !== undefined) if (images[value] !== undefined && eassy[value] !== undefined) eassy.push('%21' + value + '+');
@@ -102,13 +127,13 @@ exports.handler = function (argv) {
     source: 'https://searx.me/',
     url: url
   };
-  var spinner = ora({
-    text: '' + chalk.bold.cyan('Loading results...'),
+  var spinner = (0, _ora2.default)({
+    text: '' + _chalk2.default.bold.cyan('Loading results...'),
     spinner: 'dots8',
     color: 'yellow'
   });
   spinner.start();
-  var x = xray();
+  var x = (0, _xRay2.default)();
   x(url, {
     h: 'body@html',
     r: ['.result', '.result-default', '.result-content']
@@ -116,33 +141,33 @@ exports.handler = function (argv) {
     spinner.stop();
     spinner.clear();
     var icont = [];
-    _.map(body.r, function (value) {
+    (0, _map3.default)(body.r, function (value) {
       return icont.push(value.trim().replace(/cached/, '').replace(/ {2,}/mig, '').replace(/\n{2,}/mig, '\n'));
     });
     var links = body.h.match(/(<a(?:(?!\/a>).|\n)*(?=>).)(.+)(<\/a>)/mig);
     var lcont = [];
-    _.each(links, function (value) {
+    (0, _each3.default)(links, function (value) {
       return lcont.push(value.replace(/<a href="/mig, '').replace(/".*<\/a>/, ''));
     });
     lcont.pop();lcont.shift();lcont.shift();lcont.shift();lcont.shift();
     var nlink = [];
-    _.map(lcont, function (value) {
+    (0, _map3.default)(lcont, function (value) {
       if (!/https:\/\/web\.archive\.org\/web/mig.test(value) && !/https?:\/\/[a-z0-9\.\/]*\[\.\.\.\][a-z0-9_\-\.\/\?=]*/mig.test(value)) nlink.push(value);
     });
     var tcont = [];
-    _.map(icont, function (value) {
+    (0, _map3.default)(icont, function (value) {
       return tcont.push(value.replace(/[…a-z0-9\-_\.\s]*https?:\/\/[a-z0-9\.\/\[\]_\?\-#]*$/mig, '\n'));
     });
-    _.map(tcont, function (value) {
+    (0, _map3.default)(tcont, function (value) {
       value.replace(/&lt;/, '<');
       value.replace(/&gt;/, '>');
     });
-    themes.label(theme, 'down', 'searx', decodeURI('!' + ccont.join(' !') + ' !' + econt.join(' !') + ' ' + scont.join(' ')));
+    _themes2.default.label(theme, 'down', 'searx', decodeURI('!' + ccont.join(' !') + ' !' + econt.join(' !') + ' ' + scont.join(' ')));
     for (var y = 0; y <= tcont.length - 1; y++) {
-      console.log(tcont[y] + '\n' + chalk.underline(nlink[y]) + '\n\n');
+      console.log(tcont[y] + '\n' + _chalk2.default.underline(nlink[y]) + '\n\n');
       tofile[['text' + y]] = tcont[y];
       tofile[['link' + y]] = nlink[y];
     }
-    if (argv.o) tools.outFile(argv.o, argv.f, tofile);
+    if (argv.o) _tools2.default.outFile(argv.o, argv.f, tofile);
   });
 };

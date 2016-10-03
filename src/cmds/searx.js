@@ -1,12 +1,12 @@
 /* eslint max-len: 0 */
-const themes = require('../themes')
-const tools = require('../tools')
+import themes from '../themes'
+import tools from '../tools'
 
-const _ = require('lodash')
-const chalk = require('chalk')
-const noon = require('noon')
-const ora = require('ora')
-const xray = require('x-ray')
+import _ from 'lodash'
+import chalk from 'chalk'
+import noon from 'noon'
+import ora from 'ora'
+import xray from 'x-ray'
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
