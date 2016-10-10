@@ -59,6 +59,43 @@ exports.limitWolf = function (config) {
 };
 
 /**
+  * Wunderground's API limit check
+  * @param  {Object} config The current config
+  * @return {Array} Updated config, proceed boolean, and reset boolean
+  */
+exports.limitWunder = function (config) {
+  var c = config;
+  var dproceed = false;
+  var mproceed = false;
+  var dreset = false;
+  var mreset = false;
+  var dstamp = new Date(c.wunder.date.dstamp);
+  var mstamp = new Date(c.wunder.date.mstamp);
+  var day = (0, _moment2.default)(new Date()).diff(dstamp, 'hours');
+  var minute = (0, _moment2.default)(new Date()).diff(mstamp, 'seconds');
+  if (day < 24) {
+    c.wunder.date.dremain--;
+  } else if (day >= 24) {
+    dreset = true;
+    c.wunder.date.dstamp = new Date().toJSON();
+    c.wunder.date.dremain = c.wunder.date.dlimit;
+    c.wunder.date.dremain--;
+  }
+  if (minute < 60) {
+    c.wunder.date.mremain--;
+  } else if (minute >= 60) {
+    mreset = true;
+    c.wunder.date.mstamp = new Date().toJSON();
+    c.wunder.date.mremain = c.wunder.date.mlimit;
+    c.wunder.date.mremain--;
+  }
+  c.wunder.date.dremain <= 0 ? c.wunder.date.dremain = 0 : dproceed = true;
+  c.wunder.date.mremain <= 0 ? c.wunder.date.mremain = 0 : mproceed = true;
+  _noon2.default.save(CFILE, c);
+  return [c, dproceed, mproceed, dreset, mreset];
+};
+
+/**
   * Checks if a file exists
   * @private
   * @param {string} path The filename to check.

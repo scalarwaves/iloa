@@ -30,3 +30,17 @@ wolf
   trans  false
   unit  ||
   width  ||
+wunder
+  bestf  true
+  date
+    dinterval  day
+    minterval  minute
+    dlimit  500
+    mlimit  10
+    dremain  500
+    mremain  10
+    dstamp  ||
+    mstamp  ||
+  features  ||
+  lang  EN
+  pws  true

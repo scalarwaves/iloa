@@ -45,6 +45,8 @@ exports.handler = (argv) => {
     }
   }
   obj.wolf.date.stamp = new Date().toJSON()
+  obj.wunder.date.dstamp = new Date().toJSON()
+  obj.wunder.date.mstamp = new Date().toJSON()
   let fileExists = null
   try {
     fs.statSync(CFILE)
@@ -59,6 +61,8 @@ exports.handler = (argv) => {
       const config = noon.load(CFILE)
       obj.wolf.date.stamp = config.wolf.date.stamp
       obj.wolf.date.remain = config.wolf.date.remain
+      obj.wunder.date.dstamp = config.wunder.date.dstamp
+      obj.wunder.date.mstamp = config.wunder.date.mstamp
       noon.save(CFILE, obj)
       console.log(`Overwrote ${chalk.white.bold(CFILE)}.`)
     } else {

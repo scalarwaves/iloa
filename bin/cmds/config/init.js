@@ -59,6 +59,8 @@ exports.handler = function (argv) {
     }
   }
   obj.wolf.date.stamp = new Date().toJSON();
+  obj.wunder.date.dstamp = new Date().toJSON();
+  obj.wunder.date.mstamp = new Date().toJSON();
   var fileExists = null;
   try {
     _fs2.default.statSync(CFILE);
@@ -73,6 +75,8 @@ exports.handler = function (argv) {
       var _config = _noon2.default.load(CFILE);
       obj.wolf.date.stamp = _config.wolf.date.stamp;
       obj.wolf.date.remain = _config.wolf.date.remain;
+      obj.wunder.date.dstamp = _config.wunder.date.dstamp;
+      obj.wunder.date.mstamp = _config.wunder.date.mstamp;
       _noon2.default.save(CFILE, obj);
       console.log('Overwrote ' + _chalk2.default.white.bold(CFILE) + '.');
     } else {

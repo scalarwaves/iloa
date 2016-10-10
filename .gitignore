@@ -12,7 +12,7 @@ staging
 wiki
 TODO.md
 jsdoc.conf.json
-json
+cson
 .nvmrc
 searx.cookie
 nesh.js
