@@ -17,7 +17,7 @@ function subPod(subpods) {
     const sp = subpods[i]
     themes.label(theme, 'right', `Subpod ${i}`)
     themes.label(theme, 'right', 'Title', sp.title)
-    themes.label(theme, 'right', 'Text', sp.plaintext)
+    themes.label(theme, 'right', 'Text', tools.wrapStr(tools.arrToStr(sp.plaintext)))
     themes.label(theme, 'right', 'Image', sp.img.src)
   }
 }
@@ -35,7 +35,7 @@ function numSubPods(pods, subpods) {
   } else {
     themes.label(theme, 'right', `Subpod ${pods.$.numsubpods}`)
     if (subpods.$.title !== '') themes.label(theme, 'right', 'Title', subpods.$.title)
-    themes.label(theme, 'right', 'Text', subpods.plaintext[0])
+    themes.label(theme, 'right', 'Text', tools.wrapStr(tools.arrToStr(subpods.plaintext)))
     themes.label(theme, 'right', 'Image', subpods.img[0].$.src)
   }
 }
@@ -71,7 +71,7 @@ exports.numPods = (pods) => {
     if (!pods.error) {
       themes.label(theme, 'right', `Pod ${pods.length}`)
       themes.label(theme, 'right', 'Title', pods.title)
-      themes.label(theme, 'right', 'Text', pods.plaintext)
+      themes.label(theme, 'right', 'Text', tools.wrapStr(tools.arrToStr(pods.plaintext)))
       themes.label(theme, 'right', 'Scanner', pods.scanner)
       themes.label(theme, 'right', 'Subpods', pods.numsubpods)
       themes.label(theme, 'right', 'Position', pods.position)
