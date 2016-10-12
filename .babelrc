@@ -1,4 +1,12 @@
 {
   "presets": ["latest"],
-  "compact": false
+  "compact": false,
+  "env": {
+    "dev": {
+      "plugins": ["lodash"]
+    },
+    "test": {
+      "plugins": ["istanbul", "lodash"]
+    }
+  }
 }
