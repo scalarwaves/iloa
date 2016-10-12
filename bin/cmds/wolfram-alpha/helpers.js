@@ -31,7 +31,7 @@ function subPod(subpods) {
     var sp = subpods[i];
     _themes2.default.label(theme, 'right', 'Subpod ' + i);
     _themes2.default.label(theme, 'right', 'Title', sp.title);
-    _themes2.default.label(theme, 'right', 'Text', sp.plaintext);
+    _themes2.default.label(theme, 'right', 'Text', _tools2.default.wrapStr(_tools2.default.arrToStr(sp.plaintext)));
     _themes2.default.label(theme, 'right', 'Image', sp.img.src);
   }
 }
@@ -49,7 +49,7 @@ function numSubPods(pods, subpods) {
   } else {
     _themes2.default.label(theme, 'right', 'Subpod ' + pods.$.numsubpods);
     if (subpods.$.title !== '') _themes2.default.label(theme, 'right', 'Title', subpods.$.title);
-    _themes2.default.label(theme, 'right', 'Text', subpods.plaintext[0]);
+    _themes2.default.label(theme, 'right', 'Text', _tools2.default.wrapStr(_tools2.default.arrToStr(subpods.plaintext)));
     _themes2.default.label(theme, 'right', 'Image', subpods.img[0].$.src);
   }
 }
@@ -85,7 +85,7 @@ exports.numPods = function (pods) {
     if (!pods.error) {
       _themes2.default.label(theme, 'right', 'Pod ' + pods.length);
       _themes2.default.label(theme, 'right', 'Title', pods.title);
-      _themes2.default.label(theme, 'right', 'Text', pods.plaintext);
+      _themes2.default.label(theme, 'right', 'Text', _tools2.default.wrapStr(_tools2.default.arrToStr(pods.plaintext)));
       _themes2.default.label(theme, 'right', 'Scanner', pods.scanner);
       _themes2.default.label(theme, 'right', 'Subpods', pods.numsubpods);
       _themes2.default.label(theme, 'right', 'Position', pods.position);
