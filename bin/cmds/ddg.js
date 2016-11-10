@@ -1,30 +1,16 @@
 'use strict';
 
-var _each2 = require('lodash/each');
-
-var _each3 = _interopRequireDefault(_each2);
-
-var _themes = require('../themes');
-
-var _themes2 = _interopRequireDefault(_themes);
-
-var _tools = require('../tools');
-
-var _tools2 = _interopRequireDefault(_tools);
-
-var _noon = require('noon');
-
-var _noon2 = _interopRequireDefault(_noon);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 /* eslint max-len:0 */
-var http = require('good-guy-http')();
+var themes = require('../themes');
+var tools = require('../tools');
 
+var _ = require('lodash');
+var http = require('good-guy-http')();
+var noon = require('noon');
 
 var CFILE = process.env.HOME + '/.iloa.noon';
 
-exports.command = 'duck <query>';
+exports.command = 'ddg <query>';
 exports.desc = 'DuckDuckGo Instant Answers';
 exports.builder = {
   out: {
@@ -41,15 +27,15 @@ exports.builder = {
   }
 };
 exports.handler = function (argv) {
-  _tools2.default.checkConfig(CFILE);
-  var config = _noon2.default.load(CFILE);
-  var theme = _themes2.default.loadTheme(config.theme);
-  if (config.verbose) _themes2.default.label(theme, 'down', 'DuckDuckGo');
+  tools.checkConfig(CFILE);
+  var config = noon.load(CFILE);
+  var theme = themes.loadTheme(config.theme);
+  if (config.verbose) themes.label(theme, 'down', 'DuckDuckGo');
   var dcont = [];
   dcont.push(argv.query);
   if (argv._.length > 1) {
-    (0, _each3.default)(argv._, function (value) {
-      if (value !== 'duck') dcont.push(value);
+    _.each(argv._, function (value) {
+      if (value !== 'ddg') dcont.push(value);
     });
   }
   var words = '';
@@ -108,31 +94,31 @@ exports.handler = function (argv) {
       } else rtype = body.Type;
       tofile.answerType = body.AnswerType;
       if (body.AnswerType === 'calc') {
-        _themes2.default.label(theme, 'right', 'Calculation');
-        console.log(_tools2.default.stripHTML(body.Answer));
+        themes.label(theme, 'right', 'Calculation');
+        console.log(tools.stripHTML(body.Answer));
         process.exit(0);
       }
       if (body.AnswerType === 'phone') {
-        _themes2.default.label(theme, 'right', 'Phone number');
-        var href = body.Answer.match(/<a href="(http:\/\/[a-z0-9\.\/\?=]*) *">/i);
-        console.log(_tools2.default.stripHTML(body.Answer) + ': ' + href[1]);
+        themes.label(theme, 'right', 'Phone number');
+        var href = body.Answer.match(/<a href="(http:\/\/[a-z0-9./?=]*) *">/i);
+        console.log(tools.stripHTML(body.Answer) + ': ' + href[1]);
         process.exit(0);
       }
       if (body.AnswerType === 'unicode' || body.AnswerType === 'unicode_conversion') {
-        _themes2.default.label(theme, 'right', 'Unicode conversion');
+        themes.label(theme, 'right', 'Unicode conversion');
         console.log(body.Answer);
         process.exit(0);
       }
-      if (rtype !== '') _themes2.default.label(theme, 'right', 'Type', rtype);
+      if (rtype !== '') themes.label(theme, 'right', 'Type', rtype);
       tofile.responseType = rtype;
       if (rtype === 'Article') {
-        _themes2.default.label(theme, 'right', 'Title', body.Heading);
-        _themes2.default.label(theme, 'right', 'Entity', body.Entity);
-        _themes2.default.label(theme, 'right', 'Source', body.AbstractSource);
-        _themes2.default.label(theme, 'right', 'URL', body.AbstractURL);
-        _themes2.default.label(theme, 'right', 'Text', body.AbstractText);
+        themes.label(theme, 'right', 'Title', body.Heading);
+        themes.label(theme, 'right', 'Entity', body.Entity);
+        themes.label(theme, 'right', 'Source', body.AbstractSource);
+        themes.label(theme, 'right', 'URL', body.AbstractURL);
+        themes.label(theme, 'right', 'Text', body.AbstractText);
         if (body.Results.length > 0) {
-          _themes2.default.label(theme, 'down', 'Primary Results');
+          themes.label(theme, 'down', 'Primary Results');
           for (var i = 0; i <= body.Results - 1; i++) {
             var res = body.Results[i];
             console.log(res.Text + '\n' + res.FirstURL);
@@ -147,15 +133,15 @@ exports.handler = function (argv) {
         tofile.text = body.AbstractText;
       }
       if (rtype === 'Category' || rtype === 'Disambiguation') {
-        _themes2.default.label(theme, 'right', 'Title', body.Heading);
-        _themes2.default.label(theme, 'right', 'Source', body.AbstractSource);
-        _themes2.default.label(theme, 'right', 'URL', body.AbstractURL);
+        themes.label(theme, 'right', 'Title', body.Heading);
+        themes.label(theme, 'right', 'Source', body.AbstractSource);
+        themes.label(theme, 'right', 'URL', body.AbstractURL);
         tofile.title = body.Heading;
         tofile.abstractSource = body.AbstractSource;
         tofile.abstractUrl = body.AbstractURL;
       }
       if (body.Image) {
-        _themes2.default.label(theme, 'right', 'Image URL', body.Image);
+        themes.label(theme, 'right', 'Image URL', body.Image);
         tofile.image = body.Image;
       }
       if (body.RelatedTopics !== []) {
@@ -171,7 +157,7 @@ exports.handler = function (argv) {
           }
         }
         if (rcont !== []) {
-          _themes2.default.label(theme, 'down', 'Related');
+          themes.label(theme, 'down', 'Related');
           for (var _i2 = 0; _i2 <= rcont.length - 1; _i2++) {
             var rhash = rcont[_i2];
             console.log(rhash.Text + '\n' + rhash.FirstURL);
@@ -182,7 +168,7 @@ exports.handler = function (argv) {
         if (tcont !== []) {
           for (var _i3 = 0; _i3 <= tcont.length - 1; _i3++) {
             var thash = tcont[_i3];
-            _themes2.default.label(theme, 'right', 'Topics', thash.Name);
+            themes.label(theme, 'right', 'Topics', thash.Name);
             tofile[['topicName' + _i3]] = thash.Name;
             var tArray = thash.Topics;
             for (var j = 0; j <= tArray.length - 1; j++) {
@@ -194,7 +180,7 @@ exports.handler = function (argv) {
           }
         }
       }
-      if (argv.o) _tools2.default.outFile(argv.o, argv.f, tofile);
+      if (argv.o) tools.outFile(argv.o, argv.f, tofile);
     } else {
       throw new Error('HTTP ' + error.statusCode + ': ' + error.reponse.body);
     }

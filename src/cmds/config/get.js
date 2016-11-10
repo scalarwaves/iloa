@@ -1,9 +1,9 @@
-import themes from '../../themes'
-import tools from '../../tools'
+const themes = require('../../themes')
+const tools = require('../../tools')
 
-import chalk from 'chalk'
-import dot from 'dotty'
-import noon from 'noon'
+const chalk = require('chalk')
+const dot = require('dotty')
+const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 

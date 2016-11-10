@@ -1,32 +1,13 @@
 'use strict';
 
-var _chalk = require('chalk');
-
-var _chalk2 = _interopRequireDefault(_chalk);
-
-var _fsExtra = require('fs-extra');
-
-var _fsExtra2 = _interopRequireDefault(_fsExtra);
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _noon = require('noon');
-
-var _noon2 = _interopRequireDefault(_noon);
-
-var _wrapAnsi = require('wrap-ansi');
-
-var _wrapAnsi2 = _interopRequireDefault(_wrapAnsi);
-
-var _xml2js = require('xml2js');
-
-var _xml2js2 = _interopRequireDefault(_xml2js);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 /* eslint max-len: 0 */
+var chalk = require('chalk');
+var fs = require('fs-extra');
+var moment = require('moment');
+var noon = require('noon');
+var wrap = require('wrap-ansi');
+var xml2js = require('xml2js');
+
 var CFILE = process.env.HOME + '/.iloa.noon';
 
 /**
@@ -44,7 +25,7 @@ exports.limitWolf = function (config) {
   var proceed = false;
   var reset = false;
   var stamp = new Date(c.wolf.date.stamp);
-  var days = (0, _moment2.default)(new Date()).diff(stamp, 'days');
+  var days = moment(new Date()).diff(stamp, 'days');
   if (days < 31) {
     c.wolf.date.remain--;
   } else if (days >= 31) {
@@ -54,7 +35,7 @@ exports.limitWolf = function (config) {
     c.wolf.date.remain--;
   }
   c.wolf.date.remain <= 0 ? c.wolf.date.remain = 0 : proceed = true;
-  _noon2.default.save(CFILE, c);
+  noon.save(CFILE, c);
   return [c, proceed, reset];
 };
 
@@ -71,8 +52,8 @@ exports.limitWunder = function (config) {
   var mreset = false;
   var dstamp = new Date(c.wunder.date.dstamp);
   var mstamp = new Date(c.wunder.date.mstamp);
-  var day = (0, _moment2.default)(new Date()).diff(dstamp, 'hours');
-  var minute = (0, _moment2.default)(new Date()).diff(mstamp, 'seconds');
+  var day = moment(new Date()).diff(dstamp, 'hours');
+  var minute = moment(new Date()).diff(mstamp, 'seconds');
   if (day < 24) {
     c.wunder.date.dremain--;
   } else if (day >= 24) {
@@ -91,7 +72,7 @@ exports.limitWunder = function (config) {
   }
   c.wunder.date.dremain <= 0 ? c.wunder.date.dremain = 0 : dproceed = true;
   c.wunder.date.mremain <= 0 ? c.wunder.date.mremain = 0 : mproceed = true;
-  _noon2.default.save(CFILE, c);
+  noon.save(CFILE, c);
   return [c, dproceed, mproceed, dreset, mreset];
 };
 
@@ -104,7 +85,7 @@ exports.limitWunder = function (config) {
 function checkOutfile(path) {
   var fileExists = null;
   try {
-    _fsExtra2.default.statSync(path);
+    fs.statSync(path);
     fileExists = true;
   } catch (e) {
     if (e.code === 'ENOENT') fileExists = false;
@@ -132,7 +113,7 @@ exports.checkBoolean = function (value) {
   */
 exports.checkConfig = function (file) {
   try {
-    _fsExtra2.default.statSync(file);
+    fs.statSync(file);
   } catch (e) {
     if (e.code === 'ENOENT') throw new Error('No config found at ' + file + ', run: \'iloa config init\'');
   }
@@ -169,7 +150,7 @@ exports.stripHTML = function (string) {
   * @return {string} ANSI-wrapped string
   */
 exports.wrapStr = function (str, col, hard) {
-  return (0, _wrapAnsi2.default)(str, col, hard);
+  return wrap(str, col, hard);
 };
 
 /**
@@ -182,32 +163,32 @@ exports.wrapStr = function (str, col, hard) {
 exports.outFile = function (path, force, tofile) {
   var match = path.match(/\.([a-z]*)$/i);
   var ext = match[1];
-  var builder = new _xml2js2.default.Builder();
+  var builder = new xml2js.Builder();
   if (ext === 'xml') {
     if (checkOutfile(path)) {
       if (force) {
         var xml = builder.buildObject(tofile);
-        var fd = _fsExtra2.default.openSync(path, 'w+');
-        _fsExtra2.default.writeSync(fd, xml);
-        _fsExtra2.default.closeSync(fd);
-        console.log(_chalk2.default.white('Overwrote ' + path + ' with data.'));
-      } else console.log(_chalk2.default.white(path + ' exists, use -f to force overwrite.'));
+        var fd = fs.openSync(path, 'w+');
+        fs.writeSync(fd, xml);
+        fs.closeSync(fd);
+        console.log(chalk.white('Overwrote ' + path + ' with data.'));
+      } else console.log(chalk.white(path + ' exists, use -f to force overwrite.'));
     } else {
       var _xml = builder.buildObject(tofile);
-      var _fd = _fsExtra2.default.openSync(path, 'w+');
-      _fsExtra2.default.writeSync(_fd, _xml);
-      _fsExtra2.default.closeSync(_fd);
-      console.log(_chalk2.default.white('Wrote data to ' + path + '.'));
+      var _fd = fs.openSync(path, 'w+');
+      fs.writeSync(_fd, _xml);
+      fs.closeSync(_fd);
+      console.log(chalk.white('Wrote data to ' + path + '.'));
     }
   } else if (ext === 'cson' || ext === 'json' || ext === 'noon' || ext === 'plist' || ext === 'yml' || ext === 'yaml') {
     if (checkOutfile(path)) {
       if (force) {
-        _noon2.default.save(path, tofile);
-        console.log(_chalk2.default.white('Overwrote ' + path + ' with data.'));
-      } else console.log(_chalk2.default.white(path + ' exists, use -f to force overwrite.'));
+        noon.save(path, tofile);
+        console.log(chalk.white('Overwrote ' + path + ' with data.'));
+      } else console.log(chalk.white(path + ' exists, use -f to force overwrite.'));
     } else {
-      _noon2.default.save(path, tofile);
-      console.log(_chalk2.default.white('Wrote data to ' + path + '.'));
+      noon.save(path, tofile);
+      console.log(chalk.white('Wrote data to ' + path + '.'));
     }
   } else if (ext !== 'xml' || ext !== 'cson' || ext !== 'json' || ext !== 'noon' || ext !== 'plist' || ext !== 'yml' || ext !== 'yaml') throw new Error('Format ' + ext + ' not supported.');
 };

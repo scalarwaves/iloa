@@ -41,6 +41,7 @@ wunder
     mremain  10
     dstamp  ||
     mstamp  ||
+  measure  standard
   features  ||
   lang  EN
   pws  true

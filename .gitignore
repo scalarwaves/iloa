@@ -7,12 +7,9 @@ node_modules
 # Project specific
 .sync
 docs
-scripts
-staging
 wiki
 TODO.md
 jsdoc.conf.json
-cson
+data
 .nvmrc
-searx.cookie
-nesh.js
+wunder.sh

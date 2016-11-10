@@ -1,17 +1,17 @@
 /* eslint max-len:0 */
-import themes from '../themes'
-import tools from '../tools'
+const themes = require('../themes')
+const tools = require('../tools')
 
-import _ from 'lodash'
-import moment from 'moment'
-import noon from 'noon'
+const _ = require('lodash')
+const moment = require('moment')
+const noon = require('noon')
 const http = require('good-guy-http')({
   cache: false,
 })
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'wunder <query>'
+exports.command = 'wu <query>'
 exports.desc = 'Query Weather Underground'
 exports.builder = {
   out: {
@@ -92,13 +92,7 @@ exports.handler = (argv) => {
     scont.push(`lang:${config.wunder.lang.toUpperCase()}`)
     config.wunder.pws ? scont.push('pws:1') : scont.push('pws:0')
     config.wunder.bestf ? scont.push('bestfct:1') : scont.push('bestfct:0')
-    const qcont = []
-    qcont.push(argv.query)
-    _.each(argv._, (value) => {
-      if (value !== 'wunder') qcont.push(value)
-    })
-    if (qcont.length > 1) throw new Error('Multiple queries not allowed.')
-    const query = qcont[0]
+    const query = argv.query
     const apikey = process.env.WUNDERGROUND
     const url = encodeURI(`https://api.wunderground.com/api/${apikey}/${features}/${scont.join('/')}/q/${query}.json`)
     console.log(url)
@@ -109,6 +103,7 @@ exports.handler = (argv) => {
     http({ url }, (error, response) => {
       if (!error && response.statusCode === 200) {
         const body = JSON.parse(response.body)
+        if (body.response.error) throw new Error(body.response.error.description)
         tofile.body = body
         if (argv.o) tools.outFile(argv.o, argv.f, tofile)
         if (config.usage) {

@@ -1,8 +1,8 @@
-import themes from '../../themes'
+const themes = require('../../themes')
 
-import chalk from 'chalk'
-import fs from 'fs'
-import noon from 'noon'
+const chalk = require('chalk')
+const fs = require('fs')
+const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 const PKGDIR = `${process.env.NODE_PATH}/iloa/`
@@ -62,7 +62,9 @@ exports.handler = (argv) => {
       obj.wolf.date.stamp = config.wolf.date.stamp
       obj.wolf.date.remain = config.wolf.date.remain
       obj.wunder.date.dstamp = config.wunder.date.dstamp
+      obj.wunder.date.dremain = config.wunder.date.dremain
       obj.wunder.date.mstamp = config.wunder.date.mstamp
+      obj.wunder.date.mremain = config.wunder.date.mremain
       noon.save(CFILE, obj)
       console.log(`Overwrote ${chalk.white.bold(CFILE)}.`)
     } else {

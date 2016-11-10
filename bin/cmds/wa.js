@@ -1,55 +1,25 @@
 'use strict';
 
-var _each2 = require('lodash/each');
-
-var _each3 = _interopRequireDefault(_each2);
-
-var _merge2 = require('lodash/merge');
-
-var _merge3 = _interopRequireDefault(_merge2);
-
-var _themes = require('../../themes');
-
-var _themes2 = _interopRequireDefault(_themes);
-
-var _tools = require('../../tools');
-
-var _tools2 = _interopRequireDefault(_tools);
-
-var _helpers = require('./helpers');
-
-var _helpers2 = _interopRequireDefault(_helpers);
-
-var _goodGuyHttp = require('good-guy-http');
-
-var _goodGuyHttp2 = _interopRequireDefault(_goodGuyHttp);
-
-var _moment = require('moment');
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _noon = require('noon');
-
-var _noon2 = _interopRequireDefault(_noon);
-
-var _xml2js = require('xml2js');
-
-var _xml2js2 = _interopRequireDefault(_xml2js);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 /* eslint max-len:0 */
-var http = (0, _goodGuyHttp2.default)({
+var themes = require('../themes');
+var tools = require('../tools');
+var helpers = require('./helpers/wa');
+
+var _ = require('lodash');
+var gg = require('good-guy-http');
+var http = gg({
   cache: false,
   defaultCache: {
     cached: false
   }
 });
-
+var moment = require('moment');
+var noon = require('noon');
+var xml2js = require('xml2js');
 
 var CFILE = process.env.HOME + '/.iloa.noon';
 
-exports.command = 'search <query>';
+exports.command = 'wa <query>';
 exports.desc = 'Search Wolfram|Alpha';
 exports.builder = {
   out: {
@@ -188,15 +158,15 @@ exports.builder = {
   }
 };
 exports.handler = function (argv) {
-  _tools2.default.checkConfig(CFILE);
-  var config = _noon2.default.load(CFILE);
+  tools.checkConfig(CFILE);
+  var config = noon.load(CFILE);
   var proceed = false;
   var reset = false;
   var stamp = new Date(config.wolf.date.stamp);
-  var days = (0, _moment2.default)(new Date()).diff(stamp, 'days');
-  var hours = (0, _moment2.default)(new Date()).diff(stamp, 'hours');
-  var minutes = (0, _moment2.default)(new Date()).diff(stamp, 'minutes');
-  var checkStamp = _tools2.default.limitWolf(config);
+  var days = moment(new Date()).diff(stamp, 'days');
+  var hours = moment(new Date()).diff(stamp, 'hours');
+  var minutes = moment(new Date()).diff(stamp, 'minutes');
+  var checkStamp = tools.limitWolf(config);
   config = checkStamp[0];
   proceed = checkStamp[1];
   reset = checkStamp[2];
@@ -226,16 +196,16 @@ exports.handler = function (argv) {
           trans: argv.trans
         }
       };
-      if (config.merge) config = (0, _merge3.default)({}, config, userConfig);
-      if (argv.v && config.merge) _noon2.default.save(CFILE, config);
+      if (config.merge) config = _.merge({}, config, userConfig);
+      if (argv.v && config.merge) noon.save(CFILE, config);
       if (argv.v && !config.merge) throw new Error("Can't save user config, set option merge to true.");
-      var theme = _themes2.default.loadTheme(config.theme);
-      if (config.verbose) _themes2.default.label(theme, 'down', 'Wolfram|Alpha');
+      var theme = themes.loadTheme(config.theme);
+      if (config.verbose) themes.label(theme, 'down', 'Wolfram|Alpha');
       var wcont = [];
       wcont.push(argv.query);
       if (argv._.length > 1) {
-        (0, _each3.default)(argv._, function (value) {
-          if (value !== 'wolf') wcont.push(value);
+        _.each(argv._, function (value) {
+          if (value !== 'wa') wcont.push(value);
         });
       }
       var words = '';
@@ -270,14 +240,14 @@ exports.handler = function (argv) {
         if (!error && response.statusCode === 200) {
           if (response.headers['x-gg-state'] === 'cached' || response.headers['x-gg-state'] === 'stale') throw new Error('Result should not be cached per Wolfram|Alpha TOS.');
           var body = response.body;
-          var parser = new _xml2js2.default.Parser();
+          var parser = new xml2js.Parser();
           parser.parseString(body, function (err, result) {
             var q = result.queryresult;
             var pods = q.pod;
-            _helpers2.default.numPods(pods);
-            if (argv.fetch) _helpers2.default.assume(q.assumptions);
+            tofile = helpers.numPods(pods, tofile);
+            if (argv.fetch) tofile = helpers.assume(q.assumptions, tofile);
           });
-          if (argv.o) _tools2.default.outFile(argv.o, argv.f, tofile);
+          if (argv.o) tools.outFile(argv.o, argv.f, tofile);
           if (config.usage) reset ? console.log('Timestamp expired, reset usage limits.\n' + config.wolf.date.remain + '/' + config.wolf.date.limit + ' requests remaining this month.') : console.log(config.wolf.date.remain + '/' + config.wolf.date.limit + ' requests remaining this month, will reset in ' + (31 - days) + ' days, ' + (24 - hours) + ' hours, ' + (60 - minutes) + ' minutes.');
         } else {
           throw new Error('HTTP ' + error.statusCode + ': ' + error.reponse.body);

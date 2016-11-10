@@ -1,22 +1,10 @@
 'use strict';
 
-var _themes = require('../../themes');
+var themes = require('../../themes');
 
-var _themes2 = _interopRequireDefault(_themes);
-
-var _chalk = require('chalk');
-
-var _chalk2 = _interopRequireDefault(_chalk);
-
-var _fs = require('fs');
-
-var _fs2 = _interopRequireDefault(_fs);
-
-var _noon = require('noon');
-
-var _noon2 = _interopRequireDefault(_noon);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var chalk = require('chalk');
+var fs = require('fs');
+var noon = require('noon');
 
 var CFILE = process.env.HOME + '/.iloa.noon';
 var PKGDIR = process.env.NODE_PATH + '/iloa/';
@@ -36,16 +24,16 @@ exports.handler = function (argv) {
   var configExists = null;
   var dirExists = null;
   try {
-    _fs2.default.statSync('default.config.noon');
+    fs.statSync('default.config.noon');
     configExists = true;
   } catch (e) {
     if (e.code === 'ENOENT') configExists = false;
   }
   if (configExists) {
-    obj = _noon2.default.load('default.config.noon');
+    obj = noon.load('default.config.noon');
   } else {
     try {
-      _fs2.default.statSync(PKGDIR);
+      fs.statSync(PKGDIR);
       dirExists = true;
     } catch (e) {
       if (e.code === 'ENOENT') {
@@ -53,7 +41,7 @@ exports.handler = function (argv) {
       }
     }
     if (dirExists) {
-      obj = _noon2.default.load(PKGDIR + 'default.config.noon');
+      obj = noon.load(PKGDIR + 'default.config.noon');
     } else {
       throw new Error('Package dir not found, set NODE_PATH per documentation.');
     }
@@ -63,7 +51,7 @@ exports.handler = function (argv) {
   obj.wunder.date.mstamp = new Date().toJSON();
   var fileExists = null;
   try {
-    _fs2.default.statSync(CFILE);
+    fs.statSync(CFILE);
     fileExists = true;
   } catch (e) {
     if (e.code === 'ENOENT') {
@@ -72,26 +60,28 @@ exports.handler = function (argv) {
   }
   if (fileExists) {
     if (argv.f) {
-      var _config = _noon2.default.load(CFILE);
+      var _config = noon.load(CFILE);
       obj.wolf.date.stamp = _config.wolf.date.stamp;
       obj.wolf.date.remain = _config.wolf.date.remain;
       obj.wunder.date.dstamp = _config.wunder.date.dstamp;
+      obj.wunder.date.dremain = _config.wunder.date.dremain;
       obj.wunder.date.mstamp = _config.wunder.date.mstamp;
-      _noon2.default.save(CFILE, obj);
-      console.log('Overwrote ' + _chalk2.default.white.bold(CFILE) + '.');
+      obj.wunder.date.mremain = _config.wunder.date.mremain;
+      noon.save(CFILE, obj);
+      console.log('Overwrote ' + chalk.white.bold(CFILE) + '.');
     } else {
-      console.log('Using configuration at ' + _chalk2.default.white.bold(CFILE) + '.');
+      console.log('Using configuration at ' + chalk.white.bold(CFILE) + '.');
     }
   } else if (!fileExists) {
-    _noon2.default.save(CFILE, obj);
-    console.log('Created ' + _chalk2.default.white.bold(CFILE) + '.');
+    noon.save(CFILE, obj);
+    console.log('Created ' + chalk.white.bold(CFILE) + '.');
   }
-  var config = _noon2.default.load(CFILE);
-  var theme = _themes2.default.loadTheme(config.theme);
+  var config = noon.load(CFILE);
+  var theme = themes.loadTheme(config.theme);
   if (argv.v) {
-    _themes2.default.label(theme, 'down', 'Configuration');
+    themes.label(theme, 'down', 'Configuration');
     console.log('Your current configuration is:');
-    console.log(_noon2.default.stringify(config, {
+    console.log(noon.stringify(config, {
       indent: 2,
       align: true,
       maxalign: 32,

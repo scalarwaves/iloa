@@ -1,10 +1,10 @@
 /* eslint max-len: 0 */
-import chalk from 'chalk'
-import fs from 'fs-extra'
-import moment from 'moment'
-import noon from 'noon'
-import wrap from 'wrap-ansi'
-import xml2js from 'xml2js'
+const chalk = require('chalk')
+const fs = require('fs-extra')
+const moment = require('moment')
+const noon = require('noon')
+const wrap = require('wrap-ansi')
+const xml2js = require('xml2js')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 

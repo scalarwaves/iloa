@@ -1,10 +1,10 @@
 /* eslint max-len:0 */
-import themes from '../themes'
-import tools from '../tools'
+const themes = require('../themes')
+const tools = require('../tools')
 
-import _ from 'lodash'
-import gg from 'good-guy-http'
-import noon from 'noon'
+const _ = require('lodash')
+const gg = require('good-guy-http')
+const noon = require('noon')
 const http = gg({
   cache: false,
   defaultCache: {
@@ -14,7 +14,7 @@ const http = gg({
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'wiki <query>'
+exports.command = 'wp <query>'
 exports.desc = 'Wikipedia summaries'
 exports.builder = {
   out: {
@@ -53,7 +53,7 @@ exports.handler = (argv) => {
   wcont.push(argv.query)
   if (argv._.length > 1) {
     _.each(argv._, (value) => {
-      if (value !== 'wiki') wcont.push(value)
+      if (value !== 'wp') wcont.push(value)
     })
   }
   let words = ''

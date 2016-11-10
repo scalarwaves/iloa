@@ -1,14 +1,14 @@
 /* eslint max-len:0 */
-import themes from '../themes'
-import tools from '../tools'
+const themes = require('../themes')
+const tools = require('../tools')
 
-import _ from 'lodash'
+const _ = require('lodash')
 const http = require('good-guy-http')()
-import noon from 'noon'
+const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'duck <query>'
+exports.command = 'ddg <query>'
 exports.desc = 'DuckDuckGo Instant Answers'
 exports.builder = {
   out: {
@@ -33,7 +33,7 @@ exports.handler = (argv) => {
   dcont.push(argv.query)
   if (argv._.length > 1) {
     _.each(argv._, (value) => {
-      if (value !== 'duck') dcont.push(value)
+      if (value !== 'ddg') dcont.push(value)
     })
   }
   let words = ''
@@ -98,7 +98,7 @@ exports.handler = (argv) => {
       }
       if (body.AnswerType === 'phone') {
         themes.label(theme, 'right', 'Phone number')
-        const href = body.Answer.match(/<a href="(http:\/\/[a-z0-9\.\/\?=]*) *">/i)
+        const href = body.Answer.match(/<a href="(http:\/\/[a-z0-9./?=]*) *">/i)
         console.log(`${tools.stripHTML(body.Answer)}: ${href[1]}`)
         process.exit(0)
       }

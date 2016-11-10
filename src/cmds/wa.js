@@ -1,23 +1,23 @@
 /* eslint max-len:0 */
-import themes from '../../themes'
-import tools from '../../tools'
-import helpers from './helpers'
+const themes = require('../themes')
+const tools = require('../tools')
+const helpers = require('./helpers/wa')
 
-import _ from 'lodash'
-import gg from 'good-guy-http'
+const _ = require('lodash')
+const gg = require('good-guy-http')
 const http = gg({
   cache: false,
   defaultCache: {
     cached: false,
   },
 })
-import moment from 'moment'
-import noon from 'noon'
-import xml2js from 'xml2js'
+const moment = require('moment')
+const noon = require('noon')
+const xml2js = require('xml2js')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'search <query>'
+exports.command = 'wa <query>'
 exports.desc = 'Search Wolfram|Alpha'
 exports.builder = {
   out: {
@@ -202,7 +202,7 @@ exports.handler = (argv) => {
     wcont.push(argv.query)
     if (argv._.length > 1) {
       _.each(argv._, (value) => {
-        if (value !== 'wolf') wcont.push(value)
+        if (value !== 'wa') wcont.push(value)
       })
     }
     let words = ''
@@ -229,7 +229,7 @@ exports.handler = (argv) => {
     pcont.push(`sig=${argv.g}`)
     const apikey = process.env.WOLFRAM
     const url = encodeURI(`http://api.wolframalpha.com/v2/query?input=${words}&${pcont.join('&')}&appid=${apikey}`)
-    const tofile = {
+    let tofile = {
       type: 'wolfram-alpha',
       source: 'http://www.wolframalpha.com/',
     }
@@ -241,8 +241,8 @@ exports.handler = (argv) => {
         parser.parseString(body, (err, result) => {
           const q = result.queryresult
           const pods = q.pod
-          helpers.numPods(pods)
-          if (argv.fetch) helpers.assume(q.assumptions)
+          tofile = helpers.numPods(pods, tofile)
+          if (argv.fetch) tofile = helpers.assume(q.assumptions, tofile)
         })
         if (argv.o) tools.outFile(argv.o, argv.f, tofile)
         if (config.usage) reset ? console.log(`Timestamp expired, reset usage limits.\n${config.wolf.date.remain}/${config.wolf.date.limit} requests remaining this month.`) : console.log(`${config.wolf.date.remain}/${config.wolf.date.limit} requests remaining this month, will reset in ${31 - days} days, ${24 - hours} hours, ${60 - minutes} minutes.`)
