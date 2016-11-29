@@ -7,6 +7,12 @@ const CFILE = `${process.env.HOME}/.iloa.noon`
 const config = noon.load(CFILE)
 const theme = themes.loadTheme(config.theme)
 
+/**
+ * Handles alerts
+ * @param  {object} data   Alert data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.alerts = (data, tofile) => {
   themes.label(theme, 'right', 'Alerts')
   const tf = tofile
@@ -32,6 +38,12 @@ exports.alerts = (data, tofile) => {
   return tf
 }
 
+/**
+ * Handles almanac
+ * @param  {object} data   Almanac data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.almanac = (data, tofile) => {
   themes.label(theme, 'right', 'Almanac')
   const tf = tofile
@@ -54,6 +66,12 @@ exports.almanac = (data, tofile) => {
   return tf
 }
 
+/**
+ * Handles astronomy
+ * @param  {object} data   Astronomy data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.astronomy = (data, tofile) => {
   themes.label(theme, 'right', 'Moon Phase')
   const tf = tofile
@@ -132,6 +150,12 @@ exports.conditions = (data, tofile) => {
   return tf
 }
 
+/**
+ * Handles forecast and 10-day
+ * @param  {object} data   Forecast data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.forecast = (data, tofile) => {
   themes.label(theme, 'right', 'Forecast')
   const tf = tofile
@@ -163,6 +187,12 @@ exports.forecast = (data, tofile) => {
   return tf
 }
 
+/**
+ * Handles geolookup
+ * @param  {object} data   Geolookup data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.geolookup = (data, limit, tofile) => {
   themes.label(theme, 'right', 'Nearby Weather Stations')
   const tf = tofile
@@ -187,6 +217,12 @@ exports.geolookup = (data, limit, tofile) => {
   return tf
 }
 
+/**
+ * Handles hourly and 10-day
+ * @param  {object} data   Hourly data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.hourly = (data, tofile) => {
   themes.label(theme, 'right', 'Hourly forecast')
   const tf = tofile
@@ -258,6 +294,12 @@ exports.hourly = (data, tofile) => {
   return tf
 }
 
+/**
+ * Handles tide
+ * @param  {object} data   Tide data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.tide = (data, tofile) => {
   const tf = tofile
   const d = data
@@ -279,6 +321,12 @@ exports.tide = (data, tofile) => {
   return tf
 }
 
+/**
+ * Handles webcams
+ * @param  {object} data   Webcam data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.webcams = (data, limit, tofile) => {
   themes.label(theme, 'right', 'Webcams')
   const tf = tofile

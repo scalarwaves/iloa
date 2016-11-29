@@ -3,6 +3,7 @@ const chalk = require('chalk')
 const fs = require('fs-extra')
 const moment = require('moment')
 const noon = require('noon')
+const ts = require('term-size')
 const wrap = require('wrap-ansi')
 const xml2js = require('xml2js')
 
@@ -156,7 +157,10 @@ exports.stripHTML = (string) => string.replace(/(<([^>]+)>)/ig, '')
   * @param  {boolean} hard true, soft false
   * @return {string} ANSI-wrapped string
   */
-exports.wrapStr = (str, col, hard) => wrap(str, col, hard)
+exports.wrapStr = (str, col, hard) => {
+  const termsize = ts()
+  wrap(str, termsize.columns, hard)
+}
 
 /**
   * Handles data export to file. Supports cson, json, noon, plist, xml, yaml.

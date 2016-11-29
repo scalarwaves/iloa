@@ -5,6 +5,7 @@ var chalk = require('chalk');
 var fs = require('fs-extra');
 var moment = require('moment');
 var noon = require('noon');
+var ts = require('term-size');
 var wrap = require('wrap-ansi');
 var xml2js = require('xml2js');
 
@@ -161,7 +162,8 @@ exports.stripHTML = function (string) {
   * @return {string} ANSI-wrapped string
   */
 exports.wrapStr = function (str, col, hard) {
-  return wrap(str, col, hard);
+  var termsize = ts();
+  wrap(str, termsize.columns, hard);
 };
 
 /**

@@ -9,6 +9,84 @@ var CFILE = process.env.HOME + '/.iloa.noon';
 var config = noon.load(CFILE);
 var theme = themes.loadTheme(config.theme);
 
+/**
+ * Handles alerts
+ * @param  {object} data   Alert data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
+exports.alerts = function (data, tofile) {
+  themes.label(theme, 'right', 'Alerts');
+  var tf = tofile;
+  tf.alerts = {};
+  var d = data;
+  for (var i = 0; i <= d.length - 1; i++) {
+    var item = d[i];
+    if (item.attribution) {
+      themes.label(theme, 'right', item.description, item.level_meteoalarm_description);
+      themes.label(theme, 'right', 'Attribution', item.attribution);
+      tf.alerts[['description' + i]] = item.description;
+      tf.alerts[['message' + i]] = item.level_meteoalarm_description;
+      tf.alerts.attribution = item.attribution;
+    } else {
+      themes.label(theme, 'right', item.description, item.message);
+      themes.label(theme, 'right', 'VTEC', 'phenomena: ' + item.phenomena + ' significance: ' + item.significance);
+      tf.alerts[['description' + i]] = item.description;
+      tf.alerts[['message' + i]] = item.message;
+      tf.alerts[['phenomena' + i]] = item.phenomena;
+      tf.alerts[['significance' + i]] = item.significance;
+    }
+  }
+  return tf;
+};
+
+/**
+ * Handles almanac
+ * @param  {object} data   Almanac data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
+exports.almanac = function (data, tofile) {
+  themes.label(theme, 'right', 'Almanac');
+  var tf = tofile;
+  tf.almanac = {};
+  var d = data;
+  var hn = '';
+  var hr = '';
+  var ln = '';
+  var lr = '';
+  config.wunder.metric ? hn = d.temp_high.normal.C : hn = d.temp_high.normal.F;
+  config.wunder.metric ? hr = d.temp_high.record.C : hr = d.temp_high.record.F;
+  config.wunder.metric ? ln = d.temp_low.normal.C : ln = d.temp_low.normal.F;
+  config.wunder.metric ? lr = d.temp_low.record.C : lr = d.temp_low.record.F;
+  themes.label(theme, 'right', 'Airport Code', d.airport_code);
+  themes.label(theme, 'right', 'Average High', hn);
+  themes.label(theme, 'right', 'Record High', hr + ' in ' + d.temp_high.recordyear);
+  themes.label(theme, 'right', 'Average Low', ln);
+  themes.label(theme, 'right', 'Record Low', lr + ' in ' + d.temp_low.recordyear);
+  tf.almanac = d;
+  return tf;
+};
+
+/**
+ * Handles astronomy
+ * @param  {object} data   Astronomy data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
+exports.astronomy = function (data, tofile) {
+  themes.label(theme, 'right', 'Moon Phase');
+  var tf = tofile;
+  tf.astronomy = {};
+  var d = data;
+  themes.label(theme, 'right', 'Illumination', d.percentIlluminated + '%');
+  themes.label(theme, 'right', 'Age', d.ageOfMoon);
+  themes.label(theme, 'right', 'Sunrise', d.sunrise.hour + ':' + d.sunrise.minute);
+  themes.label(theme, 'right', 'Sunset', d.sunset.hour + ':' + d.sunset.minute);
+  tf.astronomy = d;
+  return tf;
+};
+
 /*
  * Handles current conditions
  *
@@ -74,6 +152,12 @@ exports.conditions = function (data, tofile) {
   return tf;
 };
 
+/**
+ * Handles forecast and 10-day
+ * @param  {object} data   Forecast data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.forecast = function (data, tofile) {
   themes.label(theme, 'right', 'Forecast');
   var tf = tofile;
@@ -105,6 +189,12 @@ exports.forecast = function (data, tofile) {
   return tf;
 };
 
+/**
+ * Handles geolookup
+ * @param  {object} data   Geolookup data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.geolookup = function (data, limit, tofile) {
   themes.label(theme, 'right', 'Nearby Weather Stations');
   var tf = tofile;
@@ -129,6 +219,12 @@ exports.geolookup = function (data, limit, tofile) {
   return tf;
 };
 
+/**
+ * Handles hourly and 10-day
+ * @param  {object} data   Hourly data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.hourly = function (data, tofile) {
   themes.label(theme, 'right', 'Hourly forecast');
   var tf = tofile;
@@ -200,66 +296,12 @@ exports.hourly = function (data, tofile) {
   return tf;
 };
 
-exports.alerts = function (data, tofile) {
-  themes.label(theme, 'right', 'Alerts');
-  var tf = tofile;
-  tf.alerts = {};
-  var d = data;
-  for (var i = 0; i <= d.length - 1; i++) {
-    var item = d[i];
-    if (item.attribution) {
-      themes.label(theme, 'right', item.description, item.level_meteoalarm_description);
-      themes.label(theme, 'right', 'Attribution', item.attribution);
-      tf.alerts[['description' + i]] = item.description;
-      tf.alerts[['message' + i]] = item.level_meteoalarm_description;
-      tf.alerts.attribution = item.attribution;
-    } else {
-      themes.label(theme, 'right', item.description, item.message);
-      themes.label(theme, 'right', 'VTEC', 'phenomena: ' + item.phenomena + ' significance: ' + item.significance);
-      tf.alerts[['description' + i]] = item.description;
-      tf.alerts[['message' + i]] = item.message;
-      tf.alerts[['phenomena' + i]] = item.phenomena;
-      tf.alerts[['significance' + i]] = item.significance;
-    }
-  }
-  return tf;
-};
-
-exports.almanac = function (data, tofile) {
-  themes.label(theme, 'right', 'Almanac');
-  var tf = tofile;
-  tf.almanac = {};
-  var d = data;
-  var hn = '';
-  var hr = '';
-  var ln = '';
-  var lr = '';
-  config.wunder.metric ? hn = d.temp_high.normal.C : hn = d.temp_high.normal.F;
-  config.wunder.metric ? hr = d.temp_high.record.C : hr = d.temp_high.record.F;
-  config.wunder.metric ? ln = d.temp_low.normal.C : ln = d.temp_low.normal.F;
-  config.wunder.metric ? lr = d.temp_low.record.C : lr = d.temp_low.record.F;
-  themes.label(theme, 'right', 'Airport Code', d.airport_code);
-  themes.label(theme, 'right', 'Average High', hn);
-  themes.label(theme, 'right', 'Record High', hr + ' in ' + d.temp_high.recordyear);
-  themes.label(theme, 'right', 'Average Low', ln);
-  themes.label(theme, 'right', 'Record Low', lr + ' in ' + d.temp_low.recordyear);
-  tf.almanac = d;
-  return tf;
-};
-
-exports.astronomy = function (data, tofile) {
-  themes.label(theme, 'right', 'Moon Phase');
-  var tf = tofile;
-  tf.astronomy = {};
-  var d = data;
-  themes.label(theme, 'right', 'Illumination', d.percentIlluminated + '%');
-  themes.label(theme, 'right', 'Age', d.ageOfMoon);
-  themes.label(theme, 'right', 'Sunrise', d.sunrise.hour + ':' + d.sunrise.minute);
-  themes.label(theme, 'right', 'Sunset', d.sunset.hour + ':' + d.sunset.minute);
-  tf.astronomy = d;
-  return tf;
-};
-
+/**
+ * Handles tide
+ * @param  {object} data   Tide data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.tide = function (data, tofile) {
   var tf = tofile;
   var d = data;
@@ -281,6 +323,12 @@ exports.tide = function (data, tofile) {
   return tf;
 };
 
+/**
+ * Handles webcams
+ * @param  {object} data   Webcam data
+ * @param  {object} tofile The tofile object
+ * @return {object}        The tofile object
+ */
 exports.webcams = function (data, limit, tofile) {
   themes.label(theme, 'right', 'Webcams');
   var tf = tofile;
