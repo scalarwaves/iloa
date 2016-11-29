@@ -19,3 +19,5 @@ Right now iloa is in **alpha** testing. Here is the current feature progress:
 ## Resources
 
 - [WikSearch](http://www.wiksearch.com) = [Datamuse](http://www.datamuse.com/api/) + [Wikipedia](https://www.wikipedia.org)
+- [VTEC Info](http://www.nws.noaa.gov/os/vtec/pdfs/VTEC_explanation6.pdf) for Wunderground alerts
+- [US Severe Weather Map](http://www.wunderground.com/severe.asp) & [Euro Severe Weather Map](http://www.wunderground.com/severe/europe.html)

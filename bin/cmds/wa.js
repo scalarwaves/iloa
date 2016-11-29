@@ -3,7 +3,6 @@
 /* eslint max-len:0 */
 var themes = require('../themes');
 var tools = require('../tools');
-var helpers = require('./helpers/wa');
 
 var _ = require('lodash');
 var gg = require('good-guy-http');
@@ -244,6 +243,7 @@ exports.handler = function (argv) {
           parser.parseString(body, function (err, result) {
             var q = result.queryresult;
             var pods = q.pod;
+            var helpers = require('./helpers/wa');
             tofile = helpers.numPods(pods, tofile);
             if (argv.fetch) tofile = helpers.assume(q.assumptions, tofile);
           });

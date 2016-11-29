@@ -1,7 +1,6 @@
 /* eslint max-len:0 */
 const themes = require('../themes')
 const tools = require('../tools')
-const helpers = require('./helpers/wa')
 
 const _ = require('lodash')
 const gg = require('good-guy-http')
@@ -241,6 +240,7 @@ exports.handler = (argv) => {
         parser.parseString(body, (err, result) => {
           const q = result.queryresult
           const pods = q.pod
+          const helpers = require('./helpers/wa')
           tofile = helpers.numPods(pods, tofile)
           if (argv.fetch) tofile = helpers.assume(q.assumptions, tofile)
         })

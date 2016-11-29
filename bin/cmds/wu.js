@@ -40,6 +40,12 @@ exports.builder = {
     default: 'EN',
     type: 'string'
   },
+  limit: {
+    alias: 't',
+    desc: 'Limit number of results returned',
+    default: 5,
+    type: 'number'
+  },
   pws: {
     alias: 'p',
     desc: 'Use personal weather stations for weather conditions',
@@ -84,6 +90,7 @@ exports.handler = function (argv) {
         bestf: argv.b,
         features: features.split('/'),
         lang: argv.l,
+        limit: argv.t,
         pws: argv.p
       };
       if (config.merge) config = _.merge({}, config, userConfig);
@@ -98,7 +105,6 @@ exports.handler = function (argv) {
       var query = argv.query;
       var apikey = process.env.WUNDERGROUND;
       var url = encodeURI('https://api.wunderground.com/api/' + apikey + '/' + features + '/' + scont.join('/') + '/q/' + query + '.json');
-      console.log(url);
       var tofile = {
         type: 'wunderground',
         source: 'https://www.wunderground.com/?apiref=f6e0dc6b44f8fee2'
@@ -107,11 +113,20 @@ exports.handler = function (argv) {
         if (!error && response.statusCode === 200) {
           var body = JSON.parse(response.body);
           if (body.response.error) throw new Error(body.response.error.description);
-          tofile.body = body;
+          var helpers = require('./helpers/wu');
+          if (body.response.features.alerts === 1) tofile = helpers.alerts(body.alerts, tofile);
+          if (body.response.features.almanac === 1) tofile = helpers.almanac(body.almanac, tofile);
+          if (body.response.features.astronomy === 1) tofile = helpers.astronomy(body.moon_phase, tofile);
+          if (body.response.features.conditions === 1) tofile = helpers.conditions(body.current_observation, tofile);
+          if (body.response.features.forecast === 1 || body.response.features.forecast10day === 1) tofile = helpers.forecast(body.forecast, tofile);
+          if (body.response.features.geolookup === 1) tofile = helpers.geolookup(body.location, argv.t, tofile);
+          if (body.response.features.hourly === 1 || body.response.features.hourly10day === 1) tofile = helpers.hourly(body.hourly_forecast, tofile);
+          if (body.response.features.tide === 1) tofile = helpers.tide(body.tide, tofile);
+          if (body.response.features.webcams === 1) tofile = helpers.webcams(body.webcams, argv.t, tofile);
           if (argv.o) tools.outFile(argv.o, argv.f, tofile);
           if (config.usage) {
             dreset ? console.log('Timestamp expired, reset usage limits.\n' + config.wunder.date.dremain + '/' + config.wunder.date.dlimit + ' requests remaining today.') : console.log(config.wunder.date.dremain + '/' + config.wunder.date.dlimit + ' requests remaining today, will reset in ' + (24 - day) + ' hours, ' + (60 - hour) + ' minutes, ' + (60 - minute) + ' seconds.');
-            mreset ? console.log('Timestamp expired, reset usage limits.\n' + config.wunder.date.mremain + '/' + config.wunder.date.mlimit + ' requests remaining this minute.') : console.log(config.wunder.date.mremain + '/' + config.wunder.date.mlimit + ' requests remaining today, will reset in ' + (60 - minute) + ' seconds.');
+            mreset ? console.log('Timestamp expired, reset usage limits.\n' + config.wunder.date.mremain + '/' + config.wunder.date.mlimit + ' requests remaining this minute.') : console.log(config.wunder.date.mremain + '/' + config.wunder.date.mlimit + ' requests remaining this minute, will reset in ' + (60 - minute) + ' seconds.');
           }
         } else {
           throw new Error('HTTP ' + error.statusCode + ': ' + error.reponse.body);
@@ -119,6 +134,6 @@ exports.handler = function (argv) {
       });
     })();
   } else if (!dproceed) {
-    throw new Error('Reached month\'s usage limit of ' + config.wunder.date.dlimit + '.');
+    throw new Error('Reached today\'s usage limit of ' + config.wunder.date.dlimit + '.');
   } else if (!mproceed) console.log('Reached usage limit of ' + config.wunder.date.mlimit + ', please wait a minute.');
 };

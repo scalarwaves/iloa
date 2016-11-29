@@ -107,6 +107,17 @@ exports.checkBoolean = function (value) {
 };
 
 /**
+ * Converts a boolean to a 0 or 1
+ * @param  {boolean} value A boolean value
+ * @return {integer} 0 or 1
+ */
+exports.boolToBin = function (value) {
+  var r = null;
+  value ? r = 1 : r = 0;
+  return r;
+};
+
+/**
   * Checks if config exists. If not, prints init message and exits with error code.
   * @public
   * @param {string} file Configuration filepath

@@ -60,7 +60,7 @@ exports.getThemes = function () {
   if (!dirExists) console.log(chalk.white(process.cwd() + '/themes does not exist, falling back to ' + process.env.NODE_PATH + '/iloa/themes.'));
   files = glob.sync(TDIR + '*.noon');
   _.each(files, function (path) {
-    var name = path.replace(/[a-z0-9\/_\.]*themes\//, '').replace(/\.noon/, '');
+    var name = path.replace(/[a-z0-9/_.]*themes\//, '').replace(/\.noon/, '');
     list.push(name);
   });
   return list;

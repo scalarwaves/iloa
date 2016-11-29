@@ -41,7 +41,17 @@ wunder
     mremain  10
     dstamp  ||
     mstamp  ||
-  measure  standard
-  features  ||
+  features
+    alerts
+    almanac
+    astronomy
+    conditions
+    forecast
+    geolookup
+    hourly
+    tide
+    webcams
   lang  EN
+  limit  5
+  metric  false
   pws  true
