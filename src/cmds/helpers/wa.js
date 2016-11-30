@@ -26,7 +26,7 @@ function subPod(pn, subpod, tofile) {
       themes.label(theme, 'right', 'Title', meta.title)
       tf[[`pod${pn}`]][[`subpod${i}`]].title = meta.title
     }
-    themes.label(theme, 'right', 'Text', tools.wrapStr(tools.arrToStr(sp.plaintext)))
+    themes.label(theme, 'right', 'Text', tools.wrapStr(tools.arrToStr(sp.plaintext), true, true))
     tf[[`pod${pn}`]][[`subpod${i}`]].text = tools.arrToStr(sp.plaintext)
     themes.label(theme, 'right', 'Image', sp.img[0].$.src)
     tf[[`pod${pn}`]][[`subpod${i}`]].image = sp.img[0].$.src

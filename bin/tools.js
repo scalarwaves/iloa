@@ -157,13 +157,13 @@ exports.stripHTML = function (string) {
 /**
   * Wraps blocks of text
   * @param  {string} str Long string
-  * @param  {number} col Number of columns
   * @param  {boolean} hard true, soft false
+  * @param  {boolean} wwrap true, column wrap false
   * @return {string} ANSI-wrapped string
   */
-exports.wrapStr = function (str, col, hard) {
+exports.wrapStr = function (str, hard, wwrap) {
   var termsize = ts();
-  wrap(str, termsize.columns, hard);
+  return wrap(str, termsize.columns, hard, wwrap);
 };
 
 /**

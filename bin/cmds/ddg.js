@@ -77,7 +77,12 @@ exports.handler = function (argv) {
         Results: []
       };
       var body = JSON.parse(response.body);
-      if (body === blank) {
+      if (body.Abstract === '' && body.Answer === '' && body.meta !== null) {
+        console.log('Only metadata was returned:');
+        console.log(JSON.stringify(body.meta, null, 2));
+        process.exit(0);
+      }
+      if (JSON.stringify(body) === JSON.stringify(blank)) {
         console.log('DuckDuckGo found no results.');
         process.exit(0);
       }
@@ -116,7 +121,7 @@ exports.handler = function (argv) {
         themes.label(theme, 'right', 'Entity', body.Entity);
         themes.label(theme, 'right', 'Source', body.AbstractSource);
         themes.label(theme, 'right', 'URL', body.AbstractURL);
-        themes.label(theme, 'right', 'Text', body.AbstractText);
+        themes.label(theme, 'right', 'Text', tools.wrapStr(body.AbstractText, true, true));
         if (body.Results.length > 0) {
           themes.label(theme, 'down', 'Primary Results');
           for (var i = 0; i <= body.Results - 1; i++) {
@@ -160,7 +165,7 @@ exports.handler = function (argv) {
           themes.label(theme, 'down', 'Related');
           for (var _i2 = 0; _i2 <= rcont.length - 1; _i2++) {
             var rhash = rcont[_i2];
-            console.log(rhash.Text + '\n' + rhash.FirstURL);
+            console.log(tools.wrapStr(rhash.Text, true, true) + '\n' + rhash.FirstURL);
             tofile[['relatedText' + _i2]] = rhash.Text;
             tofile[['relatedUrl' + _i2]] = rhash.FirstURL;
           }

@@ -75,7 +75,12 @@ exports.handler = (argv) => {
         Results: [],
       }
       const body = JSON.parse(response.body)
-      if (body === blank) {
+      if (body.Abstract === '' && body.Answer === '' && body.meta !== null) {
+        console.log('Only metadata was returned:')
+        console.log(JSON.stringify(body.meta, null, 2))
+        process.exit(0)
+      }
+      if (JSON.stringify(body) === JSON.stringify(blank)) {
         console.log('DuckDuckGo found no results.')
         process.exit(0)
       }
@@ -114,7 +119,7 @@ exports.handler = (argv) => {
         themes.label(theme, 'right', 'Entity', body.Entity)
         themes.label(theme, 'right', 'Source', body.AbstractSource)
         themes.label(theme, 'right', 'URL', body.AbstractURL)
-        themes.label(theme, 'right', 'Text', body.AbstractText)
+        themes.label(theme, 'right', 'Text', tools.wrapStr(body.AbstractText, true, true))
         if (body.Results.length > 0) {
           themes.label(theme, 'down', 'Primary Results')
           for (let i = 0; i <= body.Results - 1; i++) {
@@ -158,7 +163,7 @@ exports.handler = (argv) => {
           themes.label(theme, 'down', 'Related')
           for (let i = 0; i <= rcont.length - 1; i++) {
             const rhash = rcont[i]
-            console.log(`${rhash.Text}\n${rhash.FirstURL}`)
+            console.log(`${tools.wrapStr(rhash.Text, true, true)}\n${rhash.FirstURL}`)
             tofile[[`relatedText${i}`]] = rhash.Text
             tofile[[`relatedUrl${i}`]] = rhash.FirstURL
           }

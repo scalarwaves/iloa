@@ -89,7 +89,7 @@ exports.handler = function (argv) {
       var pageID = body.query.pageids[0];
       var page = body.query.pages[pageID];
       var plain = page.extract.trim();
-      var wrapped = tools.wrapStr(plain, 80, false);
+      var wrapped = tools.wrapStr(plain, true, true);
       themes.label(theme, 'down', 'Summary', wrapped);
       tofile.summary = plain;
       if (argv.o) tools.outFile(argv.o, argv.f, tofile);

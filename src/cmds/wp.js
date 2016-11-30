@@ -87,7 +87,7 @@ exports.handler = (argv) => {
       const pageID = body.query.pageids[0]
       const page = body.query.pages[pageID]
       const plain = page.extract.trim()
-      const wrapped = tools.wrapStr(plain, 80, false)
+      const wrapped = tools.wrapStr(plain, true, true)
       themes.label(theme, 'down', 'Summary', wrapped)
       tofile.summary = plain
       if (argv.o) tools.outFile(argv.o, argv.f, tofile)
