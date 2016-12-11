@@ -1,3 +1,57 @@
+eol
+  collect
+    by  recently_added
+    cachettl  60
+    field  ||
+    filter  ||
+    language  en
+    page  1
+    ppage  50
+  entry
+    cachettl  60
+    common  false
+    language  en
+    synonym  false
+  hierarc
+    cachettl  60
+    language  en
+  meta
+    cachettl  60
+    language  en
+    taxonomy  true
+  page
+    batch  false
+    cachettl  60
+    common  false
+    details  false
+    imagepage  1
+    imagepp  1
+    iucn  false
+    language  en
+    license  all
+    mapspage  1
+    mapspp  1
+    reference  false
+    soundpage  1
+    soundpp  1
+    subjects  overview
+    synonym  false
+    taxonomy  true
+    textpage  1
+    textpp  1
+    vetted  0
+    videopage  1
+    videopp  1
+  sbp
+    cachettl  60
+    pid  903
+  search
+    cachettl  60
+    exact  false
+    hfilter  0
+    page  1
+    string  ||
+    tfilter  0
 usage  true
 merge  true
 theme  square
