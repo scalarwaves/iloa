@@ -30,7 +30,7 @@ exports.builder = {
   },
   features: {
     alias: 'e',
-    desc: 'CSV alerts,almanac,animatedradar,animatedsatellite,animatedradar/animatedsatellite,astronomy,conditions,currenthurricane,forecast,forecast10day,geolookup,history,hourly,hourly10day,planner,radar,radar/satellite,rawtide,satellite,tide,webcams,yesterday',
+    desc: 'CSV alerts,almanac,astronomy,conditions,forecast,forecast10day,geolookup,hourly,hourly10day,tide,webcams',
     default: 'conditions',
     type: 'string'
   },
