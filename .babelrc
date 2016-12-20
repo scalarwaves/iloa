@@ -1,6 +1,6 @@
 {
   "presets": ["latest"],
-  "compact": false,
+  "compact": true,
   "env": {
     "dev": {
       "plugins": ["lodash"]
