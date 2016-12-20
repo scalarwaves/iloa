@@ -73,8 +73,8 @@ exports.handler = (argv) => {
       const link = body[1]
       themes.label(theme, 'right', 'Page ID', pid.eol_page_id)
       tofile.eol_page_id = pid.eol_page_id
-      themes.label(theme, 'right', 'Page Link', link.eol_page_link)
-      tofile.eol_page_link = link.eol_page_link
+      themes.label(theme, 'right', 'Page Link', `http://${link.eol_page_link}`)
+      tofile.eol_page_link = `http://${link.eol_page_link}`
       if (argv.o) tools.outFile(argv.o, argv.f, tofile)
     } else {
       throw new Error(error)
