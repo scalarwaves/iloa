@@ -78,7 +78,7 @@ exports.handler = (argv) => {
   const url = `${prefix}?${ucont.join('&')}`
   const tofile = {
     type: 'entry',
-    source: 'http://eol.org',
+    src: 'http://eol.org/',
   }
   http({ url }, (error, response) => {
     if (!error && response.statusCode === 200) {
