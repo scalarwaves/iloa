@@ -1,0 +1,102 @@
+eol
+  collect
+    by  recently_added
+    cachettl  60
+    field  ||
+    filter  ||
+    language  en
+    page  1
+    ppage  50
+  entry
+    cachettl  60
+    common  true
+    language  en
+    synonym  true
+  hier
+    cachettl  60
+    language  en
+  meta
+    cachettl  60
+    language  en
+    taxonomy  true
+  page
+    batch  false
+    cachettl  60
+    common  true
+    details  true
+    imagepage  1
+    imagepp  1
+    iucn  true
+    language  en
+    license  all
+    mapspage  1
+    mapspp  1
+    reference  true
+    soundpage  1
+    soundpp  1
+    subjects  overview
+    synonym  true
+    taxonomy  true
+    textpage  1
+    textpp  1
+    vetted  0
+    videopage  1
+    videopp  1
+  sbp
+    cachettl  60
+    pid  903
+  search
+    cachettl  60
+    exact  false
+    hfilter  0
+    page  1
+    string  ||
+    tfilter  0
+usage  true
+merge  true
+theme  square
+verbose  true
+wiki
+  intro  false
+wolf
+  assu  ||
+  async  false
+  date
+    interval  month
+    limit  2000
+    remain  2000
+    stamp  ||
+  expod  ||
+  fetch  true
+  fmt  ||
+  ftime  8
+  icase  false
+  incpod  ||
+  loc  ||
+  pdtime  ||
+  podid  ||
+  podt  ||
+  prtime  5
+  reint  false
+  scan  ||
+  sig  ||
+  stime  3
+  trans  false
+  unit  ||
+  width  ||
+wunder
+  bestf  true
+  date
+    dinterval  day
+    minterval  minute
+    dlimit  500
+    mlimit  10
+    dremain  500
+    mremain  10
+    dstamp  ||
+    mstamp  ||
+  features  alerts,almanac,astronomy,conditions,forecast10day,geolookup,hourly10day,tide,webcams
+  lang  EN
+  limit  5
+  metric  false
+  pws  true
