@@ -12,7 +12,7 @@ eol
     common  false
     language  en
     synonym  false
-  hierarc
+  hier
     cachettl  60
     language  en
   meta
@@ -95,16 +95,7 @@ wunder
     mremain  10
     dstamp  ||
     mstamp  ||
-  features
-    alerts
-    almanac
-    astronomy
-    conditions
-    forecast
-    geolookup
-    hourly
-    tide
-    webcams
+  features  conditions,forecast
   lang  EN
   limit  5
   metric  false
