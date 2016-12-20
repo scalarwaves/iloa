@@ -16,7 +16,7 @@
   "scripts": {
     "bin": "cross-env BABEL_ENV=dev babel src -d bin",
     "bump": "git push origin master --tags && npm publish",
-    "clean": "rimraf bin && rimraf cson/* && rimraf coverage && rimraf .nyc_output && rimraf test/output && rimraf lcov.info",
+    "clean": "rimraf bin && rimraf cson/* && rimraf coverage && rimraf .nyc_output && rimraf test/output",
     "climate": "./node_modules/.bin/codeclimate-test-reporter < lcov.info",
     "cover": "cat lcov.info | ./node_modules/.bin/coveralls",
     "inst": "cross-env BABEL_ENV=test babel src -d bin",
