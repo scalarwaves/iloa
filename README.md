@@ -60,8 +60,7 @@ See the [tests](https://github.com/drawnepicenter/iloa/blob/master/test/test.es6
 The following links can help you use iloa or perform related tasks.
 
 - [WikSearch](http://www.wiksearch.com) = [Datamuse](http://www.datamuse.com/api/) + [Wikipedia](https://www.wikipedia.org)
-- [VTEC Info](http://www.nws.noaa.gov/os/vtec/pdfs/VTEC_explanation6.pdf) for Wunderground alerts
-- [US Severe Weather Map](http://www.wunderground.com/severe.asp) & [Euro Severe Weather Map](http://www.wunderground.com/severe/europe.html)
+- [VTEC Info](http://www.nws.noaa.gov/os/vtec/pdfs/VTEC_explanation6.pdf), [US Severe Weather Map](http://www.wunderground.com/severe.asp) & [Euro Severe Weather Map](http://www.wunderground.com/severe/europe.html) for Wunderground alerts
 
 ## Contributing
 
