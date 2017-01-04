@@ -111,10 +111,10 @@ describe('tools', () => {
       const c = checkStamp[0]
       const proceed = checkStamp[1]
       const reset = checkStamp[2]
-      expect(c.wolf.date.remain).to.equals(1999)
-      expect(c.wolf.date.stamp).to.match(/2016[\-\d]*T[0-9:\.\-Z]*/mig)
+      expect(c.wolf.date.remain).to.match(/\d+/mig)
+      expect(c.wolf.date.stamp).to.match(/201\d[\-\d]*T[0-9:\.\-Z]*/mig)
       expect(proceed).to.equals(true)
-      expect(reset).to.equals(true)
+      expect(reset).to.equals(false)
       done()
     })
     it('decrements wolfram limit', (done) => {
@@ -134,8 +134,8 @@ describe('tools', () => {
     it('resets wunder limit', (done) => {
       fs.copySync('test/test.config.noon', CFILE)
       const config = noon.load(CFILE)
-      config.wunder.date.dstamp = new Date().toJSON().replace(/2016/, '2015')
-      config.wunder.date.mstamp = new Date().toJSON().replace(/2016/, '2015')
+      config.wunder.date.dstamp = new Date().toJSON().replace(/2017/, '2016')
+      config.wunder.date.mstamp = new Date().toJSON().replace(/2017/, '2016')
       config.wunder.date.dremain = 498
       config.wunder.date.mremain = 8
       const checkStamp = tools.limitWunder(config)
@@ -146,8 +146,8 @@ describe('tools', () => {
       const mreset = checkStamp[4]
       expect(c.wunder.date.dremain).to.equals(499)
       expect(c.wunder.date.mremain).to.equals(9)
-      expect(c.wunder.date.dstamp).to.match(/2016[\-\d]*T[0-9:\.\-Z]*/mig)
-      expect(c.wunder.date.mstamp).to.match(/2016[\-\d]*T[0-9:\.\-Z]*/mig)
+      expect(c.wunder.date.dstamp).to.match(/201\d[\-\d]*T[0-9:\.\-Z]*/mig)
+      expect(c.wunder.date.mstamp).to.match(/201\d[\-\d]*T[0-9:\.\-Z]*/mig)
       expect(dproceed).to.equals(true)
       expect(mproceed).to.equals(true)
       expect(dreset).to.equals(true)
