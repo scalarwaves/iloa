@@ -10,7 +10,7 @@
 
 *iloa* is [Samoan](https://en.wikipedia.org/wiki/Samoan_language) for **knowing**
 
-iloa is a powerful tool for gaining knowledge from the command line. It queries [DuckDuckGo](https://duckduckgo.com/api), [Encyclopedia of Life](http://eol.org/), [Weather Underground](https://www.wunderground.com/), [Wikipedia](https://www.wikipedia.org), [Wolfram|Alpha](https://www.wolframalpha.com/about.html), and more through meta-searches. See the [wiki](https://github.com/drawnepicenter/iloa/wiki) for more info. iloa goes great with [leximaven](https://github.com/drawnepicenter/leximaven).
+iloa is a powerful tool for gaining knowledge from the command line. It queries [DuckDuckGo](https://duckduckgo.com/api), [Encyclopedia of Life](http://eol.org/), [Weather Underground](https://www.wunderground.com/), [Wikipedia](https://www.wikipedia.org), [Wolfram|Alpha](https://www.wolframalpha.com/about.html), and more through meta-searches. See the [wiki](https://github.com/drawnepicenter/iloa/wiki) for more info.
 
 ## Installation
 
@@ -69,3 +69,7 @@ See [CONTRIBUTING](https://github.com/drawnepicenter/iloa/blob/master/CONTRIBUTI
 ## Gratitude
 
 Many thanks to all contributors to the libraries used in this project! And thanks to the creators and maintainers of the APIs that this tool consumes. DuckDuckGo, Encyclopedia of Life, Weather Underground, Wikipedia, and Wolfram|Alpha are awesome!
+
+### Take Command
+
+See [take-command](https://github.com/drawnepicenter/take-command).
