@@ -11,7 +11,8 @@ const http = require('good-guy-http')({
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'wu <query>'
+exports.command = 'weather <query>'
+exports.aliases = ['wunder', 'wu']
 exports.desc = 'Query Weather Underground'
 exports.builder = {
   out: {

@@ -16,7 +16,8 @@ const xml2js = require('xml2js')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'wa <query>'
+exports.command = 'wolfram <query>'
+exports.aliases = ['wolf', 'wa']
 exports.desc = 'Search Wolfram|Alpha'
 exports.builder = {
   out: {

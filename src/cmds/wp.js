@@ -14,7 +14,8 @@ const http = gg({
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'wp <query>'
+exports.command = 'wikipedia <query>'
+exports.aliases = ['wiki', 'wp']
 exports.desc = 'Wikipedia summaries'
 exports.builder = {
   out: {

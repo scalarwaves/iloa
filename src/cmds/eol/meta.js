@@ -8,7 +8,8 @@ const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'meta <id>'
+exports.command = 'metadata <id>'
+exports.aliases = ['meta', 'md']
 exports.desc = 'Returns metadata for given data object'
 exports.builder = {
   out: {

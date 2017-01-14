@@ -9,6 +9,7 @@ const noon = require('noon')
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
 exports.command = 'page <id>'
+exports.aliases = ['pg']
 exports.desc = 'Returns data for a given page ID number'
 exports.builder = {
   out: {

@@ -8,7 +8,8 @@ const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'hier <id>'
+exports.command = 'hierarchy <id>'
+exports.aliases = ['hier', 'ha']
 exports.desc = 'Returns data for a single hierarchy and its root taxa'
 exports.builder = {
   out: {

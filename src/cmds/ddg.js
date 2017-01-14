@@ -8,7 +8,8 @@ const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'ddg <query>'
+exports.command = 'duckduckgo <query>'
+exports.aliases = ['duck', 'dg']
 exports.desc = 'DuckDuckGo Instant Answers'
 exports.builder = {
   out: {

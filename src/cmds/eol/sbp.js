@@ -8,7 +8,8 @@ const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'sbp <id>'
+exports.command = 'searchby <id>'
+exports.aliases = ['provider', 'sbp']
 exports.desc = 'Search for an entry within a given provider'
 exports.builder = {
   out: {

@@ -8,7 +8,8 @@ const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'collect <id>'
+exports.command = 'collection <id>'
+exports.aliases = ['collect', 'col']
 exports.desc = 'Returns entries that match a string query'
 exports.builder = {
   out: {
