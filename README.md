@@ -59,6 +59,7 @@ See the [tests](https://github.com/drawnepicenter/iloa/blob/master/test/test.es6
 
 The following links can help you use iloa or perform related tasks.
 
+- [Wikimindmap](https://github.com/nyfelix/wikimindmap) displays a mindmap of [Wikipedia](https://www.wikipedia.org) articles.
 - [WikSearch](http://www.wiksearch.com) = [Datamuse](http://www.datamuse.com/api/) + [Wikipedia](https://www.wikipedia.org)
 - [VTEC Info](http://www.nws.noaa.gov/os/vtec/pdfs/VTEC_explanation6.pdf), [US Severe Weather Map](http://www.wunderground.com/severe.asp) & [Euro Severe Weather Map](http://www.wunderground.com/severe/europe.html) for Wunderground alerts
 
@@ -69,6 +70,8 @@ See [CONTRIBUTING](https://github.com/drawnepicenter/iloa/blob/master/CONTRIBUTI
 ## Gratitude
 
 Many thanks to all contributors to the libraries used in this project! And thanks to the creators and maintainers of the APIs that this tool consumes. DuckDuckGo, Encyclopedia of Life, Weather Underground, Wikipedia, and Wolfram|Alpha are awesome!
+
+## Extras
 
 ### Take Command
 
