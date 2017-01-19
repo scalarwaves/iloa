@@ -485,7 +485,7 @@ describe('root commands', () => {
     it('shows usage', (done) => {
       child.exec(`node ${__dirname}/../bin/iloa.js --help > test/output/help.out`, (err) => {
         const stdout = fs.readFileSync('test/output/help.out', 'utf8')
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/^[\s_\(\)\/\\`,]*\sUsage:\s[a-z \/\.<>\[\]]*\s*Commands:\s[a-z <>\s|]*Options:\s[ -a-z\s]*\[boolean\]\s*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[\\\/_\(\) ,`]*Usage:\s[a-z \/\.<>\[\]]*\s*Commands:\s[a-z \[:\]\s<>,|]*Options:\s*[a-z\-, \[\]\s]*/mig)
         done(err)
       })
     })
@@ -501,7 +501,7 @@ describe('root commands', () => {
   })
   describe('duckduckgo', () => {
     it('shows output', (done) => {
-      child.exec(`node ${process.cwd()}/bin/iloa.js ddg -o ${process.cwd()}/test/output/ddg.json nodejs > test/output/ddg.out`, (err) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js dg -o ${process.cwd()}/test/output/ddg.json nodejs > test/output/ddg.out`, (err) => {
         const stdout = fs.readFileSync('test/output/ddg.out', 'utf8')
         const obj = {
           type: 'duckduckgo',
@@ -517,10 +517,10 @@ describe('root commands', () => {
           image: 'https://duckduckgo.com/i/a65969b4.png',
           relatedText0: 'MEAN (software bundle) - MEAN is a free and open-source JavaScript software stack for building dynamic web sites and web applications.',
           relatedUrl0: 'https://duckduckgo.com/MEAN_(software_bundle)',
-          relatedText1: 'Online JavaScript IDE - An online JavaScript IDE is an integrated development environment that is hosted in a browser, with an aim to ease JavaScript, HTML, and CSS based web development. Generally, they allow users to edit JavaScript code in the browser, and see the results of executing the code.',
-          relatedUrl1: 'https://duckduckgo.com/Online_JavaScript_IDE',
-          relatedText2: 'Rhino (JavaScript engine) - Rhino is a JavaScript engine written fully in Java and managed by the Mozilla Foundation as open source software. It is separate from the SpiderMonkey engine, which is also developed by Mozilla, but written in C++ and used in Mozilla Firefox.',
-          relatedUrl2: 'https://duckduckgo.com/Rhino_(JavaScript_engine)',
+          relatedText1: 'Rhino (JavaScript engine) - Rhino is a JavaScript engine written fully in Java and managed by the Mozilla Foundation as open source software. It is separate from the SpiderMonkey engine, which is also developed by Mozilla, but written in C++ and used in Mozilla Firefox.',
+          relatedUrl1: 'https://duckduckgo.com/Rhino_(JavaScript_engine)',
+          relatedText2: 'Linux Foundation projects',
+          relatedUrl2: 'https://duckduckgo.com/c/Linux_Foundation_projects',
           relatedText3: 'Free software programmed in JavaScript',
           relatedUrl3: 'https://duckduckgo.com/c/Free_software_programmed_in_JavaScript',
           relatedText4: 'Joyent',
