@@ -17,7 +17,7 @@ As of right now, I am the only one contributing to this project. I welcome you t
 
 ### Coding Style & Linting
 
-Code is linted with [ESLint](http://eslint.org). If you want to contribute code please consider using the provided .eslintrc as a styleguide. It's based on [Airbnb's styleguide](https://github.com/airbnb/javascript), and customized to my liking.
+This project adheres to [standard](https://github.com/feross/standard) formatting rules.
 
 ### Testing
 
