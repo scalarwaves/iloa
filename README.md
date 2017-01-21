@@ -39,19 +39,19 @@ iloa has a built-in help system for CLI parameters and options. Access it with `
 Here are some examples:
     
     // Get DuckDuckGo instant answers for Infected Mushroom
-    iloa ddg 'Infected Mushroom'
+    iloa duck 'Infected Mushroom'
     
     // Get Encyclopedia of Life pages for Homo sapiens
-    iloa eol page 327955 -n -d -m -y -r -x
+    iloa life page 327955 -n -d -m -y -r -x
     
     // Get Weather Underground conditions and forecast for Tampa Knight Airport
-    iloa wu -e conditions,forecast KTPF
+    iloa weather -e conditions,forecast KTPF
     
     // Get Wolfram|Alpha computation of doppler shift
-    iloa wa 'doppler shift'
+    iloa wolfram 'doppler shift'
     
     // Get Wikipedia article for George Gurdjieff
-    iloa wp 'George Gurdjieff'
+    iloa wikipedia 'George Gurdjieff'
 
 See the [tests](https://github.com/drawnepicenter/iloa/blob/master/test/test.es6) for more.
 
