@@ -4,9 +4,20 @@ As of right now, I am the only one contributing to this project. I welcome you t
 
 ### Build process
 
-- Managed with [Gulp](http://gulpjs.com) plugins.
-- The **bin** task transpiles all ES6 code to ES5 using [Babel](http://babeljs.io) and pipes to the bin folder.
-- The **clean** task removes test output and the bin folder, then runs the **bin** task
+Managed with npm scripts. [redrun](https://github.com/coderaiser/redrun) is my task runner.
+Here are the tasks:
+
+- **bin** - transpiles src into bin
+- **bump** - after release task, pushes version to repo and publishes npm package
+- **clean** - deletes all generated files
+- **climate** - CI-only task to submit test coverage
+- **cover** - instruments code, calculates coverage, generates lcov and cleans up
+- **lcov** - generates lcov.info from nyc data
+- **lint** - fixes stylistic issues in src folder
+- **test** - compiles test file, uses test runner
+- **release** - uses standard-version to update the CHANGELOG and modify the version in package.json
+- **report** - generates a nice HTML test report to load in your browser
+- **watch** - watches src directory for changes and automatically compiles to bin folder
 
 ### Changelog & Versioning
 
