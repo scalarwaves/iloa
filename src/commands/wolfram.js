@@ -1,15 +1,10 @@
 /* eslint max-len:0 */
 const themes = require('../themes')
 const tools = require('../tools')
+const helpers = require('./helpers/wolfram-helper')
 
-const _ = require('lodash')
 const gg = require('good-guy-http')
-const http = gg({
-  cache: false,
-  defaultCache: {
-    cached: false,
-  },
-})
+const http = gg({ cache: false, defaultCache: { cached: false } })
 const moment = require('moment')
 const noon = require('noon')
 const xml2js = require('xml2js')
@@ -24,136 +19,136 @@ exports.builder = {
     alias: 'o',
     desc: 'Write cson, json, noon, plist, yaml, xml',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   force: {
     alias: 'f',
     desc: 'Force overwriting outfile',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   save: {
     alias: 'v',
     desc: 'Save options to config',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   assu: {
     alias: 'u',
     desc: "Specifies an assumption, such as the meaning of a word or the value of a formula variable. See the 'Assumptions' section for more details. Optional.",
     default: '',
-    type: 'string',
+    type: 'string'
   },
   expod: {
     alias: 'x',
     desc: 'Specifies a pod ID to exclude. You can specify more than one of these elements in the query. Pods with the given IDs will be excluded from the result. Optional.',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   fmt: {
     alias: 'm',
     desc: "The desired result format(s). Possible values are 'image,plaintext,minput,moutput,cell,mathml,imagemap,sound,wav' To request more than one format type, separate values with a comma. Optional; defaults to 'plaintext,image'.",
     default: '',
-    type: 'string',
+    type: 'string'
   },
   ftime: {
     alias: 'e',
     desc: "The number of seconds to allow Wolfram|Alpha to spend in the 'format' stage for the entire collection of pods. Optional; defaults to 8.0.",
     default: 8.0,
-    type: 'number',
+    type: 'number'
   },
   incpod: {
     alias: 'c',
     desc: 'Specifies a pod ID to include. You can specify more than one of these elements in the query. Only pods with the given IDs will be returned.',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   loc: {
     alias: 'l',
     desc: "Some Wolfram|Alpha computations take into account the caller's current location. By default, Wolfram|Alpha attempts to determine the caller's location from the IP address, but you can override this by specifying location information in one of three forms. See the 'Specifying Your Location' section for more details. Optional; defaults to determining location via the IP address of the caller.",
     default: '',
-    type: 'string',
+    type: 'string'
   },
   prtime: {
     alias: 'r',
     desc: "The number of seconds to allow Wolfram|Alpha to spend in the 'parsing' stage of processing. Optional; defaults to 5.0.",
     default: 5.0,
-    type: 'number',
+    type: 'number'
   },
   podid: {
     alias: 'i',
     desc: "Specifies the index of the pod(s) to return. This is an alternative to specifying pods by title or ID. You can give a single number or a sequence like '2,3,5'. Optional; default is all pods.",
     default: '',
-    type: 'string',
+    type: 'string'
   },
   podt: {
     alias: 't',
     desc: 'Specifies a pod title. You can specify more than one of these elements in the query. Only pods with the given titles will be returned. You can use * as a wildcard to match zero or more characters in pod titles. Optional.',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   pdtime: {
     alias: 'd',
     desc: "The number of seconds to allow Wolfram|Alpha to spend in the 'format' stage for any one pod. Optional; defaults to 4.0.",
     default: 4.0,
-    type: 'number',
+    type: 'number'
   },
   scan: {
     alias: 'a',
     desc: 'Specifies that only pods produced by the given scanner should be returned. You can specify more than one of these elements in the query. Optional; default is all pods.',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   sig: {
     alias: 'g',
     desc: 'A special signature that can be applied to guard against misuse of your AppID. Optional.',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   stime: {
     alias: 's',
     desc: "The number of seconds to allow Wolfram|Alpha to compute results in the 'scan' stage of processing. Optional; defaults to 3.0.",
     default: 3.0,
-    type: 'number',
+    type: 'number'
   },
   unit: {
     alias: 'n',
     desc: "Lets you specify the preferred measurement system, either 'metric' or 'nonmetric' (U.S. customary units). Optional; defaults to making a decision based on the caller's geographic location.",
     default: '',
-    type: 'string',
+    type: 'string'
   },
   width: {
     alias: 'w',
     desc: "These specifications control the page width in pixels for which the output should be formatted. See the section 'Controlling the Width of Results' for more details. Optional. Default width and maxwidth are 500; default plotwidth is 200; default mag is 1.0.",
     default: '',
-    type: 'string',
+    type: 'string'
   },
   async: {
     alias: 'y',
     desc: 'Search asynchronously',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   fetch: {
     desc: 'Fetch assumptions',
     default: true,
-    type: 'boolean',
+    type: 'boolean'
   },
   icase: {
     desc: 'Whether to force Wolfram|Alpha to ignore case in queries. Optional.',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   reint: {
     desc: 'Whether to allow Wolfram|Alpha to reinterpret queries that would otherwise not be understood. Optional.',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   trans: {
     desc: 'Whether to allow Wolfram|Alpha to try to translate simple queries into English. Optional.',
     default: false,
-    type: 'boolean',
-  },
+    type: 'boolean'
+  }
 }
 exports.handler = (argv) => {
   tools.checkConfig(CFILE)
@@ -161,9 +156,9 @@ exports.handler = (argv) => {
   let proceed = false
   let reset = false
   const stamp = new Date(config.wolf.date.stamp)
-  const days = moment(new Date).diff(stamp, 'days')
-  const hours = moment(new Date).diff(stamp, 'hours')
-  const minutes = moment(new Date).diff(stamp, 'minutes')
+  const days = moment(new Date()).diff(stamp, 'days')
+  const hours = moment(new Date()).diff(stamp, 'hours')
+  const minutes = moment(new Date()).diff(stamp, 'minutes')
   const checkStamp = tools.limitWolf(config)
   config = checkStamp[0]
   proceed = checkStamp[1]
@@ -190,10 +185,10 @@ exports.handler = (argv) => {
         fetch: argv.fetch,
         icase: argv.icase,
         reint: argv.reint,
-        trans: argv.trans,
-      },
+        trans: argv.trans
+      }
     }
-    if (config.merge) config = _.merge({}, config, userConfig)
+    if (config.merge) config = tools.merge(config, userConfig)
     if (argv.v && config.merge) noon.save(CFILE, config)
     if (argv.v && !config.merge) throw new Error("Can't save user config, set option merge to true.")
     const theme = themes.loadTheme(config.theme)
@@ -201,9 +196,9 @@ exports.handler = (argv) => {
     const wcont = []
     wcont.push(argv.query)
     if (argv._.length > 1) {
-      _.each(argv._, (value) => {
-        if (value !== 'wa') wcont.push(value)
-      })
+      for (let i = 1; i <= argv._; i++) {
+        if (argv._[i] !== 'wolfram' && argv._[i] !== 'wolf' && argv._[i] !== 'wa') wcont.push(argv._[i])
+      }
     }
     let words = ''
     wcont.length > 1 ? words = wcont.join('+') : words = wcont[0]
@@ -231,7 +226,7 @@ exports.handler = (argv) => {
     const url = encodeURI(`http://api.wolframalpha.com/v2/query?input=${words}&${pcont.join('&')}&appid=${apikey}`)
     let tofile = {
       type: 'wolfram-alpha',
-      source: 'http://www.wolframalpha.com/',
+      source: 'http://www.wolframalpha.com/'
     }
     http({ url }, (error, response) => {
       if (!error && response.statusCode === 200) {
@@ -239,11 +234,14 @@ exports.handler = (argv) => {
         const body = response.body
         const parser = new xml2js.Parser()
         parser.parseString(body, (err, result) => {
-          const q = result.queryresult
-          const pods = q.pod
-          const helpers = require('./helpers/wa')
-          tofile = helpers.numPods(pods, tofile)
-          if (argv.fetch) tofile = helpers.assume(q.assumptions, tofile)
+          if (!err) {
+            const q = result.queryresult
+            const pods = q.pod
+            tofile = helpers.numPods(pods, tofile)
+            if (argv.fetch) tofile = helpers.assume(q.assumptions, tofile)
+          } else {
+            throw new Error(err)
+          }
         })
         if (argv.o) tools.outFile(argv.o, argv.f, tofile)
         if (config.usage) reset ? console.log(`Timestamp expired, reset usage limits.\n${config.wolf.date.remain}/${config.wolf.date.limit} requests remaining this month.`) : console.log(`${config.wolf.date.remain}/${config.wolf.date.limit} requests remaining this month, will reset in ${31 - days} days, ${24 - hours} hours, ${60 - minutes} minutes.`)

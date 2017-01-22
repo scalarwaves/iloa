@@ -1,15 +1,13 @@
+/* eslint no-undef: 0 */
 const themes = require('../bin/themes')
 const tools = require('../bin/tools')
 
-const _ = require('lodash')
-const chalk = require('chalk')
 const child = require('child_process')
 const expect = require('chai').expect
 const fs = require('fs-extra')
 const noon = require('noon')
 const sinon = require('sinon')
 const version = require('../package.json').version
-const xml2js = require('xml2js')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 const TFILE = `${process.cwd()}/test/test.config.noon`
@@ -45,7 +43,7 @@ describe('tools', () => {
       const obj = { foo: 'bar' }
       const obj2 = { bar: 'foo' }
       tools.outFile('test/output/test.json', false, obj)
-      expect(spy.calledWith(tools.outFile('test/output/test.json', false, obj2))).to.match(/[a-z\/,\-\. ]*/mig)
+      expect(spy.calledWith(tools.outFile('test/output/test.json', false, obj2))).to.match(/[a-z/,-. ]*/mig)
       const actual = fs.readJsonSync('test/output/test.json')
       expect(actual).to.deep.equal(obj)
       fs.removeSync('test/output/test.json')
@@ -53,7 +51,7 @@ describe('tools', () => {
     })
     it("json doesn't exist", (done) => {
       const obj = { foo: 'bar' }
-      expect(spy.calledWith(tools.outFile('test/output/test.json', false, obj))).to.match(/[a-z\/,\-\. ]*/mig)
+      expect(spy.calledWith(tools.outFile('test/output/test.json', false, obj))).to.match(/[a-z/,-. ]*/mig)
       fs.removeSync('test/output/test.json')
       done()
     })
@@ -112,7 +110,7 @@ describe('tools', () => {
       const proceed = checkStamp[1]
       const reset = checkStamp[2]
       expect(c.wolf.date.remain).to.match(/\d+/mig)
-      expect(c.wolf.date.stamp).to.match(/201\d[\-\d]*T[0-9:\.\-Z]*/mig)
+      expect(c.wolf.date.stamp).to.match(/201\d[-\d]*T[0-9:.-Z]*/mig)
       expect(proceed).to.equals(true)
       expect(reset).to.equals(false)
       done()
@@ -146,8 +144,8 @@ describe('tools', () => {
       const mreset = checkStamp[4]
       expect(c.wunder.date.dremain).to.equals(499)
       expect(c.wunder.date.mremain).to.equals(9)
-      expect(c.wunder.date.dstamp).to.match(/201\d[\-\d]*T[0-9:\.\-Z]*/mig)
-      expect(c.wunder.date.mstamp).to.match(/201\d[\-\d]*T[0-9:\.\-Z]*/mig)
+      expect(c.wunder.date.dstamp).to.match(/201\d[-\d]*T[0-9:.\-Z]*/mig)
+      expect(c.wunder.date.mstamp).to.match(/201\d[-\d]*T[0-9:.\-Z]*/mig)
       expect(dproceed).to.equals(true)
       expect(mproceed).to.equals(true)
       expect(dreset).to.equals(true)
@@ -197,22 +195,22 @@ describe('themes', () => {
       const obj = {
         prefix: {
           str: '[',
-          style: 'bold.green',
+          style: 'bold.green'
         },
         text: {
-          style: 'bold.white',
+          style: 'bold.white'
         },
         content: {
-          style: 'white',
+          style: 'white'
         },
         suffix: {
           str: ']',
-          style: 'bold.green',
+          style: 'bold.green'
         },
         connector: {
           str: '→',
-          style: 'bold.cyan',
-        },
+          style: 'bold.cyan'
+        }
       }
       expect(theme).to.deep.equal(obj)
       done()
@@ -284,22 +282,22 @@ describe('config commands', () => {
               filter: '',
               language: 'en',
               page: 1,
-              ppage: 50,
+              ppage: 50
             },
             entry: {
               cachettl: 60,
               common: false,
               language: 'en',
-              synonym: false,
+              synonym: false
             },
             hier: {
               cachettl: 60,
-              language: 'en',
+              language: 'en'
             },
             meta: {
               cachettl: 60,
               language: 'en',
-              taxonomy: true,
+              taxonomy: true
             },
             page: {
               batch: false,
@@ -323,11 +321,11 @@ describe('config commands', () => {
               textpp: 1,
               vetted: 0,
               videopage: 1,
-              videopp: 1,
+              videopp: 1
             },
             sbp: {
               cachettl: 60,
-              pid: 903,
+              pid: 903
             },
             search: {
               cachettl: 60,
@@ -335,15 +333,15 @@ describe('config commands', () => {
               hfilter: 0,
               page: 1,
               string: '',
-              tfilter: 0,
-            },
+              tfilter: 0
+            }
           },
           merge: true,
           theme: 'square',
           usage: true,
           verbose: true,
           wiki: {
-            intro: true,
+            intro: true
           },
           wolf: {
             assu: '',
@@ -352,7 +350,7 @@ describe('config commands', () => {
               interval: 'month',
               limit: 2000,
               remain: 2000,
-              stamp: '',
+              stamp: ''
             },
             expod: '',
             fetch: true,
@@ -371,7 +369,7 @@ describe('config commands', () => {
             stime: 3,
             trans: false,
             unit: '',
-            width: '',
+            width: ''
           },
           wunder: {
             bestf: true,
@@ -383,14 +381,14 @@ describe('config commands', () => {
               dremain: 500,
               mremain: 10,
               dstamp: '',
-              mstamp: '',
+              mstamp: ''
             },
             features: 'conditions,forecast',
             lang: 'EN',
             limit: 5,
             metric: false,
-            pws: true,
-          },
+            pws: true
+          }
         }
         config.wolf.date.stamp = ''
         config.wolf.date.remain = 2000
@@ -398,7 +396,7 @@ describe('config commands', () => {
         config.wunder.date.dremain = 500
         config.wunder.date.mstamp = ''
         config.wunder.date.mremain = 10
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Created [a-z\/\.]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Created [a-z/.]*/mig)
         expect(config).to.deep.equal(obj)
         done(err)
       })
@@ -406,7 +404,7 @@ describe('config commands', () => {
     it('force overwrites existing and prints config', (done) => {
       child.exec(`node ${process.cwd()}/bin/iloa.js config init -f -v > test/output/config-init.out`, (err) => {
         const stdout = fs.readFileSync('test/output/config-init.out', 'utf8')
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \/\.\[\]:\-\s|]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 /.[]:-\s|]*/mig)
         done(err)
       })
     })
@@ -476,7 +474,7 @@ describe('root commands', () => {
     it('outputs shell completion script', (done) => {
       child.exec(`node ${__dirname}/../bin/iloa.js comp > test/output/comp.out`, (err) => {
         const stdout = fs.readFileSync('test/output/comp.out', 'utf8')
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[#\-a-z0-9\.\s:\/>~_\(\)\{\}\[\]="$@,;]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[#-a-z0-9.\s:/>~_(){}[]="$@,;]*/mig)
         done(err)
       })
     })
@@ -485,7 +483,7 @@ describe('root commands', () => {
     it('shows usage', (done) => {
       child.exec(`node ${__dirname}/../bin/iloa.js --help > test/output/help.out`, (err) => {
         const stdout = fs.readFileSync('test/output/help.out', 'utf8')
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[\\\/_\(\) ,`]*Usage:\s[a-z \/\.<>\[\]]*\s*Commands:\s[a-z \[:\]\s<>,|]*Options:\s*[a-z\-, \[\]\s]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[/_() ,`]*Usage:\s[a-z /.<>[]]*\s*Commands:\s[a-z [:]\s<>,|]*Options:\s*[a-z-, []\s]*/mig)
         done(err)
       })
     })
@@ -494,7 +492,7 @@ describe('root commands', () => {
     it('demonstrates installed themes', (done) => {
       child.exec(`node ${__dirname}/../bin/iloa.js ls > test/output/ls.out`, (err) => {
         const stdout = fs.readFileSync('test/output/ls.out', 'utf8')
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z :|,.<>\-\[\]→]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z :|,.<>-[]→]*/mig)
         done(err)
       })
     })
@@ -530,10 +528,10 @@ describe('root commands', () => {
           relatedText6: 'Software using the MIT license',
           relatedUrl6: 'https://duckduckgo.com/c/Software_using_the_MIT_license',
           relatedText7: 'Free software programmed in C++',
-          relatedUrl7: 'https://duckduckgo.com/c/Free_software_programmed_in_C%2B%2B',
+          relatedUrl7: 'https://duckduckgo.com/c/Free_software_programmed_in_C%2B%2B'
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/ddg.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[\[\]a-z0-9 \(\):\/\.-→,\-+%']*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[[]a-z0-9 ():\/\.-→,-+%']*/mig)
         expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -553,8 +551,8 @@ describe('root commands', () => {
             position: 100,
             subpod0: {
               text: 'Doppler shift',
-              image: '',
-            },
+              image: ''
+            }
           },
           pod1: {
             title: 'Equation',
@@ -562,9 +560,9 @@ describe('root commands', () => {
             subpods: 1,
             position: 200,
             subpod0: {
-              text: "f_o/f_s = c/(c + v_s) |  \nf_o/f_s | frequency reduction factor\nv_s | speed of the source away from the observer\nc | sound speed\n(the ratio between emitted and observed sound frequencies due to relative motion)",
-              image: '',
-            },
+              text: 'f_o/f_s = c/(c + v_s) |  \nf_o/f_s | frequency reduction factor\nv_s | speed of the source away from the observer\nc | sound speed\n(the ratio between emitted and observed sound frequencies due to relative motion)',
+              image: ''
+            }
           },
           pod2: {
             title: 'Input values',
@@ -572,9 +570,9 @@ describe('root commands', () => {
             subpods: 1,
             position: 300,
             subpod0: {
-              text: "speed of the source away from the observer | 10 m/s  (meters per second)\nsound speed | 340.3 m/s  (meters per second)",
-              image: '',
-            },
+              text: 'speed of the source away from the observer | 10 m/s  (meters per second)\nsound speed | 340.3 m/s  (meters per second)',
+              image: ''
+            }
           },
           pod3: {
             title: 'Result',
@@ -583,8 +581,8 @@ describe('root commands', () => {
             position: 400,
             subpod0: {
               text: 'frequency reduction factor | 0.9715',
-              image: '',
-            },
+              image: ''
+            }
           },
           pod4: {
             title: 'Audible frequencies',
@@ -593,39 +591,39 @@ describe('root commands', () => {
             position: 500,
             subpod0: {
               text: 'source: 1  |  observed: 0.9715',
-              image: '',
-            },
+              image: ''
+            }
           },
           assumption0: {
             type: 'Clash',
-            clash: 'Assuming doppler shift is a formula. Use a physical quantity instead.',
+            clash: 'Assuming doppler shift is a formula. Use a physical quantity instead.'
           },
           assumption1: {
             type: 'FormulaSolve',
             'frequency reduction factor': '*FS-_**DopplerShift.DopplerRatio--',
             'speed of the source away from the observer': '*FS-_**DopplerShift.vs--',
-            'sound speed': '*FS-_**DopplerShift.c--',
+            'sound speed': '*FS-_**DopplerShift.c--'
           },
           assumption2: {
             type: 'FormulaSelect',
-            formulaSelect: 'Assuming Doppler shift. Use relativistic Doppler shift instead.',
+            formulaSelect: 'Assuming Doppler shift. Use relativistic Doppler shift instead.'
           },
           assumption3: {
             type: 'FormulaVariable',
-            'speed of the source away from the observer': '10 m/s',
+            'speed of the source away from the observer': '10 m/s'
           },
           assumption4: {
             type: 'FormulaVariable',
-            'sound speed': '340.3 m/s',
+            'sound speed': '340.3 m/s'
           },
           assumption5: {
             type: 'FormulaVariableOption',
-            formulaVariableOption: 'Assuming frequency reduction factor. Use frequency observed and frequency at the source instead.',
+            formulaVariableOption: 'Assuming frequency reduction factor. Use frequency observed and frequency at the source instead.'
           },
           assumption6: {
             type: 'FormulaVariableInclude',
-            formulaVariableInclude: 'speed of the observer',
-          },
+            formulaVariableInclude: 'speed of the observer'
+          }
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/wa.json`)
         json.pod0.subpod0.image = ''
@@ -633,7 +631,7 @@ describe('root commands', () => {
         json.pod2.subpod0.image = ''
         json.pod3.subpod0.image = ''
         json.pod4.subpod0.image = ''
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[\[\]a-z0-9 \(\):\/\.-→,\-+%']*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[[]a-z0-9 ():\/\.-→,-+%']*/mig)
         expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -643,14 +641,14 @@ describe('root commands', () => {
     it('shows output', (done) => {
       child.exec(`node ${process.cwd()}/bin/iloa.js wp -i -o ${process.cwd()}/test/output/wp.json 'George Gurdjieff' > test/output/wp.out`, (err) => {
         const stdout = fs.readFileSync('test/output/wp.out', 'utf8')
-        const obj = {
-          type: 'wiki',
-          source: 'http://www.wikipedia.org/',
-          url: 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&indexpageids&redirects=1&continue=&explaintext=&exintro=&titles=George%20Gurdjieff',
-          summary: `George Ivanovich Gurdjieff (/ˈɡɜːrdʒiˌɛf/; January 13, 1866/1872/1877? – October 29, 1949), also commonly referred to as Georges Ivanovich Gurdjieff and G. I. Gurdjieff, was an influential early 20th-century mystic, philosopher, spiritual teacher, and composer born in what was then an Armenian region of Russia of Armenian and Greek descent. Gurdjieff taught that most humans do not possess a unified mind-body consciousness and thus live their lives in a state of hypnotic \"waking sleep\", but that it is possible to transcend to a higher state of consciousness and achieve full human potential. Gurdjieff described a method attempting to do so, calling the discipline \"The Work\" (connoting \"work on oneself\") or \"the Method\". According to his principles and instructions,\nGurdjieff's method for awakening one's consciousness unites the methods of the fakir, monk or yogi, and thus he referred to it as the \"Fourth Way\".`,
-        }
-        const json = fs.readJsonSync(`${process.cwd()}/test/output/wp.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[\[\]\(\) a-z0-9\/\-,"\.?;'→–ˈɡɜːʒˌɛ]*/mig)
+        // const obj = {
+        //   type: 'wiki',
+        //   source: 'http://www.wikipedia.org/',
+        //   url: 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&indexpageids&redirects=1&continue=&explaintext=&exintro=&titles=George%20Gurdjieff',
+        //   summary: `George Ivanovich Gurdjieff (/ˈɡɜːrdʒiˌɛf/; January 13, 1866/1872/1877? – October 29, 1949), also commonly referred to as Georges Ivanovich Gurdjieff and G. I. Gurdjieff, was an influential early 20th-century mystic, philosopher, spiritual teacher, and composer born in what was then an Armenian region of Russia of Armenian and Greek descent. Gurdjieff taught that most humans do not possess a unified mind-body consciousness and thus live their lives in a state of hypnotic \"waking sleep\", but that it is possible to transcend to a higher state of consciousness and achieve full human potential. Gurdjieff described a method attempting to do so, calling the discipline \"The Work\" (connoting \"work on oneself\") or \"the Method\". According to his principles and instructions,\nGurdjieff's method for awakening one's consciousness unites the methods of the fakir, monk or yogi, and thus he referred to it as the \"Fourth Way\".`
+        // }
+        // const json = fs.readJsonSync(`${process.cwd()}/test/output/wp.json`)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[[]() a-z0-9\/-,"\.?;'→–ˈɡɜːʒˌɛ]*/mig)
         // expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -660,7 +658,7 @@ describe('root commands', () => {
     it('shows output', (done) => {
       child.exec(`node ${process.cwd()}/bin/iloa.js wu -e alerts,almanac,astronomy,conditions,forecast,geolookup,hourly,tide,webcams -l 1 33706 > test/output/wu.out`, (err) => {
         const stdout = fs.readFileSync('test/output/wu.out', 'utf8')
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \[\]→\.\/*:%\(\),\-_?=]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 []→\.\/*:%\(\),-_?=]*/mig)
         done(err)
       })
     })
@@ -715,11 +713,11 @@ describe('encyclopedia-of-life', () => {
             item_name0: 'Salix alba L.',
             item_title0: 'Salix alba',
             object_type0: 'TaxonConcept',
-            object_id0: 1264966,
+            object_id0: 1264966
           }
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-collect.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[\[\]a-z0-9 →\.\-,\(\):\/_]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[[]a-z0-9 →\.-,\(\):\/_]*/mig)
         expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -730,124 +728,124 @@ describe('encyclopedia-of-life', () => {
       child.exec(`node ${process.cwd()}/bin/iloa.js eol entry -o ${process.cwd()}/test/output/eol-entry.json 61387754 > test/output/eol-entry.out`, (err) => {
         const stdout = fs.readFileSync('test/output/eol-entry.out', 'utf8')
         const obj = {
-          "type": "entry",
-          "src": "http://eol.org/",
-          "sourceIdentifier": "507182",
-          "taxonID": 61387754,
-          "parentNameUsageID": 61387718,
-          "scientificName": "Sporobolus compositus (Poir.) Merr.",
-          "taxonRank": "Species",
-          "source": "http://eol.org/pages/46698411/hierarchy_entries/61387754/overview",
-          "nameAccordingTo": [
-              "Integrated Taxonomic Information System (ITIS)"
+          'type': 'entry',
+          'src': 'http://eol.org/',
+          'sourceIdentifier': '507182',
+          'taxonID': 61387754,
+          'parentNameUsageID': 61387718,
+          'scientificName': 'Sporobolus compositus (Poir.) Merr.',
+          'taxonRank': 'Species',
+          'source': 'http://eol.org/pages/46698411/hierarchy_entries/61387754/overview',
+          'nameAccordingTo': [
+            'Integrated Taxonomic Information System (ITIS)'
           ],
-          "vernacular": {},
-          "synonyms": {},
-          "ancestors": {
-              "sourceIdentifier0": "202422",
-              "taxonID0": 46150613,
-              "parentNameUsageID0": 0,
-              "taxonConceptID0": 281,
-              "scientificName0": "Plantae",
-              "taxonRank0": "kingdom",
-              "source0": "http://eol.org/pages/281/hierarchy_entries/46150613/overview",
-              "sourceIdentifier1": "954898",
-              "taxonID1": 61348076,
-              "parentNameUsageID1": 46150613,
-              "taxonConceptID1": 8654492,
-              "scientificName1": "Viridiplantae",
-              "taxonRank1": "subkingdom",
-              "source1": "http://eol.org/pages/8654492/hierarchy_entries/61348076/overview",
-              "sourceIdentifier2": "846494",
-              "taxonID2": 61350312,
-              "parentNameUsageID2": 61348076,
-              "taxonConceptID2": 11823577,
-              "scientificName2": "Streptophyta",
-              "taxonRank2": "infrakingdom",
-              "source2": "http://eol.org/pages/11823577/hierarchy_entries/61350312/overview",
-              "sourceIdentifier3": "954900",
-              "taxonID3": 61352360,
-              "parentNameUsageID3": 61350312,
-              "taxonConceptID3": 2913521,
-              "scientificName3": "Embryophyta",
-              "taxonRank3": "superdivision",
-              "source3": "http://eol.org/pages/2913521/hierarchy_entries/61352360/overview",
-              "sourceIdentifier4": "846496",
-              "taxonID4": 61355912,
-              "parentNameUsageID4": 61352360,
-              "taxonConceptID4": 4077,
-              "scientificName4": "Tracheophyta",
-              "taxonRank4": "phylum",
-              "source4": "http://eol.org/pages/4077/hierarchy_entries/61355912/overview",
-              "sourceIdentifier5": "846504",
-              "taxonID5": 61355913,
-              "parentNameUsageID5": 61355912,
-              "taxonConceptID5": 39715199,
-              "scientificName5": "Spermatophytina",
-              "taxonRank5": "subphylum",
-              "source5": "http://eol.org/pages/39715199/hierarchy_entries/61355913/overview",
-              "sourceIdentifier6": "18063",
-              "taxonID6": 61356312,
-              "parentNameUsageID6": 61355913,
-              "taxonConceptID6": 283,
-              "scientificName6": "Magnoliopsida",
-              "taxonRank6": "class",
-              "source6": "http://eol.org/pages/283/hierarchy_entries/61356312/overview",
-              "sourceIdentifier7": "846542",
-              "taxonID7": 61380387,
-              "parentNameUsageID7": 61356312,
-              "taxonConceptID7": 28846734,
-              "scientificName7": "Lilianae",
-              "taxonRank7": "superorder",
-              "source7": "http://eol.org/pages/28846734/hierarchy_entries/61380387/overview",
-              "sourceIdentifier8": "846620",
-              "taxonID8": 61381764,
-              "parentNameUsageID8": 61380387,
-              "taxonConceptID8": 4075,
-              "scientificName8": "Poales",
-              "taxonRank8": "order",
-              "source8": "http://eol.org/pages/4075/hierarchy_entries/61381764/overview",
-              "sourceIdentifier9": "40351",
-              "taxonID9": 61383384,
-              "parentNameUsageID9": 61381764,
-              "taxonConceptID9": 8223,
-              "scientificName9": "Poaceae",
-              "taxonRank9": "family",
-              "source9": "http://eol.org/pages/8223/hierarchy_entries/61383384/overview",
-              "sourceIdentifier10": "42115",
-              "taxonID10": 61387718,
-              "parentNameUsageID10": 61383384,
-              "taxonConceptID10": 108217,
-              "scientificName10": "Sporobolus R. Br.",
-              "taxonRank10": "genus",
-              "source10": "http://eol.org/pages/108217/hierarchy_entries/61387718/overview"
+          'vernacular': {},
+          'synonyms': {},
+          'ancestors': {
+            'sourceIdentifier0': '202422',
+            'taxonID0': 46150613,
+            'parentNameUsageID0': 0,
+            'taxonConceptID0': 281,
+            'scientificName0': 'Plantae',
+            'taxonRank0': 'kingdom',
+            'source0': 'http://eol.org/pages/281/hierarchy_entries/46150613/overview',
+            'sourceIdentifier1': '954898',
+            'taxonID1': 61348076,
+            'parentNameUsageID1': 46150613,
+            'taxonConceptID1': 8654492,
+            'scientificName1': 'Viridiplantae',
+            'taxonRank1': 'subkingdom',
+            'source1': 'http://eol.org/pages/8654492/hierarchy_entries/61348076/overview',
+            'sourceIdentifier2': '846494',
+            'taxonID2': 61350312,
+            'parentNameUsageID2': 61348076,
+            'taxonConceptID2': 11823577,
+            'scientificName2': 'Streptophyta',
+            'taxonRank2': 'infrakingdom',
+            'source2': 'http://eol.org/pages/11823577/hierarchy_entries/61350312/overview',
+            'sourceIdentifier3': '954900',
+            'taxonID3': 61352360,
+            'parentNameUsageID3': 61350312,
+            'taxonConceptID3': 2913521,
+            'scientificName3': 'Embryophyta',
+            'taxonRank3': 'superdivision',
+            'source3': 'http://eol.org/pages/2913521/hierarchy_entries/61352360/overview',
+            'sourceIdentifier4': '846496',
+            'taxonID4': 61355912,
+            'parentNameUsageID4': 61352360,
+            'taxonConceptID4': 4077,
+            'scientificName4': 'Tracheophyta',
+            'taxonRank4': 'phylum',
+            'source4': 'http://eol.org/pages/4077/hierarchy_entries/61355912/overview',
+            'sourceIdentifier5': '846504',
+            'taxonID5': 61355913,
+            'parentNameUsageID5': 61355912,
+            'taxonConceptID5': 39715199,
+            'scientificName5': 'Spermatophytina',
+            'taxonRank5': 'subphylum',
+            'source5': 'http://eol.org/pages/39715199/hierarchy_entries/61355913/overview',
+            'sourceIdentifier6': '18063',
+            'taxonID6': 61356312,
+            'parentNameUsageID6': 61355913,
+            'taxonConceptID6': 283,
+            'scientificName6': 'Magnoliopsida',
+            'taxonRank6': 'class',
+            'source6': 'http://eol.org/pages/283/hierarchy_entries/61356312/overview',
+            'sourceIdentifier7': '846542',
+            'taxonID7': 61380387,
+            'parentNameUsageID7': 61356312,
+            'taxonConceptID7': 28846734,
+            'scientificName7': 'Lilianae',
+            'taxonRank7': 'superorder',
+            'source7': 'http://eol.org/pages/28846734/hierarchy_entries/61380387/overview',
+            'sourceIdentifier8': '846620',
+            'taxonID8': 61381764,
+            'parentNameUsageID8': 61380387,
+            'taxonConceptID8': 4075,
+            'scientificName8': 'Poales',
+            'taxonRank8': 'order',
+            'source8': 'http://eol.org/pages/4075/hierarchy_entries/61381764/overview',
+            'sourceIdentifier9': '40351',
+            'taxonID9': 61383384,
+            'parentNameUsageID9': 61381764,
+            'taxonConceptID9': 8223,
+            'scientificName9': 'Poaceae',
+            'taxonRank9': 'family',
+            'source9': 'http://eol.org/pages/8223/hierarchy_entries/61383384/overview',
+            'sourceIdentifier10': '42115',
+            'taxonID10': 61387718,
+            'parentNameUsageID10': 61383384,
+            'taxonConceptID10': 108217,
+            'scientificName10': 'Sporobolus R. Br.',
+            'taxonRank10': 'genus',
+            'source10': 'http://eol.org/pages/108217/hierarchy_entries/61387718/overview'
           },
-          "children": {
-              "sourceIdentifier0": "531124",
-              "taxonID0": 61387755,
-              "parentNameUsageID0": 61387754,
-              "taxonConceptID0": 1294248,
-              "scientificName0": "Sporobolus compositus var. compositus (Poir.) Merr.",
-              "taxonRank0": "variety",
-              "source0": "http://eol.org/pages/1294248/hierarchy_entries/61387755/overview",
-              "sourceIdentifier1": "531125",
-              "taxonID1": 61387756,
-              "parentNameUsageID1": 61387754,
-              "taxonConceptID1": 44043852,
-              "scientificName1": "Sporobolus compositus var. drummondii (Trin.) Kartesz & Gandhi",
-              "taxonRank1": "variety",
-              "source1": "http://eol.org/pages/44043852/hierarchy_entries/61387756/overview",
-              "sourceIdentifier2": "531126",
-              "taxonID2": 61387757,
-              "parentNameUsageID2": 61387754,
-              "taxonConceptID2": 1294250,
-              "scientificName2": "Sporobolus compositus var. macer (Trin.) Kartesz & Gandhi",
-              "taxonRank2": "variety",
-              "source2": "http://eol.org/pages/1294250/hierarchy_entries/61387757/overview"
-          },
+          'children': {
+            'sourceIdentifier0': '531124',
+            'taxonID0': 61387755,
+            'parentNameUsageID0': 61387754,
+            'taxonConceptID0': 1294248,
+            'scientificName0': 'Sporobolus compositus var. compositus (Poir.) Merr.',
+            'taxonRank0': 'variety',
+            'source0': 'http://eol.org/pages/1294248/hierarchy_entries/61387755/overview',
+            'sourceIdentifier1': '531125',
+            'taxonID1': 61387756,
+            'parentNameUsageID1': 61387754,
+            'taxonConceptID1': 44043852,
+            'scientificName1': 'Sporobolus compositus var. drummondii (Trin.) Kartesz & Gandhi',
+            'taxonRank1': 'variety',
+            'source1': 'http://eol.org/pages/44043852/hierarchy_entries/61387756/overview',
+            'sourceIdentifier2': '531126',
+            'taxonID2': 61387757,
+            'parentNameUsageID2': 61387754,
+            'taxonConceptID2': 1294250,
+            'scientificName2': 'Sporobolus compositus var. macer (Trin.) Kartesz & Gandhi',
+            'taxonRank2': 'variety',
+            'source2': 'http://eol.org/pages/1294250/hierarchy_entries/61387757/overview'
+          }
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-entry.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[\[\]a-z0-9 →\.\-,\(\):\/_]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[[]a-z0-9 →\.-,\(\):\/_]*/mig)
         expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -864,50 +862,50 @@ describe('encyclopedia-of-life', () => {
           contributor: 'Catalogue of Life',
           dateSubmitted: '2013-03-30 19:53:45',
           roots: {
-              parentNameUsageID0: 0,
-              scientificName0: 'Animalia',
-              taxonID0: 51521761,
-              sourceIdentifier0: '13021388',
-              taxonRank0: 'kingdom',
-              parentNameUsageID1: 0,
-              scientificName1: 'Fungi',
-              taxonID1: 52744048,
-              sourceIdentifier1: '13021511',
-              taxonRank1: 'kingdom',
-              parentNameUsageID2: 0,
-              scientificName2: 'Plantae',
-              taxonID2: 52800975,
-              sourceIdentifier2: '13021533',
-              taxonRank2: 'kingdom',
-              parentNameUsageID3: 0,
-              scientificName3: 'Bacteria',
-              taxonID3: 53103686,
-              sourceIdentifier3: '13021538',
-              taxonRank3: 'kingdom',
-              parentNameUsageID4: 0,
-              scientificName4: 'Chromista',
-              taxonID4: 53112249,
-              sourceIdentifier4: '13021719',
-              taxonRank4: 'kingdom',
-              parentNameUsageID5: 0,
-              scientificName5: 'Viruses',
-              taxonID5: 53114002,
-              sourceIdentifier5: '13023715',
-              taxonRank5: 'kingdom',
-              parentNameUsageID6: 0,
-              scientificName6: 'Protozoa',
-              taxonID6: 53116999,
-              sourceIdentifier6: '13023992',
-              taxonRank6: 'kingdom',
-              parentNameUsageID7: 0,
-              scientificName7: 'Archaea',
-              taxonID7: 53131235,
-              sourceIdentifier7: '13025806',
-              taxonRank7: 'kingdom',
-          },
+            parentNameUsageID0: 0,
+            scientificName0: 'Animalia',
+            taxonID0: 51521761,
+            sourceIdentifier0: '13021388',
+            taxonRank0: 'kingdom',
+            parentNameUsageID1: 0,
+            scientificName1: 'Fungi',
+            taxonID1: 52744048,
+            sourceIdentifier1: '13021511',
+            taxonRank1: 'kingdom',
+            parentNameUsageID2: 0,
+            scientificName2: 'Plantae',
+            taxonID2: 52800975,
+            sourceIdentifier2: '13021533',
+            taxonRank2: 'kingdom',
+            parentNameUsageID3: 0,
+            scientificName3: 'Bacteria',
+            taxonID3: 53103686,
+            sourceIdentifier3: '13021538',
+            taxonRank3: 'kingdom',
+            parentNameUsageID4: 0,
+            scientificName4: 'Chromista',
+            taxonID4: 53112249,
+            sourceIdentifier4: '13021719',
+            taxonRank4: 'kingdom',
+            parentNameUsageID5: 0,
+            scientificName5: 'Viruses',
+            taxonID5: 53114002,
+            sourceIdentifier5: '13023715',
+            taxonRank5: 'kingdom',
+            parentNameUsageID6: 0,
+            scientificName6: 'Protozoa',
+            taxonID6: 53116999,
+            sourceIdentifier6: '13023992',
+            taxonRank6: 'kingdom',
+            parentNameUsageID7: 0,
+            scientificName7: 'Archaea',
+            taxonID7: 53131235,
+            sourceIdentifier7: '13025806',
+            taxonRank7: 'kingdom'
+          }
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-hier.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \[\]→&:\-\/\.]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 []→&:-\/\.]*/mig)
         expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -917,7 +915,7 @@ describe('encyclopedia-of-life', () => {
     it('shows output', (done) => {
       child.exec(`node ${process.cwd()}/bin/iloa.js eol info > test/output/eol-info.out`, (err) => {
         const stdout = fs.readFileSync('test/output/eol-info.out', 'utf8')
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9\[\] \(\):&→\-]*/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9[] \(\):&→-]*/mig)
         done(err)
       })
     })
@@ -926,73 +924,73 @@ describe('encyclopedia-of-life', () => {
     it('shows output', (done) => {
       child.exec(`node ${process.cwd()}/bin/iloa.js eol meta -o ${process.cwd()}/test/output/eol-meta.json 30073527 > test/output/eol-meta.out`, (err) => {
         const stdout = fs.readFileSync('test/output/eol-meta.out', 'utf8')
-        const obj = {
-          type: 'metadata',
-          source: 'http://eol.org',
-          metadata: {
-            id: 1045608,
-            scientificName: 'Apis mellifera Linnaeus 1758',
-            richness_score: 400,
-          },
-          dataObjects: {
-            "id0": 52191458,
-            "scientificName0": "Apis mellifera Linnaeus 1758",
-            "accordingTo0": "Species 2000 & ITIS Catalogue of Life: April 2013",
-            "canonical0": "Apis mellifera",
-            "sourceIdentifier0": "6845885",
-            "taxonRank0": "Species",
-            "id1": 59534038,
-            "scientificName1": "Apis (Apis) mellifera Linnaeus 1758",
-            "accordingTo1": "Paleobiology Database",
-            "canonical1": "Apis mellifera",
-            "sourceIdentifier1": "235173",
-            "taxonRank1": "Species",
-            "id2": 49121298,
-            "scientificName2": "Apis (Apis) mellifera Linnaeus 1758",
-            "accordingTo2": "Paleobiology Database",
-            "canonical2": "Apis mellifera",
-            "sourceIdentifier2": "urn:paleodb:tn235173",
-            "taxonRank2": "Species",
-            "id3": 49379619,
-            "scientificName3": "Apis (Apis) mellifera Linnaeus 1758",
-            "accordingTo3": "Paleobiology Database",
-            "canonical3": "Apis mellifera",
-            "sourceIdentifier3": "urn:paleodb:tn235173",
-            "taxonRank3": "Species",
-            "id4": 55789671,
-            "scientificName4": "Apis mellifera Linnaeus 1758",
-            "accordingTo4": "Integrated Taxonomic Information System (ITIS)",
-            "canonical4": "Apis mellifera",
-            "sourceIdentifier4": "154396",
-            "taxonRank4": "Species",
-            "id5": 59631096,
-            "scientificName5": "Apis mellifera Linnaeus 1758",
-            "accordingTo5": "Paleobiology Database",
-            "canonical5": "Apis mellifera",
-            "sourceIdentifier5": "283625",
-            "taxonRank5": "Species",
-            "id6": 50293009,
-            "scientificName6": "Apis mellifera",
-            "accordingTo6": "Taxonomic Hierarchy of COL-China 2012",
-            "canonical6": "Apis mellifera",
-            "sourceIdentifier6": "44bde209-1a83-48bc-bacf-877b39463c35",
-            "taxonRank6": "Species",
-            "id7": 51183343,
-            "scientificName7": "Apis mellifera",
-            "accordingTo7": "NCBI Taxonomy",
-            "canonical7": "Apis mellifera",
-            "sourceIdentifier7": "7460",
-            "taxonRank7": "Species",
-            "id8": 46497385,
-            "scientificName8": "Apis mellifera Linnaeus 1758",
-            "accordingTo8": "Integrated Taxonomic Information System (ITIS)",
-            "canonical8": "Apis mellifera",
-            "sourceIdentifier8": "154396",
-            "taxonRank8": "Species",
-          },
-        }
-        const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-meta.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9\[\]\(\) &:→\-\/\._@;=<>,"]+/mig)
+        // const obj = {
+        //   type: 'metadata',
+        //   source: 'http://eol.org',
+        //   metadata: {
+        //     id: 1045608,
+        //     scientificName: 'Apis mellifera Linnaeus 1758',
+        //     richness_score: 400
+        //   },
+        //   dataObjects: {
+        //     'id0': 52191458,
+        //     'scientificName0': 'Apis mellifera Linnaeus 1758',
+        //     'accordingTo0': 'Species 2000 & ITIS Catalogue of Life: April 2013',
+        //     'canonical0': 'Apis mellifera',
+        //     'sourceIdentifier0': '6845885',
+        //     'taxonRank0': 'Species',
+        //     'id1': 59534038,
+        //     'scientificName1': 'Apis (Apis) mellifera Linnaeus 1758',
+        //     'accordingTo1': 'Paleobiology Database',
+        //     'canonical1': 'Apis mellifera',
+        //     'sourceIdentifier1': '235173',
+        //     'taxonRank1': 'Species',
+        //     'id2': 49121298,
+        //     'scientificName2': 'Apis (Apis) mellifera Linnaeus 1758',
+        //     'accordingTo2': 'Paleobiology Database',
+        //     'canonical2': 'Apis mellifera',
+        //     'sourceIdentifier2': 'urn:paleodb:tn235173',
+        //     'taxonRank2': 'Species',
+        //     'id3': 49379619,
+        //     'scientificName3': 'Apis (Apis) mellifera Linnaeus 1758',
+        //     'accordingTo3': 'Paleobiology Database',
+        //     'canonical3': 'Apis mellifera',
+        //     'sourceIdentifier3': 'urn:paleodb:tn235173',
+        //     'taxonRank3': 'Species',
+        //     'id4': 55789671,
+        //     'scientificName4': 'Apis mellifera Linnaeus 1758',
+        //     'accordingTo4': 'Integrated Taxonomic Information System (ITIS)',
+        //     'canonical4': 'Apis mellifera',
+        //     'sourceIdentifier4': '154396',
+        //     'taxonRank4': 'Species',
+        //     'id5': 59631096,
+        //     'scientificName5': 'Apis mellifera Linnaeus 1758',
+        //     'accordingTo5': 'Paleobiology Database',
+        //     'canonical5': 'Apis mellifera',
+        //     'sourceIdentifier5': '283625',
+        //     'taxonRank5': 'Species',
+        //     'id6': 50293009,
+        //     'scientificName6': 'Apis mellifera',
+        //     'accordingTo6': 'Taxonomic Hierarchy of COL-China 2012',
+        //     'canonical6': 'Apis mellifera',
+        //     'sourceIdentifier6': '44bde209-1a83-48bc-bacf-877b39463c35',
+        //     'taxonRank6': 'Species',
+        //     'id7': 51183343,
+        //     'scientificName7': 'Apis mellifera',
+        //     'accordingTo7': 'NCBI Taxonomy',
+        //     'canonical7': 'Apis mellifera',
+        //     'sourceIdentifier7': '7460',
+        //     'taxonRank7': 'Species',
+        //     'id8': 46497385,
+        //     'scientificName8': 'Apis mellifera Linnaeus 1758',
+        //     'accordingTo8': 'Integrated Taxonomic Information System (ITIS)',
+        //     'canonical8': 'Apis mellifera',
+        //     'sourceIdentifier8': '154396',
+        //     'taxonRank8': 'Species'
+        //   }
+        // }
+        // const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-meta.json`)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9[]() &:→-\/\._@;=<>,"]+/mig)
         // expect(JSON.stringify(json, null, 2)).to.equal(JSON.stringify(obj, null, 2))
         // expect(json).to.deep.equal(obj)
         done(err)
@@ -1004,93 +1002,93 @@ describe('encyclopedia-of-life', () => {
       child.exec(`node ${process.cwd()}/bin/iloa.js eol page 1045608 -o ${process.cwd()}/test/output/eol-page.json > test/output/eol-page.out`, (err) => {
         const stdout = fs.readFileSync('test/output/eol-page.out', 'utf8')
         const obj = {
-          "type": "pages",
-          "source": "http://eol.org",
-          "id": 1045608,
-          "scientificName": "Apis mellifera Linnaeus 1758",
-          "taxonConcepts": {
-              "id0": 52191458,
-              "scientificName0": "Apis mellifera Linnaeus 1758",
-              "accordingTo0": "Species 2000 & ITIS Catalogue of Life: April 2013",
-              "canonical0": "Apis mellifera",
-              "sourceIdentifier0": "6845885",
-              "taxonRank0": "Species",
-              "id1": 59534038,
-              "scientificName1": "Apis (Apis) mellifera Linnaeus 1758",
-              "accordingTo1": "Paleobiology Database",
-              "canonical1": "Apis mellifera",
-              "sourceIdentifier1": "235173",
-              "taxonRank1": "Species",
-              "id2": 49121298,
-              "scientificName2": "Apis (Apis) mellifera Linnaeus 1758",
-              "accordingTo2": "Paleobiology Database",
-              "canonical2": "Apis mellifera",
-              "sourceIdentifier2": "urn:paleodb:tn235173",
-              "taxonRank2": "Species",
-              "id3": 49379619,
-              "scientificName3": "Apis (Apis) mellifera Linnaeus 1758",
-              "accordingTo3": "Paleobiology Database",
-              "canonical3": "Apis mellifera",
-              "sourceIdentifier3": "urn:paleodb:tn235173",
-              "taxonRank3": "Species",
-              "id4": 55789671,
-              "scientificName4": "Apis mellifera Linnaeus 1758",
-              "accordingTo4": "Integrated Taxonomic Information System (ITIS)",
-              "canonical4": "Apis mellifera",
-              "sourceIdentifier4": "154396",
-              "taxonRank4": "Species",
-              "id5": 59631096,
-              "scientificName5": "Apis mellifera Linnaeus 1758",
-              "accordingTo5": "Paleobiology Database",
-              "canonical5": "Apis mellifera",
-              "sourceIdentifier5": "283625",
-              "taxonRank5": "Species",
-              "id6": 50293009,
-              "scientificName6": "Apis mellifera",
-              "accordingTo6": "Taxonomic Hierarchy of COL-China 2012",
-              "canonical6": "Apis mellifera",
-              "sourceIdentifier6": "44bde209-1a83-48bc-bacf-877b39463c35",
-              "taxonRank6": "Species",
-              "id7": 51183343,
-              "scientificName7": "Apis mellifera",
-              "accordingTo7": "NCBI Taxonomy",
-              "canonical7": "Apis mellifera",
-              "sourceIdentifier7": "7460",
-              "taxonRank7": "Species",
-              "id8": 46497385,
-              "scientificName8": "Apis mellifera Linnaeus 1758",
-              "accordingTo8": "Integrated Taxonomic Information System (ITIS)",
-              "canonical8": "Apis mellifera",
-              "sourceIdentifier8": "154396",
-              "taxonRank8": "Species"
+          'type': 'pages',
+          'source': 'http://eol.org',
+          'id': 1045608,
+          'scientificName': 'Apis mellifera Linnaeus 1758',
+          'taxonConcepts': {
+            'id0': 52191458,
+            'scientificName0': 'Apis mellifera Linnaeus 1758',
+            'accordingTo0': 'Species 2000 & ITIS Catalogue of Life: April 2013',
+            'canonical0': 'Apis mellifera',
+            'sourceIdentifier0': '6845885',
+            'taxonRank0': 'Species',
+            'id1': 59534038,
+            'scientificName1': 'Apis (Apis) mellifera Linnaeus 1758',
+            'accordingTo1': 'Paleobiology Database',
+            'canonical1': 'Apis mellifera',
+            'sourceIdentifier1': '235173',
+            'taxonRank1': 'Species',
+            'id2': 49121298,
+            'scientificName2': 'Apis (Apis) mellifera Linnaeus 1758',
+            'accordingTo2': 'Paleobiology Database',
+            'canonical2': 'Apis mellifera',
+            'sourceIdentifier2': 'urn:paleodb:tn235173',
+            'taxonRank2': 'Species',
+            'id3': 49379619,
+            'scientificName3': 'Apis (Apis) mellifera Linnaeus 1758',
+            'accordingTo3': 'Paleobiology Database',
+            'canonical3': 'Apis mellifera',
+            'sourceIdentifier3': 'urn:paleodb:tn235173',
+            'taxonRank3': 'Species',
+            'id4': 55789671,
+            'scientificName4': 'Apis mellifera Linnaeus 1758',
+            'accordingTo4': 'Integrated Taxonomic Information System (ITIS)',
+            'canonical4': 'Apis mellifera',
+            'sourceIdentifier4': '154396',
+            'taxonRank4': 'Species',
+            'id5': 59631096,
+            'scientificName5': 'Apis mellifera Linnaeus 1758',
+            'accordingTo5': 'Paleobiology Database',
+            'canonical5': 'Apis mellifera',
+            'sourceIdentifier5': '283625',
+            'taxonRank5': 'Species',
+            'id6': 50293009,
+            'scientificName6': 'Apis mellifera',
+            'accordingTo6': 'Taxonomic Hierarchy of COL-China 2012',
+            'canonical6': 'Apis mellifera',
+            'sourceIdentifier6': '44bde209-1a83-48bc-bacf-877b39463c35',
+            'taxonRank6': 'Species',
+            'id7': 51183343,
+            'scientificName7': 'Apis mellifera',
+            'accordingTo7': 'NCBI Taxonomy',
+            'canonical7': 'Apis mellifera',
+            'sourceIdentifier7': '7460',
+            'taxonRank7': 'Species',
+            'id8': 46497385,
+            'scientificName8': 'Apis mellifera Linnaeus 1758',
+            'accordingTo8': 'Integrated Taxonomic Information System (ITIS)',
+            'canonical8': 'Apis mellifera',
+            'sourceIdentifier8': '154396',
+            'taxonRank8': 'Species'
           },
-          "dataObjects": {
-              "id0": "715fac20e20b012e4c4f1e6699c0ad5e",
-              "dataType0": "http://purl.org/dc/dcmitype/Text",
-              "vettedStatus0": "Trusted",
-              "dataRating0": 4.5,
-              "subject0": "http://rs.tdwg.org/ontology/voc/SPMInfoItems#TaxonBiology",
-              "id1": "d7c57c6dd644a74556b202edd0f5c9f2",
-              "dataType1": "http://purl.org/dc/dcmitype/StillImage",
-              "vettedStatus1": "Trusted",
-              "dataRating1": 4.5,
-              "id2": "e70cb321fd2933d4db48b6c41271068b",
-              "dataType2": "http://purl.org/dc/dcmitype/MovingImage",
-              "vettedStatus2": "Trusted",
-              "dataRating2": 3.3,
-              "id3": "8787bca9f242f06fada02c341ab577d7",
-              "dataType3": "http://purl.org/dc/dcmitype/Sound",
-              "vettedStatus3": "Trusted",
-              "dataRating3": 2.5,
-              "id4": "cad9dcc72cd30bdb185416e5a35fbc01",
-              "dataType4": "http://purl.org/dc/dcmitype/StillImage",
-              "dataSubtype4": "Map",
-              "vettedStatus4": "Trusted",
-              "dataRating4": 4
-          },
+          'dataObjects': {
+            'id0': '715fac20e20b012e4c4f1e6699c0ad5e',
+            'dataType0': 'http://purl.org/dc/dcmitype/Text',
+            'vettedStatus0': 'Trusted',
+            'dataRating0': 4.5,
+            'subject0': 'http://rs.tdwg.org/ontology/voc/SPMInfoItems#TaxonBiology',
+            'id1': 'd7c57c6dd644a74556b202edd0f5c9f2',
+            'dataType1': 'http://purl.org/dc/dcmitype/StillImage',
+            'vettedStatus1': 'Trusted',
+            'dataRating1': 4.5,
+            'id2': 'e70cb321fd2933d4db48b6c41271068b',
+            'dataType2': 'http://purl.org/dc/dcmitype/MovingImage',
+            'vettedStatus2': 'Trusted',
+            'dataRating2': 3.3,
+            'id3': '8787bca9f242f06fada02c341ab577d7',
+            'dataType3': 'http://purl.org/dc/dcmitype/Sound',
+            'vettedStatus3': 'Trusted',
+            'dataRating3': 2.5,
+            'id4': 'cad9dcc72cd30bdb185416e5a35fbc01',
+            'dataType4': 'http://purl.org/dc/dcmitype/StillImage',
+            'dataSubtype4': 'Map',
+            'vettedStatus4': 'Trusted',
+            'dataRating4': 4
+          }
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-page.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \[\]\/\.:\(\)→\-&#]+/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 []\/\.:\(\)→-&#]+/mig)
         expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -1101,13 +1099,13 @@ describe('encyclopedia-of-life', () => {
       child.exec(`node ${process.cwd()}/bin/iloa.js eol sbp 180542 -p 903 -o ${process.cwd()}/test/output/eol-sbp.json > test/output/eol-sbp.out`, (err) => {
         const stdout = fs.readFileSync('test/output/eol-sbp.out', 'utf8')
         const obj = {
-          "type": "search_by_provider",
-          "source": "http://eol.org",
-          "eol_page_id": 328580,
-          "eol_page_link": "http://eol.org/pages/328580"
+          'type': 'search_by_provider',
+          'source': 'http://eol.org',
+          'eol_page_id': 328580,
+          'eol_page_link': 'http://eol.org/pages/328580'
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-sbp.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9\[\] :\/\.→]+/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9[] :\/\.→]+/mig)
         expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -1118,194 +1116,194 @@ describe('encyclopedia-of-life', () => {
       child.exec(`node ${process.cwd()}/bin/iloa.js eol search Ursus -o ${process.cwd()}/test/output/eol-search.json > test/output/eol-search.out`, (err) => {
         const stdout = fs.readFileSync('test/output/eol-search.out', 'utf8')
         const obj = {
-          "type": "search",
-          "source": "http://eol.org",
-          "search": {
-              "totalResults": 63,
-              "result0": {
-                  "title": "Ursus americanus Pallas, 1780",
-                  "id": 328582,
-                  "link": "http://eol.org/328582?action=overview&controller=taxa",
-                  "content": "Ursus americanus Pallas, 1780; Ursus americanus; Ursus americanus (Pallas, 1780)"
-              },
-              "result1": {
-                  "title": "Ursus arctos Linnaeus, 1758",
-                  "id": 328581,
-                  "link": "http://eol.org/328581?action=overview&controller=taxa",
-                  "content": "Ursus arctos Linnaeus, 1758; Ursus arctos; Ursus arctos (Linnaeus 1758); Ursus arctos piscator (Bergman, 1920); Ursus arctos gobiensis Sokolov & Orlov, 1992"
-              },
-              "result2": {
-                  "title": "Ursus arctos Linnaeus, 1758",
-                  "id": 328581,
-                  "link": "http://eol.org/328581?action=overview&controller=taxa",
-                  "content": "Ursus arctos Linnaeus, 1758; Graubar (Der); Ursus album"
-              },
-              "result3": {
-                  "title": "Meles meles (Linnaeus, 1758)",
-                  "id": 328046,
-                  "link": "http://eol.org/328046?action=overview&controller=taxa",
-                  "content": "Ursus meles; Ursus meles Linnaeus 1758; Meles canescens Blanford, 1875"
-              },
-              "result4": {
-                  "title": "Helarctos malayanus (Raffles, 1821)",
-                  "id": 328074,
-                  "link": "http://eol.org/328074?action=overview&controller=taxa",
-                  "content": "Helarctos malayanus (Raffles, 1821); Helarctos malayanus; Ursus malayanus; Helarctos malayanus Raffles, 1821; Ursus malayanus Raffles, 1821"
-              },
-              "result5": {
-                  "title": "Helarctos malayanus (Raffles, 1821)",
-                  "id": 328074,
-                  "link": "http://eol.org/328074?action=overview&controller=taxa",
-                  "content": "Helarctos malayanus (Raffles, 1821); Ursus malayanus; Ursus malayanus Raffles, 1821; Helarctos euryspilus Horsfield, 1825; Helarctos anmamiticus Heude, 1901; U. malayanus melayanus; U. malayanus wardi"
-              },
-              "result6": {
-                  "title": "Ursus arctos horribilis Ord, 1815",
-                  "id": 1241477,
-                  "link": "http://eol.org/1241477?action=overview&controller=taxa",
-                  "content": "Ursus arctos nelsoni Merriam, 1914; Ursus arctos horribilis Ord, 1815; Ursus arctos horribilis; Ursus arctos subsp. horribilis Ord, 1815; Ursus arctos horribilis (Ord, 1815)"
-              },
-              "result7": {
-                  "title": "Ursus arctos horribilis Ord, 1815",
-                  "id": 1241477,
-                  "link": "http://eol.org/1241477?action=overview&controller=taxa",
-                  "content": "Ursus arctos nelsoni Merriam, 1914"
-              },
-              "result8": {
-                  "title": "Melursus ursinus (Shaw, 1791)",
-                  "id": 328075,
-                  "link": "http://eol.org/328075?action=overview&controller=taxa",
-                  "content": "Melursus ursinus (Shaw, 1791); Melursus ursinus; Ursus ursinus; Melursus ursinus Shaw, 1791"
-              },
-              "result9": {
-                  "title": "Melursus ursinus (Shaw, 1791)",
-                  "id": 328075,
-                  "link": "http://eol.org/328075?action=overview&controller=taxa",
-                  "content": "Melursus ursinus (Shaw, 1791); Ursus ursinus; Bradypus ursinus (Shaw)"
-              },
-              "result10": {
-                  "title": "Ursus thibetanus G. [Baron] Cuvier, 1823",
-                  "id": 328069,
-                  "link": "http://eol.org/328069?action=overview&controller=taxa",
-                  "content": "Ursus thibetanus G. [Baron] Cuvier, 1823; Ursus thibetanus; Ursus thibetanus G. Cuvier, 1823; Ursus thibetanus (G. Cuvier, 1823); Ursus thibetanus Cuvier, 1823"
-              },
-              "result11": {
-                  "title": "Ursus thibetanus G. [Baron] Cuvier, 1823",
-                  "id": 328069,
-                  "link": "http://eol.org/328069?action=overview&controller=taxa",
-                  "content": "Selenarctos thibetanus; Selenarctos tibetanus; Ursus tibetanus; Ursus thibetanus Cuvier, 1823"
-              },
-              "result12": {
-                  "title": "Megathymus ursus Poling 1902",
-                  "id": 182996,
-                  "link": "http://eol.org/182996?action=overview&controller=taxa",
-                  "content": "Megathymus ursus Poling 1902; Megathymus ursus"
-              },
-              "result13": {
-                  "title": "Ursus maritimus Phipps, 1774",
-                  "id": 328580,
-                  "link": "http://eol.org/328580?action=overview&controller=taxa",
-                  "content": "Ursus arctos horribilis x Ursus maritimus"
-              },
-              "result14": {
-                  "title": "Ursus maritimus Phipps, 1774",
-                  "id": 328580,
-                  "link": "http://eol.org/328580?action=overview&controller=taxa",
-                  "content": "Ursus maritimus Phipps, 1774; Ursus maritimus; Ursus maritimus (Shaw, 1791); Ursus maritimus (Phipps 1774)"
-              },
-              "result15": {
-                  "title": "Ursus maritimus Phipps, 1774",
-                  "id": 328580,
-                  "link": "http://eol.org/328580?action=overview&controller=taxa",
-                  "content": "Thalarctos maritimus; Ursus maritimus maritimus Phipps, 1774; Ursus maritimus marinus Pallas, 1776; Thalarctos maritimus (Phipps 1774); Sea Bear"
-              },
-              "result16": {
-                  "title": "Gulo",
-                  "id": 34550,
-                  "link": "http://eol.org/34550?action=overview&controller=taxa",
-                  "content": "Gulo schlosseri Kormos 1914; Gulo gidleyi Hall 1936; Ursus luscus Linnaeus 1758"
-              },
-              "result17": {
-                  "title": "Gulo",
-                  "id": 34550,
-                  "link": "http://eol.org/34550?action=overview&controller=taxa",
-                  "content": "Gulo schlosseri Kormos 1914; Gulo gidleyi Hall 1936; Ursus luscus Linnaeus 1758"
-              },
-              "result18": {
-                  "title": "Arctodus Leidy 1854",
-                  "id": 4441502,
-                  "link": "http://eol.org/4441502?action=overview&controller=taxa",
-                  "content": "Arctotherium californicum Merriam 1911; Arctotherium yukonense Lambe 1911; Dinarctotherium merriami Barbour 1916; Ursus haplodon Cope 1895"
-              },
-              "result19": {
-                  "title": "Parribacus",
-                  "id": 39950,
-                  "link": "http://eol.org/39950?action=overview&controller=taxa",
-                  "content": "Parribacus Dana, 1852; Parribacus; Parribacus ursus; Parribacus papyraceus Rathbun"
-              },
-              "result20": {
-                  "title": "Bombodes ursus WESTWOOD, 1848",
-                  "id": 234563,
-                  "link": "http://eol.org/234563?action=overview&controller=taxa",
-                  "content": "Bombodes ursus WESTWOOD, 1848; Bombodes ursus"
-              },
-              "result21": {
-                  "title": "Ursus",
-                  "id": 14349,
-                  "link": "http://eol.org/14349?action=overview&controller=taxa",
-                  "content": "Ursus Linnaeus, 1758; Ursus; Ursus Arctos Bruinosus; Ursus Arctos Ssp."
-              },
-              "result22": {
-                  "title": "Ursus",
-                  "id": 14349,
-                  "link": "http://eol.org/14349?action=overview&controller=taxa",
-                  "content": "Ursus luteolus Griffith, 1821; Ursus amplidens Leidy 1853; Ursus horribilis Ord 1815; Ursus optimus Schultz 1938; Ursus procerus Miller 1899; Euarctos vitabilis Gidley 1913; Helarctos euryspilus Horsfield 1826; Danis ferox (Desmarest 1817); Thalarctos polaris Gray 1825; Myrmarctos eversmanni Gray 1864; Melanarctos cavifrons Heude 1898; Ursus pruinosus Blyth 1854; Ursus amblyceps Baird 1859; Ursus floridanus Merriam 1896; Ursus californiensis Miller 1900; Ursus carlottae Osgood 1901; Ursus altifrontalis Elliot 1903; Ursus machetes Elliot 1903; Ursus kermodei Hornaday 1905; Ursus marinus Pallas 1776; Ursus polaris Shaw 1792"
-              },
-              "result23": {
-                  "title": "Aniculus ursus",
-                  "id": 4255349,
-                  "link": "http://eol.org/4255349?action=overview&controller=taxa",
-                  "content": "Aniculus ursus; Aniculus ursus (Olivier 1811); Aniculus ursus (Olivier, 1812)"
-              },
-              "result24": {
-                  "title": "Ursus arctos arctos Linnaeus, 1758",
-                  "id": 1226247,
-                  "link": "http://eol.org/1226247?action=overview&controller=taxa",
-                  "content": "Ursus arctos arctos Linnaeus, 1758; Ursus arctos arctos"
-              },
-              "result25": {
-                  "title": "Megathymus ursus deserti Ronald et al., 1972",
-                  "id": 2683229,
-                  "link": "http://eol.org/2683229?action=overview&controller=taxa",
-                  "content": "Megathymus ursus deserti R. Wielgus, J. Wielgus and D. Wielgus, 1972"
-              },
-              "result26": {
-                  "title": "Megathymus ursus deserti Ronald et al., 1972",
-                  "id": 2683229,
-                  "link": "http://eol.org/2683229?action=overview&controller=taxa",
-                  "content": "Megathymus ursus deserti Ronald et al., 1972"
-              },
-              "result27": {
-                  "title": "Megathymus ursus ursus Poling 1902",
-                  "id": 2683230,
-                  "link": "http://eol.org/2683230?action=overview&controller=taxa",
-                  "content": "Megathymus ursus ursus Poling 1902"
-              },
-              "result28": {
-                  "title": "Megathymus ursus violae Stallings and Turner, 1956",
-                  "id": 2683231,
-                  "link": "http://eol.org/2683231?action=overview&controller=taxa",
-                  "content": "Megathymus ursus violae D. Stallings and Turner, 1956"
-              },
-              "result29": {
-                  "title": "Megathymus ursus violae Stallings and Turner, 1956",
-                  "id": 2683231,
-                  "link": "http://eol.org/2683231?action=overview&controller=taxa",
-                  "content": "Megathymus ursus violae Stallings and Turner, 1956"
-              },
-          },
+          'type': 'search',
+          'source': 'http://eol.org',
+          'search': {
+            'totalResults': 63,
+            'result0': {
+              'title': 'Ursus americanus Pallas, 1780',
+              'id': 328582,
+              'link': 'http://eol.org/328582?action=overview&controller=taxa',
+              'content': 'Ursus americanus Pallas, 1780; Ursus americanus; Ursus americanus (Pallas, 1780)'
+            },
+            'result1': {
+              'title': 'Ursus arctos Linnaeus, 1758',
+              'id': 328581,
+              'link': 'http://eol.org/328581?action=overview&controller=taxa',
+              'content': 'Ursus arctos Linnaeus, 1758; Ursus arctos; Ursus arctos (Linnaeus 1758); Ursus arctos piscator (Bergman, 1920); Ursus arctos gobiensis Sokolov & Orlov, 1992'
+            },
+            'result2': {
+              'title': 'Ursus arctos Linnaeus, 1758',
+              'id': 328581,
+              'link': 'http://eol.org/328581?action=overview&controller=taxa',
+              'content': 'Ursus arctos Linnaeus, 1758; Graubar (Der); Ursus album'
+            },
+            'result3': {
+              'title': 'Meles meles (Linnaeus, 1758)',
+              'id': 328046,
+              'link': 'http://eol.org/328046?action=overview&controller=taxa',
+              'content': 'Ursus meles; Ursus meles Linnaeus 1758; Meles canescens Blanford, 1875'
+            },
+            'result4': {
+              'title': 'Helarctos malayanus (Raffles, 1821)',
+              'id': 328074,
+              'link': 'http://eol.org/328074?action=overview&controller=taxa',
+              'content': 'Helarctos malayanus (Raffles, 1821); Helarctos malayanus; Ursus malayanus; Helarctos malayanus Raffles, 1821; Ursus malayanus Raffles, 1821'
+            },
+            'result5': {
+              'title': 'Helarctos malayanus (Raffles, 1821)',
+              'id': 328074,
+              'link': 'http://eol.org/328074?action=overview&controller=taxa',
+              'content': 'Helarctos malayanus (Raffles, 1821); Ursus malayanus; Ursus malayanus Raffles, 1821; Helarctos euryspilus Horsfield, 1825; Helarctos anmamiticus Heude, 1901; U. malayanus melayanus; U. malayanus wardi'
+            },
+            'result6': {
+              'title': 'Ursus arctos horribilis Ord, 1815',
+              'id': 1241477,
+              'link': 'http://eol.org/1241477?action=overview&controller=taxa',
+              'content': 'Ursus arctos nelsoni Merriam, 1914; Ursus arctos horribilis Ord, 1815; Ursus arctos horribilis; Ursus arctos subsp. horribilis Ord, 1815; Ursus arctos horribilis (Ord, 1815)'
+            },
+            'result7': {
+              'title': 'Ursus arctos horribilis Ord, 1815',
+              'id': 1241477,
+              'link': 'http://eol.org/1241477?action=overview&controller=taxa',
+              'content': 'Ursus arctos nelsoni Merriam, 1914'
+            },
+            'result8': {
+              'title': 'Melursus ursinus (Shaw, 1791)',
+              'id': 328075,
+              'link': 'http://eol.org/328075?action=overview&controller=taxa',
+              'content': 'Melursus ursinus (Shaw, 1791); Melursus ursinus; Ursus ursinus; Melursus ursinus Shaw, 1791'
+            },
+            'result9': {
+              'title': 'Melursus ursinus (Shaw, 1791)',
+              'id': 328075,
+              'link': 'http://eol.org/328075?action=overview&controller=taxa',
+              'content': 'Melursus ursinus (Shaw, 1791); Ursus ursinus; Bradypus ursinus (Shaw)'
+            },
+            'result10': {
+              'title': 'Ursus thibetanus G. [Baron] Cuvier, 1823',
+              'id': 328069,
+              'link': 'http://eol.org/328069?action=overview&controller=taxa',
+              'content': 'Ursus thibetanus G. [Baron] Cuvier, 1823; Ursus thibetanus; Ursus thibetanus G. Cuvier, 1823; Ursus thibetanus (G. Cuvier, 1823); Ursus thibetanus Cuvier, 1823'
+            },
+            'result11': {
+              'title': 'Ursus thibetanus G. [Baron] Cuvier, 1823',
+              'id': 328069,
+              'link': 'http://eol.org/328069?action=overview&controller=taxa',
+              'content': 'Selenarctos thibetanus; Selenarctos tibetanus; Ursus tibetanus; Ursus thibetanus Cuvier, 1823'
+            },
+            'result12': {
+              'title': 'Megathymus ursus Poling 1902',
+              'id': 182996,
+              'link': 'http://eol.org/182996?action=overview&controller=taxa',
+              'content': 'Megathymus ursus Poling 1902; Megathymus ursus'
+            },
+            'result13': {
+              'title': 'Ursus maritimus Phipps, 1774',
+              'id': 328580,
+              'link': 'http://eol.org/328580?action=overview&controller=taxa',
+              'content': 'Ursus arctos horribilis x Ursus maritimus'
+            },
+            'result14': {
+              'title': 'Ursus maritimus Phipps, 1774',
+              'id': 328580,
+              'link': 'http://eol.org/328580?action=overview&controller=taxa',
+              'content': 'Ursus maritimus Phipps, 1774; Ursus maritimus; Ursus maritimus (Shaw, 1791); Ursus maritimus (Phipps 1774)'
+            },
+            'result15': {
+              'title': 'Ursus maritimus Phipps, 1774',
+              'id': 328580,
+              'link': 'http://eol.org/328580?action=overview&controller=taxa',
+              'content': 'Thalarctos maritimus; Ursus maritimus maritimus Phipps, 1774; Ursus maritimus marinus Pallas, 1776; Thalarctos maritimus (Phipps 1774); Sea Bear'
+            },
+            'result16': {
+              'title': 'Gulo',
+              'id': 34550,
+              'link': 'http://eol.org/34550?action=overview&controller=taxa',
+              'content': 'Gulo schlosseri Kormos 1914; Gulo gidleyi Hall 1936; Ursus luscus Linnaeus 1758'
+            },
+            'result17': {
+              'title': 'Gulo',
+              'id': 34550,
+              'link': 'http://eol.org/34550?action=overview&controller=taxa',
+              'content': 'Gulo schlosseri Kormos 1914; Gulo gidleyi Hall 1936; Ursus luscus Linnaeus 1758'
+            },
+            'result18': {
+              'title': 'Arctodus Leidy 1854',
+              'id': 4441502,
+              'link': 'http://eol.org/4441502?action=overview&controller=taxa',
+              'content': 'Arctotherium californicum Merriam 1911; Arctotherium yukonense Lambe 1911; Dinarctotherium merriami Barbour 1916; Ursus haplodon Cope 1895'
+            },
+            'result19': {
+              'title': 'Parribacus',
+              'id': 39950,
+              'link': 'http://eol.org/39950?action=overview&controller=taxa',
+              'content': 'Parribacus Dana, 1852; Parribacus; Parribacus ursus; Parribacus papyraceus Rathbun'
+            },
+            'result20': {
+              'title': 'Bombodes ursus WESTWOOD, 1848',
+              'id': 234563,
+              'link': 'http://eol.org/234563?action=overview&controller=taxa',
+              'content': 'Bombodes ursus WESTWOOD, 1848; Bombodes ursus'
+            },
+            'result21': {
+              'title': 'Ursus',
+              'id': 14349,
+              'link': 'http://eol.org/14349?action=overview&controller=taxa',
+              'content': 'Ursus Linnaeus, 1758; Ursus; Ursus Arctos Bruinosus; Ursus Arctos Ssp.'
+            },
+            'result22': {
+              'title': 'Ursus',
+              'id': 14349,
+              'link': 'http://eol.org/14349?action=overview&controller=taxa',
+              'content': 'Ursus luteolus Griffith, 1821; Ursus amplidens Leidy 1853; Ursus horribilis Ord 1815; Ursus optimus Schultz 1938; Ursus procerus Miller 1899; Euarctos vitabilis Gidley 1913; Helarctos euryspilus Horsfield 1826; Danis ferox (Desmarest 1817); Thalarctos polaris Gray 1825; Myrmarctos eversmanni Gray 1864; Melanarctos cavifrons Heude 1898; Ursus pruinosus Blyth 1854; Ursus amblyceps Baird 1859; Ursus floridanus Merriam 1896; Ursus californiensis Miller 1900; Ursus carlottae Osgood 1901; Ursus altifrontalis Elliot 1903; Ursus machetes Elliot 1903; Ursus kermodei Hornaday 1905; Ursus marinus Pallas 1776; Ursus polaris Shaw 1792'
+            },
+            'result23': {
+              'title': 'Aniculus ursus',
+              'id': 4255349,
+              'link': 'http://eol.org/4255349?action=overview&controller=taxa',
+              'content': 'Aniculus ursus; Aniculus ursus (Olivier 1811); Aniculus ursus (Olivier, 1812)'
+            },
+            'result24': {
+              'title': 'Ursus arctos arctos Linnaeus, 1758',
+              'id': 1226247,
+              'link': 'http://eol.org/1226247?action=overview&controller=taxa',
+              'content': 'Ursus arctos arctos Linnaeus, 1758; Ursus arctos arctos'
+            },
+            'result25': {
+              'title': 'Megathymus ursus deserti Ronald et al., 1972',
+              'id': 2683229,
+              'link': 'http://eol.org/2683229?action=overview&controller=taxa',
+              'content': 'Megathymus ursus deserti R. Wielgus, J. Wielgus and D. Wielgus, 1972'
+            },
+            'result26': {
+              'title': 'Megathymus ursus deserti Ronald et al., 1972',
+              'id': 2683229,
+              'link': 'http://eol.org/2683229?action=overview&controller=taxa',
+              'content': 'Megathymus ursus deserti Ronald et al., 1972'
+            },
+            'result27': {
+              'title': 'Megathymus ursus ursus Poling 1902',
+              'id': 2683230,
+              'link': 'http://eol.org/2683230?action=overview&controller=taxa',
+              'content': 'Megathymus ursus ursus Poling 1902'
+            },
+            'result28': {
+              'title': 'Megathymus ursus violae Stallings and Turner, 1956',
+              'id': 2683231,
+              'link': 'http://eol.org/2683231?action=overview&controller=taxa',
+              'content': 'Megathymus ursus violae D. Stallings and Turner, 1956'
+            },
+            'result29': {
+              'title': 'Megathymus ursus violae Stallings and Turner, 1956',
+              'id': 2683231,
+              'link': 'http://eol.org/2683231?action=overview&controller=taxa',
+              'content': 'Megathymus ursus violae Stallings and Turner, 1956'
+            }
+          }
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-search.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \[\]→\/\.:=&;,?\(\)]+/mig)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 []→\/\.:=&;,?\(\)]+/mig)
         expect(json).to.deep.equal(obj)
         done(err)
       })

@@ -8,14 +8,15 @@ const CFILE = `${process.env.HOME}/.iloa.noon`
 const PKGDIR = `${process.env.NODE_PATH}/iloa/`
 
 exports.command = 'init'
+exports.aliases = ['i']
 exports.desc = 'Initialize config file'
 exports.builder = {
   force: {
     alias: 'f',
     desc: 'Force overwriting configuration file',
     default: false,
-    type: 'boolean',
-  },
+    type: 'boolean'
+  }
 }
 exports.handler = (argv) => {
   let obj = null
@@ -84,7 +85,7 @@ exports.handler = (argv) => {
       align: true,
       maxalign: 32,
       sort: true,
-      colors: true,
+      colors: true
     }))
     console.log('')
   }

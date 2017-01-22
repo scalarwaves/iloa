@@ -2,7 +2,6 @@
 const themes = require('../../themes')
 const tools = require('../../tools')
 
-const _ = require('lodash')
 const http = require('good-guy-http')()
 const noon = require('noon')
 
@@ -16,62 +15,62 @@ exports.builder = {
     alias: 'o',
     desc: 'Write cson, json, noon, plist, yaml, xml',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   force: {
     alias: 'f',
     desc: 'Force overwriting outfile',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   save: {
     alias: 's',
     desc: 'Save options to config file',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   page: {
     alias: 'p',
     desc: 'Page number',
     default: 1,
-    type: 'number',
+    type: 'number'
   },
   ppage: {
     alias: 'e',
     desc: '0-500',
     default: 50,
-    type: 'number',
+    type: 'number'
   },
   filter: {
     alias: 'l',
     desc: 'articles,collections,communities,images,sounds,taxa,users,video',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   by: {
     alias: 'b',
     desc: tools.wrapStr('recently_added,oldest,alphabetical,reverse_alphabetical,richness,rating,sort_field,reverse_sort_field', true, true),
     default: 'recently_added',
-    type: 'string',
+    type: 'string'
   },
   field: {
     alias: 'i',
     desc: tools.wrapStr('If a sort_field parameter is included, only collection items whose sort field exactly matches the given string will be returned', true, true),
     default: '',
-    type: 'string',
+    type: 'string'
   },
   cachettl: {
     alias: 'c',
     desc: 'No. of seconds you wish to have the response cached',
     default: 60,
-    type: 'number',
+    type: 'number'
   },
   language: {
     alias: 'g',
     desc: tools.wrapStr('ms, de, en, es, fr, gl, it, nl, nb, oc, pt-BR, sv, tl, mk, sr, uk, ar, zh-Hans, zh-Hant, ko', true, true),
     default: 'en',
-    type: 'string',
-  },
+    type: 'string'
+  }
 }
 exports.handler = (argv) => {
   tools.checkConfig(CFILE)
@@ -83,9 +82,9 @@ exports.handler = (argv) => {
     filter: argv.l,
     language: argv.g,
     page: argv.p,
-    ppage: argv.e,
+    ppage: argv.e
   }
-  if (config.merge) config = _.merge({}, config, userConfig)
+  if (config.merge) config = tools.merge(config, userConfig)
   if (argv.s && config.merge) noon.save(CFILE, config)
   if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.")
   const theme = themes.loadTheme(config.theme)
@@ -103,7 +102,7 @@ exports.handler = (argv) => {
   const url = `${prefix}?${ucont.join('&')}`
   const tofile = {
     type: 'collections',
-    source: 'http://eol.org',
+    source: 'http://eol.org'
   }
   http({ url }, (error, response) => {
     if (!error && response.statusCode === 200) {

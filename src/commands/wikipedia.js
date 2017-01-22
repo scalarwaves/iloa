@@ -2,14 +2,13 @@
 const themes = require('../themes')
 const tools = require('../tools')
 
-const _ = require('lodash')
 const gg = require('good-guy-http')
 const noon = require('noon')
 const http = gg({
   cache: false,
   defaultCache: {
-    cached: false,
-  },
+    cached: false
+  }
 })
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
@@ -22,30 +21,30 @@ exports.builder = {
     alias: 'o',
     desc: 'Write cson, json, noon, plist, yaml, xml',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   force: {
     alias: 'f',
     desc: 'Force overwriting outfile',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   intro: {
     alias: 'i',
     desc: 'Just intro or all sections',
     default: false,
-    type: 'boolean',
-  },
+    type: 'boolean'
+  }
 }
 exports.handler = (argv) => {
   tools.checkConfig(CFILE)
   let config = noon.load(CFILE)
   const userConfig = {
     wiki: {
-      intro: argv.i,
-    },
+      intro: argv.i
+    }
   }
-  if (config.merge) config = _.merge({}, config, userConfig)
+  if (config.merge) config = tools.merge(config, userConfig)
   if (argv.s && config.merge) noon.save(CFILE, config)
   if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.")
   const theme = themes.loadTheme(config.theme)
@@ -53,9 +52,9 @@ exports.handler = (argv) => {
   const wcont = []
   wcont.push(argv.query)
   if (argv._.length > 1) {
-    _.each(argv._, (value) => {
-      if (value !== 'wp') wcont.push(value)
-    })
+    for (let i = 1; i <= argv._; i++) {
+      if (argv._[i] !== 'wp') wcont.push(argv._[i])
+    }
   }
   let words = ''
   if (wcont.length > 1) {
@@ -70,7 +69,7 @@ exports.handler = (argv) => {
   const tofile = {
     type: 'wiki',
     source: 'http://www.wikipedia.org/',
-    url,
+    url
   }
   http({ url }, (error, response) => {
     if (!error && response.statusCode === 200) {

@@ -1,13 +1,11 @@
 /* eslint max-len:0 */
 const themes = require('../themes')
 const tools = require('../tools')
+const helpers = require('./helpers/weather-helper')
 
-const _ = require('lodash')
+const http = require('good-guy-http')({ cache: false })
 const moment = require('moment')
 const noon = require('noon')
-const http = require('good-guy-http')({
-  cache: false,
-})
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
@@ -19,50 +17,50 @@ exports.builder = {
     alias: 'o',
     desc: 'Write cson, json, noon, plist, yaml, xml',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   force: {
     alias: 'f',
     desc: 'Force overwriting outfile',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   features: {
     alias: 'e',
     desc: 'CSV alerts,almanac,astronomy,conditions,forecast,forecast10day,geolookup,hourly,hourly10day,tide,webcams',
     default: 'conditions',
-    type: 'string',
+    type: 'string'
   },
   lang: {
     alias: 'l',
     desc: '2-letter language codes listed here: https://www.wunderground.com/weather/api/d/docs?d=language-support',
     default: 'EN',
-    type: 'string',
+    type: 'string'
   },
   limit: {
     alias: 't',
     desc: 'Limit number of results returned',
     default: 5,
-    type: 'number',
+    type: 'number'
   },
   pws: {
     alias: 'p',
     desc: 'Use personal weather stations for weather conditions',
     default: true,
-    type: 'boolean',
+    type: 'boolean'
   },
   bestf: {
     alias: 'b',
     desc: 'Use Wunderground Best Forecast',
     default: true,
-    type: 'boolean',
+    type: 'boolean'
   },
   save: {
     alias: 's',
     desc: 'Save flags to config file',
     default: false,
-    type: 'boolean',
-  },
+    type: 'boolean'
+  }
 }
 exports.handler = (argv) => {
   tools.checkConfig(CFILE)
@@ -73,9 +71,9 @@ exports.handler = (argv) => {
   let mreset = false
   const dstamp = new Date(config.wunder.date.dstamp)
   const mstamp = new Date(config.wunder.date.mstamp)
-  const day = moment(new Date).diff(dstamp, 'hours')
-  const hour = moment(new Date).diff(mstamp, 'minutes')
-  const minute = moment(new Date).diff(mstamp, 'seconds')
+  const day = moment(new Date()).diff(dstamp, 'hours')
+  const hour = moment(new Date()).diff(mstamp, 'minutes')
+  const minute = moment(new Date()).diff(mstamp, 'seconds')
   const checkStamp = tools.limitWunder(config)
   config = checkStamp[0]
   dproceed = checkStamp[1]
@@ -89,9 +87,9 @@ exports.handler = (argv) => {
       features: features.split('/'),
       lang: argv.l,
       limit: argv.t,
-      pws: argv.p,
+      pws: argv.p
     }
-    if (config.merge) config = _.merge({}, config, userConfig)
+    if (config.merge) config = tools.merge(config, userConfig)
     if (argv.s && config.merge) noon.save(CFILE, config)
     if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.")
     const theme = themes.loadTheme(config.theme)
@@ -105,13 +103,12 @@ exports.handler = (argv) => {
     const url = encodeURI(`https://api.wunderground.com/api/${apikey}/${features}/${scont.join('/')}/q/${query}.json`)
     let tofile = {
       type: 'wunderground',
-      source: 'https://www.wunderground.com/?apiref=f6e0dc6b44f8fee2',
+      source: 'https://www.wunderground.com/?apiref=f6e0dc6b44f8fee2'
     }
     http({ url }, (error, response) => {
       if (!error && response.statusCode === 200) {
         const body = JSON.parse(response.body)
         if (body.response.error) throw new Error(body.response.error.description)
-        const helpers = require('./helpers/wu')
         if (body.response.features.alerts === 1) tofile = helpers.alerts(body.alerts, tofile)
         if (body.response.features.almanac === 1) tofile = helpers.almanac(body.almanac, tofile)
         if (body.response.features.astronomy === 1) tofile = helpers.astronomy(body.moon_phase, tofile)

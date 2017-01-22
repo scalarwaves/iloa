@@ -24,7 +24,7 @@ exports.limitWolf = (config) => {
   let proceed = false
   let reset = false
   const stamp = new Date(c.wolf.date.stamp)
-  const days = moment(new Date).diff(stamp, 'days')
+  const days = moment(new Date()).diff(stamp, 'days')
   if (days < 31) {
     c.wolf.date.remain--
   } else if (days >= 31) {
@@ -51,8 +51,8 @@ exports.limitWunder = (config) => {
   let mreset = false
   const dstamp = new Date(c.wunder.date.dstamp)
   const mstamp = new Date(c.wunder.date.mstamp)
-  const day = moment(new Date).diff(dstamp, 'hours')
-  const minute = moment(new Date).diff(mstamp, 'seconds')
+  const day = moment(new Date()).diff(dstamp, 'hours')
+  const minute = moment(new Date()).diff(mstamp, 'seconds')
   if (day < 24) {
     c.wunder.date.dremain--
   } else if (day >= 24) {
@@ -81,7 +81,7 @@ exports.limitWunder = (config) => {
   * @param {string} path The filename to check.
   * @return {boolean} fileExists
   */
-function checkOutfile(path) {
+function checkOutfile (path) {
   let fileExists = null
   try {
     fs.statSync(path)
@@ -140,6 +140,18 @@ exports.arrToStr = (obj) => {
   let fixed = null
   Array.isArray(obj) && obj.length === 1 && typeof obj[0] === 'string' ? fixed = obj[0] : fixed = obj
   return fixed
+}
+
+/**
+  * Merges two objects
+  * @public
+  * @param {object} obj Any object
+  * @param {object} src A possibly similar object
+  * @return {Object} Merged object
+ */
+function extend (obj, src) {
+  Object.keys(src).forEach(function (key) { obj[key] = src[key] })
+  return obj
 }
 
 /**

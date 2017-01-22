@@ -272,7 +272,7 @@ exports.hourly = (data, tofile) => {
         heatindex,
         snow,
         pressure,
-        uvi,
+        uvi
       }
     } else {
       themes.label(theme, 'right', `${civil}_${item.FCTTIME.weekday_name}`, `${item.wx} Temp:${t}F, Feels like:${fl}F, Wind:${ws}mph ${item.wdir.dir}, Humidity:${item.humidity}`)
@@ -287,7 +287,7 @@ exports.hourly = (data, tofile) => {
         heatindex,
         snow,
         pressure,
-        uvi,
+        uvi
       }
     }
   }

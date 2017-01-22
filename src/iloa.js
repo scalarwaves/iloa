@@ -11,14 +11,14 @@ const yargonaut = require('yargonaut')
   .style('bold.blue', 'default:')
 const yargs = require('yargs')
 yargs
-  .commandDir('cmds')
+  .commandDir('commands')
   .usage(`${chalk.yellow(`${yargonaut.asFont('iloa', 'Small Slant')}`)}\n${chalk.bold.underline('Usage:')}\n$0 <command> [options]`)
   .help('h')
   .alias('h', 'help')
   .option('v', {
     alias: 'verbose',
     type: 'boolean',
-    desc: 'Verbose output',
+    desc: 'Verbose output'
   })
   .version('V', 'Show current version', pkg.version)
   .alias('V', 'version')

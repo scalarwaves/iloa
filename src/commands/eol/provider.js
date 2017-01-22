@@ -2,55 +2,54 @@
 const themes = require('../../themes')
 const tools = require('../../tools')
 
-const _ = require('lodash')
 const http = require('good-guy-http')()
 const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
-exports.command = 'searchby <id>'
-exports.aliases = ['provider', 'sbp']
+exports.command = 'provider <id>'
+exports.aliases = ['pro', 'by']
 exports.desc = 'Search for an entry within a given provider'
 exports.builder = {
   out: {
     alias: 'o',
     desc: 'Write cson, json, noon, plist, yaml, xml',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   force: {
     alias: 'f',
     desc: 'Force overwriting outfile',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   save: {
     alias: 's',
     desc: 'Save options to config file',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   pid: {
     alias: 'p',
     desc: "A provider ID from the 'info' command",
     default: 903,
-    type: 'number',
+    type: 'number'
   },
   cachettl: {
     alias: 'c',
     desc: 'No. of seconds you wish to have the response cached',
     default: 60,
-    type: 'number',
-  },
+    type: 'number'
+  }
 }
 exports.handler = (argv) => {
   tools.checkConfig(CFILE)
   let config = noon.load(CFILE)
   const userConfig = {
     pid: argv.p,
-    cachettl: argv.c,
+    cachettl: argv.c
   }
-  if (config.merge) config = _.merge({}, config, userConfig)
+  if (config.merge) config = tools.merge(config, userConfig)
   if (argv.s && config.merge) noon.save(CFILE, config)
   if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.")
   const theme = themes.loadTheme(config.theme)
@@ -65,7 +64,7 @@ exports.handler = (argv) => {
   const url = `${prefix}?${ucont.join('&')}`
   const tofile = {
     type: 'search_by_provider',
-    source: 'http://eol.org',
+    source: 'http://eol.org'
   }
   http({ url }, (error, response) => {
     if (!error && response.statusCode === 200) {

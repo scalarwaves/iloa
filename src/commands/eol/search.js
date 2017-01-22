@@ -2,70 +2,69 @@
 const themes = require('../../themes')
 const tools = require('../../tools')
 
-const _ = require('lodash')
 const http = require('good-guy-http')()
 const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
 exports.command = 'search <query>'
-exports.aliases = ['query', 'match']
+exports.aliases = ['se', 'query', 'match']
 exports.desc = 'Returns entries that match a string query'
 exports.builder = {
   out: {
     alias: 'o',
     desc: 'Write cson, json, noon, plist, yaml, xml',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   force: {
     alias: 'f',
     desc: 'Force overwriting outfile',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   save: {
     alias: 's',
     desc: 'Save options to config file',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   page: {
     alias: 'p',
     desc: 'Page number',
     default: 1,
-    type: 'number',
+    type: 'number'
   },
   exact: {
     alias: 'x',
     desc: 'Exact match',
     default: false,
-    type: 'boolean',
+    type: 'boolean'
   },
   tfilter: {
     alias: 't',
     desc: 'given an EOL page ID, search results will be limited to members of that taxonomic group',
     default: 0,
-    type: 'number',
+    type: 'number'
   },
   hfilter: {
     alias: 'l',
     desc: 'given a Hierarchy Entry ID, search results will be limited to members of that taxonomic group',
     default: 0,
-    type: 'number',
+    type: 'number'
   },
   string: {
     alias: 'r',
     desc: 'given a search term, an exact search will be made and that matching page will be used as the taxonomic group against which to filter search results',
     default: '',
-    type: 'string',
+    type: 'string'
   },
   cachettl: {
     alias: 'c',
     desc: 'No. of seconds you wish to have the response cached',
     default: 60,
-    type: 'number',
-  },
+    type: 'number'
+  }
 }
 exports.handler = (argv) => {
   tools.checkConfig(CFILE)
@@ -76,9 +75,9 @@ exports.handler = (argv) => {
     tfilter: argv.t,
     hfilter: argv.h,
     string: argv.r,
-    cachettl: argv.c,
+    cachettl: argv.c
   }
-  if (config.merge) config = _.merge({}, config, userConfig)
+  if (config.merge) config = tools.merge(config, userConfig)
   if (argv.s && config.merge) noon.save(CFILE, config)
   if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.")
   const theme = themes.loadTheme(config.theme)
@@ -96,7 +95,7 @@ exports.handler = (argv) => {
   const url = `${prefix}?${ucont.join('&')}`
   const tofile = {
     type: 'search',
-    source: 'http://eol.org',
+    source: 'http://eol.org'
   }
   http({ url }, (error, response) => {
     if (!error && response.statusCode === 200) {

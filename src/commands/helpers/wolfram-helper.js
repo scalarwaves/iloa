@@ -1,7 +1,6 @@
 const themes = require('../../themes')
 const tools = require('../../tools')
 
-const _ = require('lodash')
 const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
@@ -15,7 +14,7 @@ const theme = themes.loadTheme(config.theme)
  * @param tofile {object} The tofile object
  * @return {object} The tofile object
  */
-function subPod(pn, subpod, tofile) {
+function subPod (pn, subpod, tofile) {
   const tf = tofile
   for (let i = 0; i <= subpod.length - 1; i++) {
     const sp = subpod[i]
@@ -42,7 +41,7 @@ function subPod(pn, subpod, tofile) {
  * @param tofile {object} The tofile object
  * @return {object} The tofile object
  */
-function handlePods(pods, tofile) {
+function handlePods (pods, tofile) {
   let tf = tofile
   for (let i = 0; i <= pods.length - 1; i++) {
     const p = pods[i]
@@ -113,10 +112,10 @@ exports.assume = (assumptions, tofile) => {
     }
     if (meta.type === 'FormulaSolve') {
       themes.label(theme, 'right', meta.type)
-      _.each(v, (val) => {
-        themes.label(theme, 'right', val.$.desc, val.$.input)
-        tf[[`assumption${i}`]][[`${val.$.desc}`]] = val.$.input
-      })
+      for (let i = 0; i <= v.length - 1; i++) {
+        themes.label(theme, 'right', v[i].$.desc, v[i].$.input)
+        tf[[`assumption${i}`]][[`${v[i].$.desc}`]] = v[i].$.input
+      }
     }
     if (meta.type === 'FormulaSelect') {
       themes.label(theme, 'down', meta.type)

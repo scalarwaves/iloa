@@ -8,6 +8,7 @@ const noon = require('noon')
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
 exports.command = 'info'
+exports.aliases = ['i']
 exports.desc = 'Print provider hierarchies and service status'
 exports.builder = {}
 exports.handler = (argv) => {
