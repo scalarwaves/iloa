@@ -4,8 +4,9 @@ As of right now, I am the only one contributing to this project. I welcome you t
 
 ### Build process
 
-Managed with npm scripts. [redrun](https://github.com/coderaiser/redrun) is my task runner.
-Here are the tasks:
+- Mocha is the test harness and Chai is assertions
+- Test style is BDD
+- Build is managed with npm scripts. [redrun](https://github.com/coderaiser/redrun) is my task runner. Here are the tasks:
 
 - **bin** - transpiles src into bin
 - **bump** - after release task, pushes version to repo and publishes npm package
