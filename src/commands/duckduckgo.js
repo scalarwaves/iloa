@@ -75,6 +75,10 @@ exports.handler = (argv) => {
         Results: []
       }
       const body = JSON.parse(response.body)
+      if (body.Redirect !== '') {
+        console.log(`!bang redirect to ${body.Redirect}`)
+        process.exit(0)
+      }
       if (body.Abstract === '' && body.Answer === '' && body.meta !== null) {
         console.log('Only metadata was returned:')
         console.log(JSON.stringify(body.meta, null, 2))
@@ -82,10 +86,6 @@ exports.handler = (argv) => {
       }
       if (JSON.stringify(body) === JSON.stringify(blank)) {
         console.log('DuckDuckGo found no results.')
-        process.exit(0)
-      }
-      if (body.Type === 'E' && body.Redirect !== '') {
-        console.log(`!bang redirect to ${body.Redirect}`)
         process.exit(0)
       }
       let rtype = null
