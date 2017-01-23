@@ -54,7 +54,7 @@ exports.handler = (argv) => {
   wcont.push(argv.query)
   if (argv._.length > 1) {
     for (let i = 0; i <= argv._ - 1; i++) {
-      if (argv._[i] !== 'wp') wcont.push(argv._[i])
+      if (argv._[i] !== 'wp' && argv._[i] !== 'wiki' && argv._[i] !== 'wikipedia') wcont.push(argv._[i])
     }
   }
   let words = ''

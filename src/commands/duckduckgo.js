@@ -33,7 +33,7 @@ exports.handler = (argv) => {
   dcont.push(argv.query)
   if (argv._.length > 1) {
     for (let i = 0; i <= argv._.length - 1; i++) {
-      if (argv._[i] !== 'ddg') dcont.push(argv._[i])
+      if (argv._[i] !== 'duckduckgo' && argv._[i] !== 'duck' && argv._[i] !== 'dg') dcont.push(argv._[i])
     }
   }
   let words = ''

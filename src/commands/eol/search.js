@@ -84,8 +84,15 @@ exports.handler = (argv) => {
   const theme = themes.loadTheme(config.theme)
   if (config.verbose) themes.label(theme, 'down', 'Encyclopedia of Life')
   const prefix = 'http://eol.org/api/search/1.0.json'
+  const qcont = []
+  if (argv._.length > 2) {
+    for (let i = 0; i <= argv._.length - 1; i++) {
+      if (argv._[i] !== 'eol' && argv._[i] !== 'life' && argv._[i] !== 'search' && argv._[i] !== 'query' && argv._[i] !== 'match' && argv._[i] !== 'se') qcont.push(argv._[i])
+    }
+  }
+  const query = qcont.join('+')
   const ucont = []
-  ucont.push(`q=${argv.query}`)
+  ucont.push(`q=${query}`)
   ucont.push(`page=${argv.p}`)
   ucont.push(`exact=${argv.x}`)
   ucont.push(`filter_by_taxon_concept_id=${argv.t}`)
