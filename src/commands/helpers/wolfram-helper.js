@@ -1,6 +1,7 @@
 const themes = require('../../themes')
 const tools = require('../../tools')
 
+const _ = require('lodash')
 const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
@@ -112,10 +113,10 @@ exports.assume = (assumptions, tofile) => {
     }
     if (meta.type === 'FormulaSolve') {
       themes.label(theme, 'right', meta.type)
-      for (let i = 0; i <= v.length - 1; i++) {
-        themes.label(theme, 'right', v[i].$.desc, v[i].$.input)
-        tf[[`assumption${i}`]][[`${v[i].$.desc}`]] = v[i].$.input
-      }
+      _.each(v, (val) => {
+        themes.label(theme, 'right', val.$.desc, val.$.input)
+        tf[[`assumption${i}`]][[`${val.$.desc}`]] = val.$.input
+      })
     }
     if (meta.type === 'FormulaSelect') {
       themes.label(theme, 'down', meta.type)

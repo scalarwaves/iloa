@@ -3,6 +3,7 @@ const themes = require('../themes')
 const tools = require('../tools')
 const helpers = require('./helpers/wolfram-helper')
 
+const _ = require('lodash')
 const gg = require('good-guy-http')
 const http = gg({ cache: false, defaultCache: { cached: false } })
 const moment = require('moment')
@@ -188,7 +189,7 @@ exports.handler = (argv) => {
         trans: argv.trans
       }
     }
-    if (config.merge) config = tools.merge(config, userConfig)
+    if (config.merge) config = _.merge({}, config, userConfig)
     if (argv.v && config.merge) noon.save(CFILE, config)
     if (argv.v && !config.merge) throw new Error("Can't save user config, set option merge to true.")
     const theme = themes.loadTheme(config.theme)
@@ -196,9 +197,9 @@ exports.handler = (argv) => {
     const wcont = []
     wcont.push(argv.query)
     if (argv._.length > 1) {
-      for (let i = 1; i <= argv._; i++) {
-        if (argv._[i] !== 'wolfram' && argv._[i] !== 'wolf' && argv._[i] !== 'wa') wcont.push(argv._[i])
-      }
+      _.each(argv._, (value) => {
+        if (value !== 'wolfram' && value !== 'wolf' && value !== 'wa') wcont.push(value)
+      })
     }
     let words = ''
     wcont.length > 1 ? words = wcont.join('+') : words = wcont[0]

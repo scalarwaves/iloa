@@ -3,6 +3,7 @@ const themes = require('../themes')
 const tools = require('../tools')
 const helpers = require('./helpers/weather-helper')
 
+const _ = require('lodash')
 const http = require('good-guy-http')({ cache: false })
 const moment = require('moment')
 const noon = require('noon')
@@ -89,7 +90,7 @@ exports.handler = (argv) => {
       limit: argv.t,
       pws: argv.p
     }
-    if (config.merge) config = tools.merge(config, userConfig)
+    if (config.merge) config = _.merge({}, config, userConfig)
     if (argv.s && config.merge) noon.save(CFILE, config)
     if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.")
     const theme = themes.loadTheme(config.theme)

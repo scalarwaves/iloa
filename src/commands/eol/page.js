@@ -2,6 +2,7 @@
 const themes = require('../../themes')
 const tools = require('../../tools')
 
+const _ = require('lodash')
 const http = require('good-guy-http')()
 const noon = require('noon')
 
@@ -180,7 +181,7 @@ exports.handler = (argv) => {
     cachettl: argv.c,
     language: argv.g
   }
-  if (config.merge) config = tools.merge(config, userConfig)
+  if (config.merge) config = _.merge({}, config, userConfig)
   if (argv.s && config.merge) noon.save(CFILE, config)
   if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.")
   const theme = themes.loadTheme(config.theme)

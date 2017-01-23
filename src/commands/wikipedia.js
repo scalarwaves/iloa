@@ -2,6 +2,7 @@
 const themes = require('../themes')
 const tools = require('../tools')
 
+const _ = require('lodash')
 const gg = require('good-guy-http')
 const noon = require('noon')
 const http = gg({
@@ -44,7 +45,7 @@ exports.handler = (argv) => {
       intro: argv.i
     }
   }
-  if (config.merge) config = tools.merge(config, userConfig)
+  if (config.merge) config = _.merge({}, config, userConfig)
   if (argv.s && config.merge) noon.save(CFILE, config)
   if (argv.s && !config.merge) throw new Error("Can't save user config, set option merge to true.")
   const theme = themes.loadTheme(config.theme)
@@ -52,7 +53,7 @@ exports.handler = (argv) => {
   const wcont = []
   wcont.push(argv.query)
   if (argv._.length > 1) {
-    for (let i = 1; i <= argv._; i++) {
+    for (let i = 0; i <= argv._ - 1; i++) {
       if (argv._[i] !== 'wp') wcont.push(argv._[i])
     }
   }

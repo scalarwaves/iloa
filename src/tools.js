@@ -143,18 +143,6 @@ exports.arrToStr = (obj) => {
 }
 
 /**
-  * Merges two objects
-  * @public
-  * @param {object} obj Any object
-  * @param {object} src A possibly similar object
-  * @return {Object} Merged object
- */
-function extend (obj, src) {
-  Object.keys(src).forEach(function (key) { obj[key] = src[key] })
-  return obj
-}
-
-/**
   * Strips HTML from a string
   * @public
   * @param  {string} string Text with HTML tags

@@ -1,4 +1,4 @@
-'use strict';/* eslint max-len:0 */var _=require('lodash');var chalk=require('chalk');var fs=require('fs');var glob=require('glob');var noon=require('noon');var TDIR=null;var themeDirExists=null;try{fs.statSync('themes');themeDirExists=true;}catch(e){if(e.code==='ENOENT')themeDirExists=false;}themeDirExists?TDIR='themes/':TDIR=process.env.NODE_PATH+'/iloa/themes/';/**
+'use strict';/* eslint max-len:0 */var chalk=require('chalk');var _=require('lodash');var fs=require('fs');var glob=require('glob');var noon=require('noon');var TDIR=null;var themeDirExists=null;try{fs.statSync('themes');themeDirExists=true;}catch(e){if(e.code==='ENOENT')themeDirExists=false;}themeDirExists?TDIR='themes/':TDIR=process.env.NODE_PATH+'/iloa/themes/';/**
   * The themes module provides useful repetitive theme tasks
   * @module Themes
   *//**
