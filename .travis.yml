@@ -3,7 +3,6 @@ node_js:
 - '7'
 - '6'
 - '5'
-- '4'
 before_script:
 - node bin/iloa.js config init
 - npm run cover

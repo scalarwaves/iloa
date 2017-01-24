@@ -12,6 +12,16 @@
 
 iloa is a powerful tool for gaining knowledge from the command line. It queries [DuckDuckGo](https://duckduckgo.com/api), [Encyclopedia of Life](http://eol.org/), [Weather Underground](https://www.wunderground.com/), [Wikipedia](https://www.wikipedia.org), [Wolfram|Alpha](https://www.wolframalpha.com/about.html), and more through meta-searches. See the [wiki](https://github.com/drawnepicenter/iloa/wiki) for more info.
 
+## Platform
+
+Looking for testers on OSX. Well tested on Linux. Will test on Windows.
+Supported Node.js versions:
+
+- 7.x
+- 6.x
+- 5.x
+- 4.x - Works but it's really slow
+
 ## Installation
 
 To initialize the config file and load themes, your NODE_PATH environment variable must point to the **lib/node_modules** directory of the Node.js installation. You can set this path automatically like this:
