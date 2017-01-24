@@ -1,7 +1,6 @@
 /* eslint max-len:0 */
 const themes = require('../themes')
 const tools = require('../tools')
-const helpers = require('./helpers/wolfram-helper')
 
 const _ = require('lodash')
 const gg = require('good-guy-http')
@@ -238,6 +237,7 @@ exports.handler = (argv) => {
           if (!err) {
             const q = result.queryresult
             const pods = q.pod
+            const helpers = require('./helpers/wolfram-helper')
             tofile = helpers.numPods(pods, tofile)
             if (argv.fetch) tofile = helpers.assume(q.assumptions, tofile)
           } else {

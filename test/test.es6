@@ -244,182 +244,181 @@ describe('themes', () => {
   })
 })
 
-// describe('config commands', () => {
-//   before((done) => {
-//     fs.mkdirpSync('test/output')
-//     fs.copySync(CFILE, 'test/output/saved.config.noon')
-//     done()
-//   })
-//   after((done) => {
-//     fs.copySync('test/output/saved.config.noon', CFILE)
-//     fs.removeSync('test/output')
-//     done()
-//   })
-//   describe('init', () => {
-//     before((done) => {
-//       fs.removeSync(CFILE)
-//       done()
-//     })
-//     it('creates the config file', (done) => {
-//       child.exec(`node ${process.cwd()}/bin/iloa.js config init > test/output/config-init.out`, (err) => {
-//         const stdout = fs.readFileSync('test/output/config-init.out', 'utf8')
-//         const config = noon.load(CFILE)
-//         console.log(JSON.stringify(config))
-//         const obj = {
-//           eol: {
-//             collect: {
-//               by: 'recently_added',
-//               cachettl: 60,
-//               field: '',
-//               filter: '',
-//               language: 'en',
-//               page: 1,
-//               ppage: 50
-//             },
-//             entry: {
-//               cachettl: 60,
-//               common: false,
-//               language: 'en',
-//               synonym: false
-//             },
-//             hier: {
-//               cachettl: 60,
-//               language: 'en'
-//             },
-//             meta: {
-//               cachettl: 60,
-//               language: 'en',
-//               taxonomy: true
-//             },
-//             page: {
-//               batch: false,
-//               cachettl: 60,
-//               common: false,
-//               details: false,
-//               imagepage: 1,
-//               imagepp: 1,
-//               iucn: false,
-//               language: 'en',
-//               license: 'all',
-//               mapspage: 1,
-//               mapspp: 1,
-//               reference: false,
-//               soundpage: 1,
-//               soundpp: 1,
-//               subjects: 'overview',
-//               synonym: false,
-//               taxonomy: true,
-//               textpage: 1,
-//               textpp: 1,
-//               vetted: 0,
-//               videopage: 1,
-//               videopp: 1
-//             },
-//             sbp: {
-//               cachettl: 60,
-//               pid: 903
-//             },
-//             search: {
-//               cachettl: 60,
-//               exact: false,
-//               hfilter: 0,
-//               page: 1,
-//               string: '',
-//               tfilter: 0
-//             }
-//           },
-//           merge: true,
-//           theme: 'square',
-//           usage: true,
-//           verbose: true,
-//           wiki: {
-//             intro: true
-//           },
-//           wolf: {
-//             assu: '',
-//             async: false,
-//             date: {
-//               interval: 'month',
-//               limit: 2000,
-//               remain: 2000,
-//               stamp: ''
-//             },
-//             expod: '',
-//             fetch: true,
-//             fmt: '',
-//             ftime: 8,
-//             icase: false,
-//             incpod: '',
-//             loc: '',
-//             pdtime: '',
-//             podid: '',
-//             podt: '',
-//             prtime: 5,
-//             reint: false,
-//             scan: '',
-//             sig: '',
-//             stime: 3,
-//             trans: false,
-//             unit: '',
-//             width: ''
-//           },
-//           wunder: {
-//             bestf: true,
-//             date: {
-//               dinterval: 'day',
-//               minterval: 'minute',
-//               dlimit: 500,
-//               mlimit: 10,
-//               dremain: 500,
-//               mremain: 10,
-//               dstamp: '',
-//               mstamp: ''
-//             },
-//             features: 'conditions,forecast',
-//             lang: 'EN',
-//             limit: 5,
-//             metric: false,
-//             pws: true
-//           }
-//         }
-//         config.wolf.date.stamp = ''
-//         config.wolf.date.remain = 2000
-//         config.wunder.date.dstamp = ''
-//         config.wunder.date.dremain = 500
-//         config.wunder.date.mstamp = ''
-//         config.wunder.date.mremain = 10
-//         expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Created [a-z\/\.]*/mig)
-//         expect(config).to.deep.equal(obj)
-//         done(err)
-//       })
-//     })
-//     it('force overwrites existing and prints config', (done) => {
-//       child.exec(`node ${process.cwd()}/bin/iloa.js config init -fv > test/output/config-init.out`, (err) => {
-//         const stdout = fs.readFileSync('test/output/config-init.out', 'utf8')
-//         expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 /.[]:-\s|]*/mig)
-//         done(err)
-//       })
-//     })
-//   })
-//   describe('get', () => {
-//     it('shows value of option wiki.intro', (done) => {
-//       child.exec(`node ${process.cwd()}/bin/iloa.js config get wiki.intro > test/output/config-get.out`, (err) => {
-//         const stdout = fs.readFileSync('test/output/config-get.out', 'utf8')
-//         expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Option wiki.intro is (true|false)\./mig)
-//         done(err)
-//       })
-//     })
-//   })
-//   describe('set', () => {
-//     it('sets value of option wiki.intro to false', (done) => {
-//       child.exec(`node ${process.cwd()}/bin/iloa.js config set wiki.intro false > test/output/config-set.out`, (err) => {
-//         const stdout = fs.readFileSync('test/output/config-set.out', 'utf8')
-//         expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Set option wiki.intro to (true|false)\./mig)
-//         done(err)
-//       })
-//     })
-//   })
-// })
+describe('config commands', () => {
+  before((done) => {
+    fs.mkdirpSync('test/output')
+    fs.copySync(CFILE, 'test/output/saved.config.noon')
+    done()
+  })
+  after((done) => {
+    fs.copySync('test/output/saved.config.noon', CFILE)
+    fs.removeSync('test/output')
+    done()
+  })
+  describe('init', () => {
+    before((done) => {
+      fs.removeSync(CFILE)
+      done()
+    })
+    it('creates the config file', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js config init > test/output/config-init.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/config-init.out', 'utf8')
+        const config = noon.load(CFILE)
+        const obj = {
+          eol: {
+            collect: {
+              by: 'recently_added',
+              cachettl: 60,
+              field: '',
+              filter: '',
+              language: 'en',
+              page: 1,
+              ppage: 50
+            },
+            entry: {
+              cachettl: 60,
+              common: false,
+              language: 'en',
+              synonym: false
+            },
+            hier: {
+              cachettl: 60,
+              language: 'en'
+            },
+            meta: {
+              cachettl: 60,
+              language: 'en',
+              taxonomy: true
+            },
+            page: {
+              batch: false,
+              cachettl: 60,
+              common: false,
+              details: false,
+              imagepage: 1,
+              imagepp: 1,
+              iucn: false,
+              language: 'en',
+              license: 'all',
+              mapspage: 1,
+              mapspp: 1,
+              reference: false,
+              soundpage: 1,
+              soundpp: 1,
+              subjects: 'overview',
+              synonym: false,
+              taxonomy: true,
+              textpage: 1,
+              textpp: 1,
+              vetted: 0,
+              videopage: 1,
+              videopp: 1
+            },
+            sbp: {
+              cachettl: 60,
+              pid: 903
+            },
+            search: {
+              cachettl: 60,
+              exact: false,
+              hfilter: 0,
+              page: 1,
+              string: '',
+              tfilter: 0
+            }
+          },
+          merge: true,
+          theme: 'square',
+          usage: true,
+          verbose: true,
+          wiki: {
+            intro: true
+          },
+          wolf: {
+            assu: '',
+            async: false,
+            date: {
+              interval: 'month',
+              limit: 2000,
+              remain: 2000,
+              stamp: ''
+            },
+            expod: '',
+            fetch: true,
+            fmt: '',
+            ftime: 8,
+            icase: false,
+            incpod: '',
+            loc: '',
+            pdtime: '',
+            podid: '',
+            podt: '',
+            prtime: 5,
+            reint: false,
+            scan: '',
+            sig: '',
+            stime: 3,
+            trans: false,
+            unit: '',
+            width: ''
+          },
+          wunder: {
+            bestf: true,
+            date: {
+              dinterval: 'day',
+              minterval: 'minute',
+              dlimit: 500,
+              mlimit: 10,
+              dremain: 500,
+              mremain: 10,
+              dstamp: '',
+              mstamp: ''
+            },
+            features: 'conditions,forecast',
+            lang: 'EN',
+            limit: 5,
+            metric: false,
+            pws: true
+          }
+        }
+        config.wolf.date.stamp = ''
+        config.wolf.date.remain = 2000
+        config.wunder.date.dstamp = ''
+        config.wunder.date.dremain = 500
+        config.wunder.date.mstamp = ''
+        config.wunder.date.mremain = 10
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Created [a-z\/\.]*/mig)
+        expect(config).to.deep.equal(obj)
+        done(err)
+      })
+    })
+    it('force overwrites existing and prints config', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js config init -fv > test/output/config-init.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/config-init.out', 'utf8')
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 /.[]:-\s|]*/mig)
+        done(err)
+      })
+    })
+  })
+  describe('get', () => {
+    it('shows value of option wiki.intro', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js config get wiki.intro > test/output/config-get.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/config-get.out', 'utf8')
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Option wiki.intro is (true|false)\./mig)
+        done(err)
+      })
+    })
+  })
+  describe('set', () => {
+    it('sets value of option wiki.intro to false', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js config set wiki.intro false > test/output/config-set.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/config-set.out', 'utf8')
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Set option wiki.intro to (true|false)\./mig)
+        done(err)
+      })
+    })
+  })
+})
 
 describe('root commands', () => {
   before((done) => {

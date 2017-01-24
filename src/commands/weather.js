@@ -1,14 +1,11 @@
 /* eslint max-len:0 */
 const themes = require('../themes')
 const tools = require('../tools')
-const helpers = require('./helpers/weather-helper')
 
 const _ = require('lodash')
-const chalk = require('chalk')
 const http = require('good-guy-http')({ cache: false })
 const moment = require('moment')
 const noon = require('noon')
-const ora = require('ora')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
@@ -68,11 +65,6 @@ exports.builder = {
 exports.handler = (argv) => {
   tools.checkConfig(CFILE)
   let config = noon.load(CFILE)
-  const spinner = ora({
-    text: `${chalk.bold.cyan('Loading...')}`,
-    spinner: 'dots8',
-    color: 'yellow'
-  })
   let dproceed = false
   let mproceed = false
   let dreset = false
@@ -116,9 +108,8 @@ exports.handler = (argv) => {
     http({ url }, (error, response) => {
       if (!error && response.statusCode === 200) {
         const body = JSON.parse(response.body)
+        const helpers = require('./helpers/weather-helper')
         if (body.response.error) throw new Error(body.response.error.description)
-        spinner.stop()
-        spinner.clear()
         if (body.response.features.alerts === 1) tofile = helpers.alerts(body.alerts, tofile)
         if (body.response.features.almanac === 1) tofile = helpers.almanac(body.almanac, tofile)
         if (body.response.features.astronomy === 1) tofile = helpers.astronomy(body.moon_phase, tofile)
