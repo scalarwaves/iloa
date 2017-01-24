@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/drawnepicenter/iloa/compare/v0.2.0...v0.3.0) (2017-01-24)
+
+
+### Bug Fixes
+
+* **duckduckgo:** make bangs work ([05022a1](https://github.com/drawnepicenter/iloa/commit/05022a1)), closes [#11](https://github.com/drawnepicenter/iloa/issues/11)
+* **project:** fix config init error ([defa87f](https://github.com/drawnepicenter/iloa/commit/defa87f))
+
+
+### Features
+
+* **wunder:** add ora spinner ([d0e85f4](https://github.com/drawnepicenter/iloa/commit/d0e85f4))
+
+
+
 <a name="0.2.0"></a>
 # [0.2.0](https://github.com/drawnepicenter/iloa/compare/v0.1.0...v0.2.0) (2017-01-23)
 
