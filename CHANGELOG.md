@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.1"></a>
+## [0.3.1](https://github.com/drawnepicenter/iloa/compare/v0.3.0...v0.3.1) (2017-01-25)
+
+
+### Bug Fixes
+
+* **project:** change leximaven to iloa ([e92c980](https://github.com/drawnepicenter/iloa/commit/e92c980))
+* **project:** config init error ([25e80ec](https://github.com/drawnepicenter/iloa/commit/25e80ec))
+* **themes:** control fallback msg with verbose ([c645df6](https://github.com/drawnepicenter/iloa/commit/c645df6))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/drawnepicenter/iloa/compare/v0.2.0...v0.3.0) (2017-01-24)
 
