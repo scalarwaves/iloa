@@ -6,11 +6,11 @@
   * @public
   * @param {string} theme The name of the theme
   * @return {Object} load The style to use
-  */exports.loadTheme=function(theme){var dirExists=null;var load=null;try{fs.statSync('themes');dirExists=true;}catch(e){if(e.code==='ENOENT')dirExists=false;}var CFILE=process.env.HOME+'/.leximaven.noon';var config=noon.load(CFILE);if(!dirExists&&config.verbose)console.log(chalk.white(process.cwd()+'/themes does not exist, falling back to '+process.env.NODE_PATH+'/iloa/themes.'));load=noon.load(''+TDIR+theme+'.noon');return load;};/**
+  */exports.loadTheme=function(theme){var dirExists=null;var load=null;try{fs.statSync('themes');dirExists=true;}catch(e){if(e.code==='ENOENT')dirExists=false;}var CFILE=process.env.HOME+'/.iloa.noon';var config=noon.load(CFILE);if(!dirExists&&config.verbose)console.log(chalk.white(process.cwd()+'/themes does not exist, falling back to '+process.env.NODE_PATH+'/iloa/themes.'));load=noon.load(''+TDIR+theme+'.noon');return load;};/**
   * Gets themes for list command
   * @public
   * @return {Array} List of theme names
-  */exports.getThemes=function(){var list=[];var dirExists=null;var files=[];try{fs.statSync('themes');dirExists=true;}catch(e){if(e.code==='ENOENT')dirExists=false;}var CFILE=process.env.HOME+'/.leximaven.noon';var config=noon.load(CFILE);if(!dirExists&&config.verbose)console.log(chalk.white(process.cwd()+'/themes does not exist, falling back to '+process.env.NODE_PATH+'/iloa/themes.'));files=glob.sync(TDIR+'*.noon');_.each(files,function(path){var name=path.replace(/[a-z0-9/_.]*themes\//,'').replace(/\.noon/,'');list.push(name);});return list;};/**
+  */exports.getThemes=function(){var list=[];var dirExists=null;var files=[];try{fs.statSync('themes');dirExists=true;}catch(e){if(e.code==='ENOENT')dirExists=false;}var CFILE=process.env.HOME+'/.iloa.noon';var config=noon.load(CFILE);if(!dirExists&&config.verbose)console.log(chalk.white(process.cwd()+'/themes does not exist, falling back to '+process.env.NODE_PATH+'/iloa/themes.'));files=glob.sync(TDIR+'*.noon');_.each(files,function(path){var name=path.replace(/[a-z0-9/_.]*themes\//,'').replace(/\.noon/,'');list.push(name);});return list;};/**
   * Prints label, connector, and content
   * @public
   * @param {Object} theme The style to use

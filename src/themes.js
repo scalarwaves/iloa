@@ -35,7 +35,7 @@ exports.loadTheme = (theme) => {
   } catch (e) {
     if (e.code === 'ENOENT') dirExists = false
   }
-  const CFILE = `${process.env.HOME}/.leximaven.noon`
+  const CFILE = `${process.env.HOME}/.iloa.noon`
   const config = noon.load(CFILE)
   if (!dirExists && config.verbose) console.log(chalk.white(`${process.cwd()}/themes does not exist, falling back to ${process.env.NODE_PATH}/iloa/themes.`))
   load = noon.load(`${TDIR}${theme}.noon`)
@@ -57,7 +57,7 @@ exports.getThemes = () => {
   } catch (e) {
     if (e.code === 'ENOENT') dirExists = false
   }
-  const CFILE = `${process.env.HOME}/.leximaven.noon`
+  const CFILE = `${process.env.HOME}/.iloa.noon`
   const config = noon.load(CFILE)
   if (!dirExists && config.verbose) console.log(chalk.white(`${process.cwd()}/themes does not exist, falling back to ${process.env.NODE_PATH}/iloa/themes.`))
   files = glob.sync(`${TDIR}*.noon`)
