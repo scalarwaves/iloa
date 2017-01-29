@@ -8,6 +8,7 @@ const noon = require('noon')
 const CFILE = `${process.env.HOME}/.iloa.noon`
 
 exports.command = 'set <key> <value>'
+exports.aliases = ['s']
 exports.desc = 'Set a config value'
 exports.builder = {}
 exports.handler = (argv) => {
