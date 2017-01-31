@@ -1,15 +1,15 @@
-'use strict';/* eslint max-len: 0 */var chalk=require('chalk');var fs=require('fs-extra');var moment=require('moment');var noon=require('noon');var ts=require('term-size');var wrap=require('wrap-ansi');var xml2js=require('xml2js');var CFILE=process.env.HOME+'/.iloa.noon';/**
+'use strict';/* eslint max-len: 0 */var chalk=require('chalk');var df=require('date-fns');var fs=require('fs-extra');var noon=require('noon');var ts=require('term-size');var wrap=require('wrap-ansi');var xml2js=require('xml2js');var CFILE=process.env.HOME+'/.iloa.noon';/**
   * The tools module provides useful repetitive tasks
   * @module Utils
   *//**
     * Wolfram|Alpha's API limit check
     * @param  {Object} config The current config
     * @return {Array} Updated config, proceed boolean, and reset boolean
-    */exports.limitWolf=function(config){var c=config;var proceed=false;var reset=false;var stamp=new Date(c.wolf.date.stamp);var days=moment(new Date()).diff(stamp,'days');if(days<31){c.wolf.date.remain--;}else if(days>=31){reset=true;c.wolf.date.stamp=new Date().toJSON();c.wolf.date.remain=c.wolf.date.limit;c.wolf.date.remain--;}c.wolf.date.remain<=0?c.wolf.date.remain=0:proceed=true;noon.save(CFILE,c);return[c,proceed,reset];};/**
+    */exports.limitWolf=function(config){var c=config;var proceed=false;var reset=false;var stamp=new Date(c.wolf.date.stamp);var days=df.differenceInCalendarDays(new Date(),stamp);if(days<31){c.wolf.date.remain--;}else if(days>=31){reset=true;c.wolf.date.stamp=new Date().toJSON();c.wolf.date.remain=c.wolf.date.limit;c.wolf.date.remain--;}c.wolf.date.remain<=0?c.wolf.date.remain=0:proceed=true;noon.save(CFILE,c);return[c,proceed,reset];};/**
   * Wunderground's API limit check
   * @param  {Object} config The current config
   * @return {Array} Updated config, proceed boolean, and reset boolean
-  */exports.limitWunder=function(config){var c=config;var dproceed=false;var mproceed=false;var dreset=false;var mreset=false;var dstamp=new Date(c.wunder.date.dstamp);var mstamp=new Date(c.wunder.date.mstamp);var day=moment(new Date()).diff(dstamp,'hours');var minute=moment(new Date()).diff(mstamp,'seconds');if(day<24){c.wunder.date.dremain--;}else if(day>=24){dreset=true;c.wunder.date.dstamp=new Date().toJSON();c.wunder.date.dremain=c.wunder.date.dlimit;c.wunder.date.dremain--;}if(minute<60){c.wunder.date.mremain--;}else if(minute>=60){mreset=true;c.wunder.date.mstamp=new Date().toJSON();c.wunder.date.mremain=c.wunder.date.mlimit;c.wunder.date.mremain--;}c.wunder.date.dremain<=0?c.wunder.date.dremain=0:dproceed=true;c.wunder.date.mremain<=0?c.wunder.date.mremain=0:mproceed=true;noon.save(CFILE,c);return[c,dproceed,mproceed,dreset,mreset];};/**
+  */exports.limitWunder=function(config){var c=config;var dproceed=false;var mproceed=false;var dreset=false;var mreset=false;var dstamp=new Date(c.wunder.date.dstamp);var mstamp=new Date(c.wunder.date.mstamp);var day=df.differenceInHours(new Date(),dstamp);var minute=df.differenceInMinutes(new Date(),mstamp);if(day<24){c.wunder.date.dremain--;}else if(day>=24){dreset=true;c.wunder.date.dstamp=new Date().toJSON();c.wunder.date.dremain=c.wunder.date.dlimit;c.wunder.date.dremain--;}if(minute<60){c.wunder.date.mremain--;}else if(minute>=60){mreset=true;c.wunder.date.mstamp=new Date().toJSON();c.wunder.date.mremain=c.wunder.date.mlimit;c.wunder.date.mremain--;}c.wunder.date.dremain<=0?c.wunder.date.dremain=0:dproceed=true;c.wunder.date.mremain<=0?c.wunder.date.mremain=0:mproceed=true;noon.save(CFILE,c);return[c,dproceed,mproceed,dreset,mreset];};/**
   * Checks if a file exists
   * @private
   * @param {string} path The filename to check.

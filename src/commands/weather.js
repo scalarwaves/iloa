@@ -3,8 +3,8 @@ const themes = require('../themes')
 const tools = require('../tools')
 
 const _ = require('lodash')
+const df = require('date-fns')
 const http = require('good-guy-http')({ cache: false })
-const moment = require('moment')
 const noon = require('noon')
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
@@ -71,9 +71,9 @@ exports.handler = (argv) => {
   let mreset = false
   const dstamp = new Date(config.wunder.date.dstamp)
   const mstamp = new Date(config.wunder.date.mstamp)
-  const day = moment(new Date()).diff(dstamp, 'hours')
-  const hour = moment(new Date()).diff(mstamp, 'minutes')
-  const minute = moment(new Date()).diff(mstamp, 'seconds')
+  const day = df.differenceInCalendarDays(new Date(), dstamp)
+  const hour = df.differenceInHours(new Date(), mstamp)
+  const minute = df.differenceInMinutes(new Date(), mstamp)
   const checkStamp = tools.limitWunder(config)
   config = checkStamp[0]
   dproceed = checkStamp[1]

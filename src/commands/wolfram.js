@@ -3,9 +3,9 @@ const themes = require('../themes')
 const tools = require('../tools')
 
 const _ = require('lodash')
+const df = require('date-fns')
 const gg = require('good-guy-http')
 const http = gg({ cache: false, defaultCache: { cached: false } })
-const moment = require('moment')
 const noon = require('noon')
 const xml2js = require('xml2js')
 
@@ -156,9 +156,9 @@ exports.handler = (argv) => {
   let proceed = false
   let reset = false
   const stamp = new Date(config.wolf.date.stamp)
-  const days = moment(new Date()).diff(stamp, 'days')
-  const hours = moment(new Date()).diff(stamp, 'hours')
-  const minutes = moment(new Date()).diff(stamp, 'minutes')
+  const days = df.differenceInCalendarDays(new Date(), stamp)
+  const hours = df.differenceInHours(new Date(), stamp)
+  const minutes = df.differenceInMinutes(new Date(), stamp)
   const checkStamp = tools.limitWolf(config)
   config = checkStamp[0]
   proceed = checkStamp[1]

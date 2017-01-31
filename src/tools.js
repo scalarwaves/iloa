@@ -1,7 +1,7 @@
 /* eslint max-len: 0 */
 const chalk = require('chalk')
+const df = require('date-fns')
 const fs = require('fs-extra')
-const moment = require('moment')
 const noon = require('noon')
 const ts = require('term-size')
 const wrap = require('wrap-ansi')
@@ -24,7 +24,7 @@ exports.limitWolf = (config) => {
   let proceed = false
   let reset = false
   const stamp = new Date(c.wolf.date.stamp)
-  const days = moment(new Date()).diff(stamp, 'days')
+  const days = df.differenceInCalendarDays(new Date(), stamp)
   if (days < 31) {
     c.wolf.date.remain--
   } else if (days >= 31) {
@@ -51,8 +51,8 @@ exports.limitWunder = (config) => {
   let mreset = false
   const dstamp = new Date(c.wunder.date.dstamp)
   const mstamp = new Date(c.wunder.date.mstamp)
-  const day = moment(new Date()).diff(dstamp, 'hours')
-  const minute = moment(new Date()).diff(mstamp, 'seconds')
+  const day = df.differenceInHours(new Date(), dstamp)
+  const minute = df.differenceInMinutes(new Date(), mstamp)
   if (day < 24) {
     c.wunder.date.dremain--
   } else if (day >= 24) {
