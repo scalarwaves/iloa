@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.3"></a>
+## [0.3.3](https://github.com/drawnepicenter/iloa/compare/v0.3.2...v0.3.3) (2017-02-05)
+
+
+### Bug Fixes
+
+* **commands:** add --save to commands unable to merge ([92fbd72](https://github.com/drawnepicenter/iloa/commit/92fbd72)), closes [#14](https://github.com/drawnepicenter/iloa/issues/14)
+
+
+
 <a name="0.3.2"></a>
 ## [0.3.2](https://github.com/drawnepicenter/iloa/compare/v0.3.1...v0.3.2) (2017-01-29)
 
