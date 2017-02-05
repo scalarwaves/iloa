@@ -22,6 +22,12 @@ exports.builder = {
     desc: 'Force overwriting outfile',
     default: false,
     type: 'boolean'
+  },
+  save: {
+    alias: 's',
+    desc: 'Save options to config file',
+    default: false,
+    type: 'boolean'
   }
 }
 exports.handler = (argv) => {

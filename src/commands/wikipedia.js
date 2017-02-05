@@ -35,6 +35,12 @@ exports.builder = {
     desc: 'Just intro or all sections',
     default: false,
     type: 'boolean'
+  },
+  save: {
+    alias: 's',
+    desc: 'Save options to config file',
+    default: false,
+    type: 'boolean'
   }
 }
 exports.handler = (argv) => {
@@ -89,7 +95,11 @@ exports.handler = (argv) => {
       const page = body.query.pages[pageID]
       const plain = page.extract.trim()
       const wrapped = tools.wrapStr(plain, true, true)
-      themes.label(theme, 'down', 'Summary', wrapped)
+      if (config.verbose) {
+        themes.label(theme, 'down', 'Summary', wrapped)
+      } else {
+        console.log(wrapped)
+      }
       tofile.summary = plain
       if (argv.o) tools.outFile(argv.o, argv.f, tofile)
     } else {
