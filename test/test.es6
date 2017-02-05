@@ -1033,8 +1033,6 @@ describe('encyclopedia-of-life', () => {
         }
         const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-meta.json`)
         expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \s[\]→.\-,():/_@;<=">&]*/mig)
-        // expect(JSON.stringify(json, null, 2)).to.equal(JSON.stringify(obj, null, 2))
-        // expect(json).to.deep.equal(obj)
         done(err)
       })
     })
