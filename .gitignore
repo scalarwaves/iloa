@@ -14,3 +14,4 @@ data
 .nvmrc
 wunder.sh
 extra
+lcov.info

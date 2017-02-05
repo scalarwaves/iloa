@@ -7,6 +7,7 @@ const expect = require('chai').expect
 const fs = require('fs-extra')
 const noon = require('noon')
 const sinon = require('sinon')
+const wrap = require('wrap-ansi')
 const version = require('../package.json').version
 
 const CFILE = `${process.env.HOME}/.iloa.noon`
@@ -99,6 +100,29 @@ describe('tools', () => {
       done()
     })
   })
+  describe('boolean to binary', () => {
+    const bool = true
+    it('returns a zero or one', (done) => {
+      expect(tools.boolToBin(bool)).to.equals(1)
+      done()
+    })
+  })
+  describe('strip HTML', () => {
+    const str = '<b>hello</b>'
+    it('returns a normal string', (done) => {
+      expect(tools.stripHTML(str)).to.equals('hello')
+      done()
+    })
+  })
+  describe('wrap string', () => {
+    const str = 'The quick brown fox jumped over the lazy dog. The quick brown fox jumped over the lazy dog.'
+    it('wraps with ANSI escape codes', (done) => {
+      tools.wrapStr(str, true, true)
+      const wrappedstr = wrap(str, 20, true, true)
+      console.log(wrappedstr)
+      done()
+    })
+  })
   describe('rate-limiting', () => {
     it('resets wolfram limit', (done) => {
       fs.copySync('test/test.config.noon', CFILE)
@@ -111,8 +135,8 @@ describe('tools', () => {
       const reset = checkStamp[2]
       expect(c.wolf.date.remain).to.match(/\d+/mig)
       expect(c.wolf.date.stamp).to.match(/201\d[-\d]*T[0-9:.-Z]*/mig)
-      expect(proceed).to.equals(true)
-      expect(reset).to.equals(false)
+      expect(proceed).to.be.true
+      expect(reset).to.be.false
       done()
     })
     it('decrements wolfram limit', (done) => {
@@ -125,8 +149,8 @@ describe('tools', () => {
       const proceed = checkStamp[1]
       const reset = checkStamp[2]
       expect(c.wolf.date.remain).to.equals(1999)
-      expect(proceed).to.equals(true)
-      expect(reset).to.equals(false)
+      expect(proceed).to.be.true
+      expect(reset).to.be.false
       done()
     })
     it('resets wunder limit', (done) => {
@@ -146,10 +170,10 @@ describe('tools', () => {
       expect(c.wunder.date.mremain).to.equals(9)
       expect(c.wunder.date.dstamp).to.match(/201\d[-\d]*T[0-9:.\-Z]*/mig)
       expect(c.wunder.date.mstamp).to.match(/201\d[-\d]*T[0-9:.\-Z]*/mig)
-      expect(dproceed).to.equals(true)
-      expect(mproceed).to.equals(true)
-      expect(dreset).to.equals(true)
-      expect(mreset).to.equals(true)
+      expect(dproceed).to.be.true
+      expect(mproceed).to.be.true
+      expect(dreset).to.be.true
+      expect(mreset).to.be.true
       done()
     })
     it('decrements wunder limit', (done) => {
@@ -167,10 +191,10 @@ describe('tools', () => {
       const mreset = checkStamp[4]
       expect(c.wunder.date.dremain).to.equals(499)
       expect(c.wunder.date.mremain).to.equals(9)
-      expect(dproceed).to.equals(true)
-      expect(mproceed).to.equals(true)
-      expect(dreset).to.equals(false)
-      expect(mreset).to.equals(false)
+      expect(dproceed).to.be.true
+      expect(mproceed).to.be.true
+      expect(dreset).to.be.false
+      expect(mreset).to.be.false
       done()
     })
   })
@@ -240,6 +264,16 @@ describe('themes', () => {
         console.log(error)
         done()
       }
+    })
+  })
+  describe('no theme dir', () => {
+    it('falls back', (done) => {
+      let TDIR = null
+      const themeDirExists = false
+      themeDirExists ? TDIR = 'themes/' : TDIR = `${process.env.NODE_PATH}/leximaven/themes/`
+      themes.loadTheme('square')
+      expect(TDIR).to.equals(`${process.env.NODE_PATH}/leximaven/themes/`)
+      done()
     })
   })
 })
@@ -416,6 +450,14 @@ describe('config commands', () => {
         expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/Set option wiki.intro to (true|false)\./mig)
         done(err)
       })
+    })
+    it('enforces hardcoded date', (done) => {
+      try {
+        child.exec(`node ${process.cwd()}/bin/leximaven.js config set onelook.date false`, (err) => {})
+      } catch (e) {
+        console.log(e)
+      }
+      done()
     })
   })
 })
@@ -639,16 +681,16 @@ describe('root commands', () => {
   })
   describe('wikipedia', () => {
     it('shows output', (done) => {
-      child.exec(`node ${process.cwd()}/bin/iloa.js wp -i -o ${process.cwd()}/test/output/wp.json 'George Gurdjieff' > test/output/wp.out`, (err) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js wp -i --verbose=false -o ${process.cwd()}/test/output/wp.json 'George Gurdjieff' > test/output/wp.out`, (err) => {
         const stdout = fs.readFileSync('test/output/wp.out', 'utf8')
-        // const obj = {
-        //   type: 'wiki',
-        //   source: 'http://www.wikipedia.org/',
-        //   url: 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&indexpageids&redirects=1&continue=&explaintext=&exintro=&titles=George%20Gurdjieff',
-        //   summary: `George Ivanovich Gurdjieff (/ˈɡɜːrdʒiˌɛf/; January 13, 1866/1872/1877? – October 29, 1949), also commonly referred to as Georges Ivanovich Gurdjieff and G. I. Gurdjieff, was an influential early 20th-century mystic, philosopher, spiritual teacher, and composer born in what was then an Armenian region of Russia of Armenian and Greek descent. Gurdjieff taught that most humans do not possess a unified mind-body consciousness and thus live their lives in a state of hypnotic \"waking sleep\", but that it is possible to transcend to a higher state of consciousness and achieve full human potential. Gurdjieff described a method attempting to do so, calling the discipline \"The Work\" (connoting \"work on oneself\") or \"the Method\". According to his principles and instructions,\nGurdjieff's method for awakening one's consciousness unites the methods of the fakir, monk or yogi, and thus he referred to it as the \"Fourth Way\".`
-        // }
-        // const json = fs.readJsonSync(`${process.cwd()}/test/output/wp.json`)
-        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \s[\]→(/ˈɡɜːʒˌɛ;?–),.\-'"]*/mig)
+        const obj = {
+          type: 'wiki',
+          source: 'http://www.wikipedia.org/',
+          url: 'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&indexpageids&redirects=1&continue=&explaintext=&exintro=&titles=George%20Gurdjieff',
+          summary: `George Ivanovich Gurdjieff (/ˈɡɜːrdʒiˌɛf/; January 13, 1866/1872/1877? – October 29, 1949), also commonly referred to as Georges Ivanovich Gurdjieff and G. I. Gurdjieff, was an influential early 20th-century mystic, philosopher, spiritual teacher, and composer born in what was then an Armenian region of Russia of Armenian and Greek descent. Gurdjieff taught that most humans do not possess a unified mind-body consciousness and thus live their lives in a state of hypnotic \"waking sleep\", but that it is possible to transcend to a higher state of consciousness and achieve full human potential. Gurdjieff described a method attempting to do so, calling the discipline \"The Work\" (connoting \"work on oneself\") or \"the Method\". According to his principles and instructions,\nGurdjieff's method for awakening one's consciousness unites the methods of the fakir, monk or yogi, and thus he referred to it as the \"Fourth Way\".`
+        }
+        const json = fs.readJsonSync(`${process.cwd()}/test/output/wp.json`)
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \s(\/ˈɡɜ:ˈʒˌɛ;?–\),\.\-"'=Гео́ргийва́новичурджΓεώργιοςωργιάδηԳեորգիԳյուրջիևἸνéâ—$\[\]’ü&]*/mig)
         // expect(json).to.deep.equal(obj)
         done(err)
       })
@@ -924,72 +966,72 @@ describe('encyclopedia-of-life', () => {
     it('shows output', (done) => {
       child.exec(`node ${process.cwd()}/bin/iloa.js eol meta -o ${process.cwd()}/test/output/eol-meta.json 30073527 > test/output/eol-meta.out`, (err) => {
         const stdout = fs.readFileSync('test/output/eol-meta.out', 'utf8')
-        // const obj = {
-        //   type: 'metadata',
-        //   source: 'http://eol.org',
-        //   metadata: {
-        //     id: 1045608,
-        //     scientificName: 'Apis mellifera Linnaeus 1758',
-        //     richness_score: 400
-        //   },
-        //   dataObjects: {
-        //     'id0': 52191458,
-        //     'scientificName0': 'Apis mellifera Linnaeus 1758',
-        //     'accordingTo0': 'Species 2000 & ITIS Catalogue of Life: April 2013',
-        //     'canonical0': 'Apis mellifera',
-        //     'sourceIdentifier0': '6845885',
-        //     'taxonRank0': 'Species',
-        //     'id1': 59534038,
-        //     'scientificName1': 'Apis (Apis) mellifera Linnaeus 1758',
-        //     'accordingTo1': 'Paleobiology Database',
-        //     'canonical1': 'Apis mellifera',
-        //     'sourceIdentifier1': '235173',
-        //     'taxonRank1': 'Species',
-        //     'id2': 49121298,
-        //     'scientificName2': 'Apis (Apis) mellifera Linnaeus 1758',
-        //     'accordingTo2': 'Paleobiology Database',
-        //     'canonical2': 'Apis mellifera',
-        //     'sourceIdentifier2': 'urn:paleodb:tn235173',
-        //     'taxonRank2': 'Species',
-        //     'id3': 49379619,
-        //     'scientificName3': 'Apis (Apis) mellifera Linnaeus 1758',
-        //     'accordingTo3': 'Paleobiology Database',
-        //     'canonical3': 'Apis mellifera',
-        //     'sourceIdentifier3': 'urn:paleodb:tn235173',
-        //     'taxonRank3': 'Species',
-        //     'id4': 55789671,
-        //     'scientificName4': 'Apis mellifera Linnaeus 1758',
-        //     'accordingTo4': 'Integrated Taxonomic Information System (ITIS)',
-        //     'canonical4': 'Apis mellifera',
-        //     'sourceIdentifier4': '154396',
-        //     'taxonRank4': 'Species',
-        //     'id5': 59631096,
-        //     'scientificName5': 'Apis mellifera Linnaeus 1758',
-        //     'accordingTo5': 'Paleobiology Database',
-        //     'canonical5': 'Apis mellifera',
-        //     'sourceIdentifier5': '283625',
-        //     'taxonRank5': 'Species',
-        //     'id6': 50293009,
-        //     'scientificName6': 'Apis mellifera',
-        //     'accordingTo6': 'Taxonomic Hierarchy of COL-China 2012',
-        //     'canonical6': 'Apis mellifera',
-        //     'sourceIdentifier6': '44bde209-1a83-48bc-bacf-877b39463c35',
-        //     'taxonRank6': 'Species',
-        //     'id7': 51183343,
-        //     'scientificName7': 'Apis mellifera',
-        //     'accordingTo7': 'NCBI Taxonomy',
-        //     'canonical7': 'Apis mellifera',
-        //     'sourceIdentifier7': '7460',
-        //     'taxonRank7': 'Species',
-        //     'id8': 46497385,
-        //     'scientificName8': 'Apis mellifera Linnaeus 1758',
-        //     'accordingTo8': 'Integrated Taxonomic Information System (ITIS)',
-        //     'canonical8': 'Apis mellifera',
-        //     'sourceIdentifier8': '154396',
-        //     'taxonRank8': 'Species'
-        //   }
-        // }
-        // const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-meta.json`)
+        const obj = {
+          type: 'metadata',
+          source: 'http://eol.org',
+          metadata: {
+            id: 1045608,
+            scientificName: 'Apis mellifera Linnaeus 1758',
+            richness_score: 400
+          },
+          dataObjects: {
+            'id0': 52191458,
+            'scientificName0': 'Apis mellifera Linnaeus 1758',
+            'accordingTo0': 'Species 2000 & ITIS Catalogue of Life: April 2013',
+            'canonical0': 'Apis mellifera',
+            'sourceIdentifier0': '6845885',
+            'taxonRank0': 'Species',
+            'id1': 59534038,
+            'scientificName1': 'Apis (Apis) mellifera Linnaeus 1758',
+            'accordingTo1': 'Paleobiology Database',
+            'canonical1': 'Apis mellifera',
+            'sourceIdentifier1': '235173',
+            'taxonRank1': 'Species',
+            'id2': 49121298,
+            'scientificName2': 'Apis (Apis) mellifera Linnaeus 1758',
+            'accordingTo2': 'Paleobiology Database',
+            'canonical2': 'Apis mellifera',
+            'sourceIdentifier2': 'urn:paleodb:tn235173',
+            'taxonRank2': 'Species',
+            'id3': 49379619,
+            'scientificName3': 'Apis (Apis) mellifera Linnaeus 1758',
+            'accordingTo3': 'Paleobiology Database',
+            'canonical3': 'Apis mellifera',
+            'sourceIdentifier3': 'urn:paleodb:tn235173',
+            'taxonRank3': 'Species',
+            'id4': 55789671,
+            'scientificName4': 'Apis mellifera Linnaeus 1758',
+            'accordingTo4': 'Integrated Taxonomic Information System (ITIS)',
+            'canonical4': 'Apis mellifera',
+            'sourceIdentifier4': '154396',
+            'taxonRank4': 'Species',
+            'id5': 59631096,
+            'scientificName5': 'Apis mellifera Linnaeus 1758',
+            'accordingTo5': 'Paleobiology Database',
+            'canonical5': 'Apis mellifera',
+            'sourceIdentifier5': '283625',
+            'taxonRank5': 'Species',
+            'id6': 50293009,
+            'scientificName6': 'Apis mellifera',
+            'accordingTo6': 'Taxonomic Hierarchy of COL-China 2012',
+            'canonical6': 'Apis mellifera',
+            'sourceIdentifier6': '44bde209-1a83-48bc-bacf-877b39463c35',
+            'taxonRank6': 'Species',
+            'id7': 51183343,
+            'scientificName7': 'Apis mellifera',
+            'accordingTo7': 'NCBI Taxonomy',
+            'canonical7': 'Apis mellifera',
+            'sourceIdentifier7': '7460',
+            'taxonRank7': 'Species',
+            'id8': 46497385,
+            'scientificName8': 'Apis mellifera Linnaeus 1758',
+            'accordingTo8': 'Integrated Taxonomic Information System (ITIS)',
+            'canonical8': 'Apis mellifera',
+            'sourceIdentifier8': '154396',
+            'taxonRank8': 'Species'
+          }
+        }
+        const json = fs.readJsonSync(`${process.cwd()}/test/output/eol-meta.json`)
         expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \s[\]→.\-,():/_@;<=">&]*/mig)
         // expect(JSON.stringify(json, null, 2)).to.equal(JSON.stringify(obj, null, 2))
         // expect(json).to.deep.equal(obj)
