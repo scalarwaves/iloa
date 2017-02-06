@@ -1,4 +1,4 @@
-/* eslint no-undef: 0, no-useless-escape: 0 */
+/* eslint no-undef: 0, no-useless-escape: 0, handle-callback-err: 0, quotes: 0, no-unused-vars: 0 */
 const themes = require('../bin/themes')
 const tools = require('../bin/tools')
 
@@ -272,6 +272,7 @@ describe('themes', () => {
       const themeDirExists = false
       themeDirExists ? TDIR = 'themes/' : TDIR = `${process.env.NODE_PATH}/leximaven/themes/`
       themes.loadTheme('square')
+      themes.getThemes()
       expect(TDIR).to.equals(`${process.env.NODE_PATH}/leximaven/themes/`)
       done()
     })
@@ -546,7 +547,7 @@ describe('root commands', () => {
         const obj = {
           type: 'duckduckgo',
           source: 'https://www.duckduckgo.com/',
-          url: 'https://api.duckduckgo.com/?q=nodejs&format=json&pretty=1&no_redirect=1&t=iloa',
+          url: 'https://api.duckduckgo.com/?q=nodejs&format=json&pretty=1&no_redirect=1&no_html=1&t=iloa',
           answerType: '',
           responseType: 'Article',
           title: 'Node.js',
@@ -575,6 +576,187 @@ describe('root commands', () => {
         const json = fs.readJsonSync(`${process.cwd()}/test/output/ddg.json`)
         expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 [\]→\s.:\/\-,'()_+%]*/mig)
         expect(json).to.deep.equal(obj)
+        done(err)
+      })
+    })
+    it('shows categories', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js dg 'The Simpsons characters' -o test/output/categories.json > test/output/categories.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/categories.out', 'utf8')
+        const json = fs.readJsonSync(`${process.cwd()}/test/output/categories.json`)
+        const obj = {
+          type: 'duckduckgo',
+          source: 'https://www.duckduckgo.com/',
+          url: 'https://api.duckduckgo.com/?q=The%20Simpsons%20characters&format=json&pretty=1&no_redirect=1&no_html=1&t=iloa',
+          answerType: '',
+          responseType: 'Category',
+          title: 'The Simpsons characters',
+          abstractSource: 'Wikipedia',
+          abstractUrl: 'https://en.wikipedia.org/wiki/The_Simpsons_characters',
+          relatedText0: "Apu Nahasapeemapetilon - Apu Nahasapeemapetilon is a cartoon character in the animated television series The Simpsons. He is the Indian immigrant proprietor of the Kwik-E-Mart, a popular convenience store in Springfield, and is well known for his catchphrase, \"Thank you, come again.\"",
+          relatedUrl0: 'https://duckduckgo.com/Apu_Nahasapeemapetilon',
+          relatedText1: "Barney Gumble - Barnard \"Barney\" Gumble is a fictional character on the American animated sitcom The Simpsons. The character is voiced by Dan Castellaneta and first appeared in the series premiere episode \"Simpsons Roasting on an Open Fire\".",
+          relatedUrl1: 'https://duckduckgo.com/Barney_Gumble',
+          relatedText2: "Bart Simpson - Bartholomew JoJo \"Bart\" Simpson is a fictional character in the American animated television series The Simpsons and part of the Simpson family. He is voiced by Nancy Cartwright and first appeared on television in The Tracey Ullman Show short \"Good Night\" on April 19, 1987.",
+          relatedUrl2: 'https://duckduckgo.com/Bart_Simpson',
+          relatedText3: "Chief Wiggum - Chief Chauncey \"Clancy\" Wiggum is a fictional character from the animated television series The Simpsons, voiced by Hank Azaria. He is the chief of police in the show's setting of Springfield. He is the father of Ralph Wiggum and the husband of Sarah Wiggum.",
+          relatedUrl3: 'https://duckduckgo.com/Chief_Wiggum',
+          relatedText4: "Cletus Spuckler - Cletus Delroy Spuckler, commonly called Cletus the Slack-Jawed Yokel is a recurring character in the Fox animated series The Simpsons, voiced by Hank Azaria. Cletus is Springfield's resident hillbilly stereotype. He is usually portrayed wearing a white sleeveless shirt and blue jeans.",
+          relatedUrl4: 'https://duckduckgo.com/Cletus_Spuckler',
+          relatedText5: "Comic Book Guy - Comic Book Guy is the common, popular name for Jeffrey \"Jeff\" Albertson, a recurring fictional character in the animated television series The Simpsons. He is voiced by Hank Azaria and first appeared in the second-season episode \"Three Men and a Comic Book\", which originally aired on May 9, 1991.",
+          relatedUrl5: 'https://duckduckgo.com/Comic_Book_Guy',
+          relatedText6: "Dr. Hibbert - Dr. Julius M. Hibbert, usually referred to as Dr. Hibbert, is a recurring character on the animated series The Simpsons. His speaking voice is provided by Harry Shearer and his singing voice was by Thurl Ravenscroft, and he first appeared in the episode \"Bart the Daredevil\".",
+          relatedUrl6: "https://duckduckgo.com/Dr._Hibbert",
+          relatedText7: "Dr. Nick - Dr. Nicholas Riviera is a recurring fictional character in the American animated sitcom The Simpsons. He is voiced by Hank Azaria and first appeared in the episode \"Bart Gets Hit by a Car\". Dr. Nick is an inept quack physician, and a satire of incompetent medical professionals.",
+          relatedUrl7: 'https://duckduckgo.com/Dr._Nick',
+          relatedText8: "Edna Krabappel - Edna Krabappel was a cartoon character from the animated television series The Simpsons, who was voiced by Marcia Wallace until her death in 2013. She is the teacher of Bart Simpson's 4th grade class at Springfield Elementary School, and Ned Flanders's wife in later seasons.",
+          relatedUrl8: 'https://duckduckgo.com/Edna_Krabappel',
+          relatedText9: "Fat Tony (The Simpsons) - Marion Anthony \"Fat Tony\" D'Amico is a recurring character in the animated sitcom The Simpsons. He is voiced by Joe Mantegna and first appeared in the third season episode \"Bart the Murderer\". Fat Tony is a gangster and the underboss of the Springfield Mafia.",
+          relatedUrl9: 'https://duckduckgo.com/Fat_Tony_(The_Simpsons)',
+          relatedText10: "Grampa Simpson - Abraham Jedediah \"Abe\" Simpson II, often known simply as Grampa, is a fictional character in the animated television series, The Simpsons, he made his first appearance in the episode entitled Grampa and the Kids, a Simpsons short on The Tracey Ullman Show.",
+          relatedUrl10: 'https://duckduckgo.com/Grampa_Simpson',
+          relatedText11: "Groundskeeper Willie - William MacDougal, more commonly known as Groundskeeper Willie, is a recurring character on The Simpsons, voiced by Dan Castellaneta. He is head groundskeeper at Springfield Elementary School. Willie is almost feral in nature and is immensely proud of his native Scotland.",
+          relatedUrl11: 'https://duckduckgo.com/Groundskeeper_Willie',
+          relatedText12: "Hans Moleman - Hans Moleman is a recurring character on the animated television series The Simpsons. He was created by series creator Matt Groening and is voiced by Dan Castellaneta, and first appeared in the episode \"Principal Charming\".",
+          relatedUrl12: 'https://duckduckgo.com/Hans_Moleman',
+          relatedText13: "Homer Simpson - Homer Jay Simpson is a fictional character and the main protagonist of the American animated television series The Simpsons as the patriarch of the eponymous family.",
+          relatedUrl13: 'https://duckduckgo.com/Homer_Simpson',
+          relatedText14: "Kang and Kodos - Kang and Kodos are a duo of recurring characters in the animated television series The Simpsons. Kang is voiced by Harry Shearer and Kodos by Dan Castellaneta. They are aliens from the fictional planet Rigel VII and appear almost exclusively in the \"Treehouse of Horror\" episodes.",
+          relatedUrl14: 'https://duckduckgo.com/Kang_and_Kodos',
+          relatedText15: "Kent Brockman - Kent Brockman is a fictional character in the animated television series The Simpsons. He is voiced by Harry Shearer and first appeared in the episode \"Krusty Gets Busted\". He is a grumpy, self-centered local Springfield news anchor.",
+          relatedUrl15: 'https://duckduckgo.com/Kent_Brockman',
+          relatedText16: "Krusty the Clown - Herschel Shmoikel Pinchas Yerucham Krustofsky, better known as Krusty the Clown, is a cartoon character in the animated television series The Simpsons. He is voiced by Dan Castellaneta.",
+          relatedUrl16: 'https://duckduckgo.com/Krusty_the_Clown',
+          relatedText17: "Lenny and Carl - Lenford \"Lenny\" Leonard and Carlton \"Carl\" Carlson are two supporting characters in the Fox animated series The Simpsons, voiced by Harry Shearer and Hank Azaria, respectively. They are best friends of Homer Simpson and work with him at the Springfield Nuclear Power Plant.",
+          relatedUrl17: 'https://duckduckgo.com/Lenny_and_Carl',
+          relatedText18: "Lionel Hutz - Lionel Hutz is a fictional character in the animated television series The Simpsons. He was voiced by Phil Hartman, and his first appearance was in the season two episode \"Bart Gets Hit by a Car\".",
+          relatedUrl18: 'https://duckduckgo.com/Lionel_Hutz',
+          relatedText19: "Lisa Simpson - Lisa Marie Simpson is a fictional character in the animated television series The Simpsons. She is the middle child and most intelligent of the Simpson family. Voiced by Yeardley Smith, Lisa first appeared on television in The Tracey Ullman Show short \"Good Night\" on April 19, 1987.",
+          relatedUrl19: 'https://duckduckgo.com/Lisa_Simpson',
+          relatedText20: "Maggie Simpson - Margaret \"Maggie\" Evelyn Simpson is a fictional character in the animated television series The Simpsons. She first appeared on television in the Tracey Ullman Show short \"Good Night\" on April 19, 1987.",
+          relatedUrl20: 'https://duckduckgo.com/Maggie_Simpson',
+          relatedText21: "Marge Simpson - Marjorie Jacqueline \"Marge\" Simpson is a fictional character in the American animated sitcom The Simpsons and part of the eponymous family. She is voiced by Julie Kavner and first appeared on television in The Tracey Ullman Show short \"Good Night\" on April 19, 1987.",
+          relatedUrl21: 'https://duckduckgo.com/Marge_Simpson',
+          relatedText22: "Mayor Quimby - Mayor Joseph \"Joe\" Quimby, nicknamed \"Diamond Joe\", is a recurring character from the animated television series The Simpsons. He is voiced by Dan Castellaneta, and first appeared in the episode \"Bart Gets an F\".",
+          relatedUrl22: 'https://duckduckgo.com/Mayor_Quimby',
+          relatedText23: "Milhouse Van Houten - Milhouse Mussolini van Houten is a fictional character featured in the animated television series The Simpsons, voiced by Pamela Hayden, and created by Matt Groening.",
+          relatedUrl23: 'https://duckduckgo.com/Milhouse_Van_Houten',
+          relatedText24: "Moe Szyslak - Moammar \"Moe\" Szyslak is a fictional character from the American animated television series, The Simpsons. He is voiced by Hank Azaria and first appeared in the series premiere episode \"Simpsons Roasting on an Open Fire\".",
+          relatedUrl24: 'https://duckduckgo.com/Moe_Szyslak',
+          relatedText25: "Mona Simpson (The Simpsons) - Mona J. Simpson is a recurring fictional character in the animated television series The Simpsons. She has been voiced by several actresses, including Maggie Roswell, Tress MacNeille, Pamela Hayden, and most prominently, Glenn Close.",
+          relatedUrl25: 'https://duckduckgo.com/Mona_Simpson_(The_Simpsons)',
+          relatedText26: "Mr. Burns - Charles Montgomery Burns, known as C. Montgomery Burns and Monty Burns, but usually referred to simply as Mr. Burns, is a recurring character in the animated television series The Simpsons, and is voiced by Harry Shearer.",
+          relatedUrl26: 'https://duckduckgo.com/Mr._Burns',
+          relatedText27: "Ned Flanders - Nedward \"Ned\" Flanders, Jr. is a recurring fictional character in the animated television series The Simpsons. He is voiced by Harry Shearer, and first appeared in the series premiere episode \"Simpsons Roasting on an Open Fire\".",
+          relatedUrl27: 'https://duckduckgo.com/Ned_Flanders',
+          relatedText28: "Nelson Muntz - Nelson Mandela Muntz is a fictional character and the lead school bully from the animated TV series The Simpsons. He is voiced by Nancy Cartwright. Nelson was introduced in Season 1's \"Bart the General\" as an antagonist but later turned into one of Bart Simpson's best friends.",
+          relatedUrl28: 'https://duckduckgo.com/Nelson_Muntz',
+          relatedText29: "Otto Mann - Otto Mann is a fictional character on the animated TV series The Simpsons, voiced by Harry Shearer. He is the school bus driver for Springfield Elementary School.",
+          relatedUrl29: 'https://duckduckgo.com/Otto_Mann',
+          relatedText30: "Patty and Selma - Patty and Selma Bouvier are fictional characters in the American animated sitcom The Simpsons. They are identical twins and are both voiced by Julie Kavner.",
+          relatedUrl30: 'https://duckduckgo.com/Patty_and_Selma',
+          relatedText31: "Principal Skinner - Principal W. Seymour Skinner is a fictional character in the American animated sitcom The Simpsons, who is voiced by Harry Shearer.",
+          relatedUrl31: 'https://duckduckgo.com/Principal_Skinner',
+          relatedText32: "Professor Frink - Professor John Nerdelbaum Frink, Jr., or simply Professor Frink, is a recurring character in the animated television series The Simpsons. He is voiced by Hank Azaria, and first appeared in the 1991 episode \"Old Money\".",
+          relatedUrl32: 'https://duckduckgo.com/Professor_Frink',
+          relatedText33: "Ralph Wiggum - Ralph Wiggum is a recurring character on the animated series The Simpsons, voiced by Nancy Cartwright. The son of Police Chief Wiggum and a classmate of Lisa Simpson, Ralph is best known as the show's resident oddball, and is noted for his non sequiturs and erratic behavior.",
+          relatedUrl33: 'https://duckduckgo.com/Ralph_Wiggum',
+          relatedText34: "Reverend Lovejoy - Reverend Timothy \"Tim\" Lovejoy is a recurring character in the animated television series The Simpsons. He is voiced by Harry Shearer, and first appeared in the episode \"The Telltale Head\". Lovejoy is the minister at The First Church of Springfield—the Protestant church in Springfield.",
+          relatedUrl34: 'https://duckduckgo.com/Reverend_Lovejoy',
+          relatedText35: "Santa's Little Helper - Santa's Little Helper is a recurring character in the American animated television series The Simpsons. He is the pet greyhound of the Simpson family.",
+          relatedUrl35: "https://duckduckgo.com/Santa's_Little_Helper",
+          relatedText36: "Sideshow Bob - Dr. Robert Underdunk Terwilliger. Jr Doctor of Philosophy, better known as Sideshow Bob, is a recurring character in the animated television series The Simpsons. He is voiced by Kelsey Grammer and first appeared briefly in the episode \"The Telltale Head\".",
+          relatedUrl36: 'https://duckduckgo.com/Sideshow_Bob',
+          relatedText37: "Simpson family - The Simpson family are cartoon characters featured in the animated television series The Simpsons. The Simpsons are a nuclear family consisting of married couple Homer and Marge and their three children Bart, Lisa and Maggie.",
+          relatedUrl37: 'https://duckduckgo.com/Simpson_family',
+          relatedText38: "Snake Jailbird - Snake Jailbird is a recurring fictional character in the animated television series The Simpsons, who is voiced by Hank Azaria. Snake's first appearance was in the episode \"The War of the Simpsons\". His catchphrase is \"Bye! \", which he usually says when he's in trouble.",
+          relatedUrl38: 'https://duckduckgo.com/Snake_Jailbird',
+          relatedText39: "The Itchy & Scratchy Show - The Itchy & Scratchy Show is a running gag and fictional animated television series featured in the animated television series The Simpsons. It usually appears as a part of The Krusty the Clown Show, watched regularly by Bart and Lisa Simpson.",
+          relatedUrl39: 'https://duckduckgo.com/The_Itchy_%26_Scratchy_Show',
+          relatedText40: "Troy McClure - Troy McClure is a fictional character from the American animated sitcom The Simpsons. He was voiced by Phil Hartman and first appeared in the second season episode \"Homer vs. Lisa and the 8th Commandment\".",
+          relatedUrl40: 'https://duckduckgo.com/Troy_McClure',
+          relatedText41: "Waylon Smithers - Waylon J. Smithers, Jr., usually referred to as Mr. Smithers or simply Smithers, is a recurring fictional character in the American animated sitcom The Simpsons, who is voiced by Harry Shearer.",
+          relatedUrl41: 'https://duckduckgo.com/Waylon_Smithers'
+        }
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \s\[\]→:\/\._\-,"'\(\)—!&%]*/mig)
+        expect(json).to.deep.equal(obj)
+        done(err)
+      })
+    })
+    it('shows topic summaries', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js dg 'Valley Forge National Historical Park' -o test/output/topic-summaries.json > test/output/topic-summaries.out`, (err) => {
+        done(err)
+      })
+    })
+    it('shows disambiguation', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js dg 'apple' -o test/output/disambiguation.json > test/output/disambiguation.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/disambiguation.out', 'utf8')
+        const json = fs.readJsonSync(`${process.cwd()}/test/output/disambiguation.json`)
+        const obj = {
+          "type": "duckduckgo",
+          "source": "https://www.duckduckgo.com/",
+          "url": "https://api.duckduckgo.com/?q=apple&format=json&pretty=1&no_redirect=1&no_html=1&t=iloa",
+          "answerType": "",
+          "responseType": "Disambiguation",
+          "title": "Apple",
+          "abstractSource": "Wikipedia",
+          "abstractUrl": "https://en.wikipedia.org/wiki/Apple_(disambiguation)",
+          "relatedText0": "Apple A deciduous tree in the rose family best known for its sweet, pomaceous fruit, the apple.",
+          "relatedUrl0": "https://duckduckgo.com/Apple",
+          "relatedText1": "Apple Inc. An American multinational technology company headquartered in Cupertino, California, that designs...",
+          "relatedUrl1": "https://duckduckgo.com/Apple_Inc.",
+          "relatedText2": "Apple I A desktop computer released by the Apple Computer Company in 1976.",
+          "relatedUrl2": "https://duckduckgo.com/Apple_I",
+          "topicName0": "Botany",
+          "topicText0": "Hedge apple A small deciduous tree or large shrub, typically growing to tall.",
+          "topicUrl0": "https://duckduckgo.com/Maclura_pomifera",
+          "topicName1": "Companies",
+          "topicText1": "Apple Leisure Group A vertically-integrated travel and hospitality conglomerate focused on packaged travel and...",
+          "topicUrl1": "https://duckduckgo.com/Apple_Leisure_Group",
+          "topicName2": "Film and television",
+          "topicText2": "\"The Apple\" (Star Trek: The Original Series) \"The Apple\" is episode No. 34, production No. 38, of the second season of the original science...",
+          "topicUrl2": "https://duckduckgo.com/The_Apple_(Star_Trek%3A_The_Original_Series)",
+          "topicName3": "Music",
+          "topicText3": "Apple (album) The only full-length studio album by the American alternative rock band Mother Love Bone.",
+          "topicUrl3": "https://duckduckgo.com/Apple_(album)",
+          "topicName4": "Places",
+          "topicText4": "Apple Creek (stream), Missouri A stream that rises in western Perry County, Missouri and empties into the Mississippi River...",
+          "topicUrl4": "https://duckduckgo.com/Apple_Creek_(stream)%2C_Missouri",
+          "topicName5": "Technology",
+          "topicText5": "Apple Pugetsound Program Library Exchange A.P.P.L.E., also known as Apple Pugetsound Program Library Exchange was initially established in...",
+          "topicUrl5": "https://duckduckgo.com/Apple_Pugetsound_Program_Library_Exchange",
+          "topicName6": "Politics",
+          "topicText6": "Yabloko A political party in Russia founded in 1993.",
+          "topicUrl6": "https://duckduckgo.com/Yabloko",
+          "topicName7": "Other uses",
+          "topicText7": "Apples (novel) The bestselling debut novel by Richard Milward, published in 2007.",
+          "topicUrl7": "https://duckduckgo.com/Apples_(novel)",
+          "topicName8": "See also",
+          "topicText8": "Big Apple Meanings See related meanings for the phrase 'Big Apple'.",
+          "topicUrl8": "https://duckduckgo.com/d/Big_Apple"
+        }
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \s\[\]→:\/\._\(\),–\-"%']*/mig)
+        expect(json).to.deep.equal(obj)
+        done(err)
+      })
+    })
+    it('shows bangs', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js dg '!songmeanings Tool' > test/output/bangs.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/bangs.out', 'utf8')
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \s\[\]!:\/\.?=]*/mig)
+        done(err)
+      })
+    })
+    it('shows calculations', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js dg '1 % 3' > test/output/calculations.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/calculations.out', 'utf8')
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \[\]\s→%=]*/mig)
+        done(err)
+      })
+    })
+    it('shows phone numbers', (done) => {
+      child.exec(`node ${process.cwd()}/bin/iloa.js dg '407-934-7639' > test/output/phone-numbers.out`, (err) => {
+        const stdout = fs.readFileSync('test/output/phone-numbers.out', 'utf8')
+        expect(stdout.replace(/(\r\n|\n|\r)\s?/gm, '\n')).to.match(/[a-z0-9 \[\]\s\-\(\)→%=]*/mig)
         done(err)
       })
     })
