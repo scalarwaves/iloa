@@ -1,4 +1,4 @@
-/* eslint no-unused-vars: 0 */
+/* eslint-disableno-unused-vars: 0 */
 exports.command = 'eol <command>'
 exports.aliases = ['life']
 exports.desc = 'Encyclopedia of Life taks'

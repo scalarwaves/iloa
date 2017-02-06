@@ -1,4 +1,4 @@
-'use strict';/* eslint max-len: 0 */var chalk=require('chalk');var df=require('date-fns');var fs=require('fs-extra');var noon=require('noon');var ts=require('term-size');var wrap=require('wrap-ansi');var xml2js=require('xml2js');var CFILE=process.env.HOME+'/.iloa.noon';/**
+'use strict';/* eslint-disablemax-len: 0 */var chalk=require('chalk');var df=require('date-fns');var fs=require('fs-extra');var noon=require('noon');var ts=require('term-size');var wrap=require('wrap-ansi');var xml2js=require('xml2js');var CFILE=process.env.HOME+'/.iloa.noon';/**
   * The tools module provides useful repetitive tasks
   * @module Utils
   *//**

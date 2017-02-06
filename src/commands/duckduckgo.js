@@ -1,4 +1,4 @@
-/* eslint max-len:0 */
+/* eslint-disablemax-len:0 */
 const helper = require('./helpers/duckduckgo-helper')
 const themes = require('../themes')
 const tools = require('../tools')

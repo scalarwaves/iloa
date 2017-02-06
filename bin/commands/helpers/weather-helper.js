@@ -1,4 +1,4 @@
-'use strict';/* eslint max-len:0 */var themes=require('../../themes');var noon=require('noon');var CFILE=process.env.HOME+'/.iloa.noon';var config=noon.load(CFILE);var theme=themes.loadTheme(config.theme);/**
+'use strict';/* eslint-disablemax-len:0 */var themes=require('../../themes');var noon=require('noon');var CFILE=process.env.HOME+'/.iloa.noon';var config=noon.load(CFILE);var theme=themes.loadTheme(config.theme);/**
  * Handles alerts
  * @param  {object} data   Alert data
  * @param  {object} tofile The tofile object

@@ -1,4 +1,4 @@
-/* eslint max-len: 0 */
+/* eslint-disablemax-len: 0 */
 const chalk = require('chalk')
 const df = require('date-fns')
 const fs = require('fs-extra')

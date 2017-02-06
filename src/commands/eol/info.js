@@ -1,4 +1,4 @@
-/* eslint max-len:0, no-unused-vars:0 */
+/* eslint-disablemax-len:0, no-unused-vars:0 */
 const themes = require('../../themes')
 const tools = require('../../tools')
 

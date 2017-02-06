@@ -1,4 +1,4 @@
-/* eslint no-unused-vars:0, no-unused-expressions:0 */
+/* eslint-disableno-unused-vars:0, no-unused-expressions:0 */
 const yargs = require('yargs')
 exports.command = 'completion'
 exports.aliases = ['comp']

@@ -1,4 +1,4 @@
-/* eslint no-unused-vars: 0 */
+/* eslint-disableno-unused-vars: 0 */
 exports.command = 'configuration <command>'
 exports.aliases = ['config', 'conf']
 exports.desc = 'Configuration tasks'

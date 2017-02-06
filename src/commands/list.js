@@ -1,4 +1,4 @@
-/* eslint no-unused-vars: 0 */
+/* eslint-disableno-unused-vars: 0 */
 const themes = require('../themes')
 
 exports.command = 'list'
