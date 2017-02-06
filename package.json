@@ -9,6 +9,12 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "standard": {
+    "ignore": [
+      "/bin/**/*.js",
+      "/test/test.js"
+    ]
+  },
   "main": "bin/iloa.js",
   "bin": {
     "iloa": "bin/iloa.js"
@@ -19,7 +25,7 @@
     "clean": "rimraf bin coverage .nyc_output test/output",
     "climate": "codeclimate-test-reporter < lcov.info",
     "instrument": "cross-env BABEL_ENV=test babel src -d bin",
-    "lint": "standard --fix src",
+    "lint": "standard --fix",
     "pretest": "cross-env BABEL_ENV=test babel test/test.es6 -o test/test.js",
     "release": "standard-version",
     "report": "nyc report -r text-lcov > lcov.info && nyc report -r html",
