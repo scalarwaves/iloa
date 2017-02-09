@@ -554,7 +554,7 @@ describe('root commands', () => {
           entity: 'software',
           abstractSource: 'Wikipedia',
           abstractUrl: 'https://en.wikipedia.org/wiki/Node.js',
-          text: "Node.js is an open-source, cross-platform JavaScript runtime environment for developing a diverse variety of tools and applications. Although Node.js is not a JavaScript framework, many of its basic modules are written in JavaScript, and developers can write new modules in JavaScript. The runtime environment interprets JavaScript using Google's V8 JavaScript engine.",
+          text: "Node.js is an open-source, cross-platform JavaScript runtime environment for developing a diverse variety of server tools and applications. Although Node.js is not a JavaScript framework, many of its basic modules are written in JavaScript, and developers can write new modules in JavaScript. The runtime environment interprets JavaScript using Google's V8 JavaScript engine.",
           image: 'https://duckduckgo.com/i/a65969b4.png',
           relatedText0: 'MEAN (software bundle) - MEAN is a free and open-source JavaScript software stack for building dynamic web sites and web applications.',
           relatedUrl0: 'https://duckduckgo.com/MEAN_(software_bundle)',
