@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.4"></a>
+## [0.3.4](https://github.com/drawnepicenter/iloa/compare/v0.3.3...v0.3.4) (2017-02-09)
+
+
+### Bug Fixes
+
+* **project:** aliases in help screen not highlighted ([84b72a3](https://github.com/drawnepicenter/iloa/commit/84b72a3))
+
+
+
 <a name="0.3.3"></a>
 ## [0.3.3](https://github.com/drawnepicenter/iloa/compare/v0.3.2...v0.3.3) (2017-02-05)
 
